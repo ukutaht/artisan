@@ -1,4 +1,19 @@
-<div class="jumbotron">
-  <h2><%= gettext "Welcome to Phoenix!" %></h2>
-  <p class="lead">A productive web framework that<br />does not compromise speed and maintainability.</p>
+<div class="dashboard-column">
+  <h2 class="dashboard-column__header"><%= gettext "Current Stories" %></h2>
+</div>
+
+<div class="dashboard-column">
+  <h2 class="dashboard-column__header"><%= gettext "Current Projects" %></h2>
+
+  <ul class="projects-list">
+    <li class="projects-list__item">
+      <a href="javascript://">Racingbreaks</a>
+    </li>
+    <li class="projects-list__item">
+      <a href="javascript://">Faros</a>
+    </li>
+    <li class="projects-list__item">
+      <a href="javascript://">Artisan</a>
+    </li>
+  </ul>
 </div>

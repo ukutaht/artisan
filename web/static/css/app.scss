@@ -3,9 +3,8 @@
 @import "settings";
 @import "top-nav";
 @import "typography";
-
+@import "dashboard";
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
+  @include outer-container(80%);
 }

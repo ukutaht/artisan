@@ -1,0 +1,19 @@
+.dashboard-column {
+  @include span-columns(6);
+
+  &__header {
+    border-bottom: 1px solid $grey;
+  }
+}
+
+.projects-list {
+  &__item {
+    padding: 10px;
+    padding-left: 0;
+    border-bottom: 1px solid $light-grey;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
+}
