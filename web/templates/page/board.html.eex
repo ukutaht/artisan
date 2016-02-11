@@ -1,0 +1,55 @@
+<div class="board">
+  <div class="board__column">
+    <div class="board__column__header">
+      <h3>Ready</h3>
+
+      <ul class="stories-list">
+        <li class="stories-list__item">
+          <div class="stories-list__item__title-line">
+            <a href="javascript://">#513 Add a ticket type for a...</a>
+            <span class="stories-list__item__estimate">1.5</span>
+          </div>
+          <div class="stories-list__item__assignee-line">
+            <img src="http://i1.wp.com/www.techrepublic.com/bundles/techrepubliccore/images/icons/standard/icon-user-default.png"
+            ></img>
+          </div>
+        </li>
+
+        <li class="stories-list__item">
+          <div class="stories-list__item__title-line">
+            <a href="javascript://">#513 Add a ticket type for a...</a>
+            <span class="stories-list__item__estimate">1.5</span>
+          </div>
+          <div class="stories-list__item__assignee-line">
+            <img src="http://i1.wp.com/www.techrepublic.com/bundles/techrepubliccore/images/icons/standard/icon-user-default.png"
+            ></img>
+          </div>
+        </li>
+
+        <li class="stories-list__item">
+          <div class="stories-list__item__title-line">
+            <a href="javascript://">#513 Add a ticket type for a...</a>
+            <span class="stories-list__item__estimate">1.5</span>
+          </div>
+          <div class="stories-list__item__assignee-line">
+            <img src="http://i1.wp.com/www.techrepublic.com/bundles/techrepubliccore/images/icons/standard/icon-user-default.png"
+            ></img>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="board__column">
+    <div class="board__column__header">
+      <h3>Working</h3>
+    </div>
+  </div>
+
+  <div class="board__column">
+    <div class="board__column__header">
+      <h3>Completed</h3>
+    </div>
+  </div>
+  </div>
+</div>

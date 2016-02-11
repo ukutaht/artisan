@@ -4,6 +4,7 @@
 @import "top-nav";
 @import "base";
 @import "dashboard";
+@import "board";
 
 .container {
   @include outer-container(80%);

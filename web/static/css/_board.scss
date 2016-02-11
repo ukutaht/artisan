@@ -1,0 +1,37 @@
+.board {
+  &__column {
+    @include span-columns(4);
+    border-right: 1px solid $light-grey;
+
+    &:last-of-type {
+      border-right: none;
+    }
+
+
+    &__header {
+      text-align: center;
+    }
+  }
+}
+
+.stories-list {
+  &__item {
+    background-color: white;
+    margin: 10px;
+    padding: 10px;
+    text-align: left;
+
+    &__estimate {
+      float: right;
+    }
+
+    &__assignee-line {
+      text-align: right;
+      margin-top: 10px;
+
+      img {
+        width: 7%;
+      }
+    }
+  }
+}

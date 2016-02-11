@@ -3,6 +3,7 @@ body {
   font-size: 14px;
   line-height: 21px;
   color: $darkest-grey;
+  background-color: #f2f2f2;
 }
 
 h1 {
@@ -45,9 +46,9 @@ li {
 
 a {
   text-decoration: none;
-  color: $blue;
+  color: $darkest-grey;
 }
 
 a:hover {
-  color: darken($blue, 20%);
+  text-decoration: underline;
 }

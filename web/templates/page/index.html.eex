@@ -7,13 +7,13 @@
 
   <ul class="projects-list">
     <li class="projects-list__item">
-      <a href="javascript://">Racingbreaks</a>
+      <a href="/board">Racingbreaks</a>
     </li>
     <li class="projects-list__item">
-      <a href="javascript://">Faros</a>
+      <a href="/board">Faros</a>
     </li>
     <li class="projects-list__item">
-      <a href="javascript://">Artisan</a>
+      <a href="/board">Artisan</a>
     </li>
   </ul>
 </div>
