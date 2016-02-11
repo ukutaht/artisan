@@ -1,6 +1,51 @@
 .board {
+  &__nav {
+    @include row();
+    margin-top: 25px;
+    border-bottom: 1px solid $grey;
+
+    &__breadcrumb {
+      @include span-columns(10);
+
+      li {
+        display: inline-block;
+
+        &:before {
+          content: ">";
+          margin-right: 0.2em;
+          margin-left: 0.2em;
+        }
+
+        &:first-of-type:before {
+          content: none;
+        }
+      }
+    }
+
+    &__dropdown {
+      @include span-columns(2);
+
+      margin-top: 1em;
+    }
+  }
+
+  &__actions {
+    @include row();
+    margin-top: 25px;
+
+    &__left {
+      @include span-columns(6);
+    }
+
+    &__right {
+      @include span-columns(6);
+      text-align: right;
+    }
+  }
+
   &__column {
     @include span-columns(4);
+    margin-top: 25px;
     border-right: 1px solid $light-grey;
 
     &:last-of-type {
@@ -19,7 +64,6 @@
     background-color: white;
     margin: 10px;
     padding: 10px;
-    text-align: left;
 
     &__estimate {
       float: right;
