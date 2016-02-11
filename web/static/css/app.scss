@@ -1,0 +1,11 @@
+@import "bourbon";
+@import "neat";
+@import "settings";
+@import "top-nav";
+@import "typography";
+
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
