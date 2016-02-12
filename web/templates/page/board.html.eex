@@ -43,33 +43,36 @@
       <li class="stories-list__item">
         <div class="stories-list__item__title-line">
           <a href="javascript://">#513 Add a ticket type for a...</a>
-          <span class="stories-list__item__estimate">1.5</span>
+          <span class="stories-list__item__estimate">
+            <i class="ion-connection-bars padded-icon"></i>1.5
+          </span>
         </div>
         <div class="stories-list__item__assignee-line">
-          <img src="http://i1.wp.com/www.techrepublic.com/bundles/techrepubliccore/images/icons/standard/icon-user-default.png"
-          ></img>
+          <i class="ion-person"></i>
         </div>
       </li>
 
       <li class="stories-list__item">
         <div class="stories-list__item__title-line">
           <a href="javascript://">#513 Add a ticket type for a...</a>
-          <span class="stories-list__item__estimate">1.5</span>
+          <span class="stories-list__item__estimate">
+            <i class="ion-connection-bars padded-icon"></i>1.5
+          </span>
         </div>
         <div class="stories-list__item__assignee-line">
-          <img src="http://i1.wp.com/www.techrepublic.com/bundles/techrepubliccore/images/icons/standard/icon-user-default.png"
-          ></img>
+          <i class="ion-person"></i>
         </div>
       </li>
 
       <li class="stories-list__item">
         <div class="stories-list__item__title-line">
           <a href="javascript://">#513 Add a ticket type for a...</a>
-          <span class="stories-list__item__estimate">1.5</span>
+          <span class="stories-list__item__estimate">
+            <i class="ion-connection-bars padded-icon"></i>1.5
+          </span>
         </div>
         <div class="stories-list__item__assignee-line">
-          <img src="http://i1.wp.com/www.techrepublic.com/bundles/techrepubliccore/images/icons/standard/icon-user-default.png"
-          ></img>
+          <i class="ion-person"></i>
         </div>
       </li>
     </ul>
