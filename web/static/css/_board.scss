@@ -40,6 +40,10 @@
     &__right {
       @include span-columns(6);
       text-align: right;
+
+      .button:last-of-type {
+        margin-right: 0;
+      }
     }
   }
 

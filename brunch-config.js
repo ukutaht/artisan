@@ -25,6 +25,7 @@ exports.config = {
 
   plugins: {
     babel: {
+      presets: ["es2015", "react"],
       ignore: [/web\/static\/vendor/]
     },
     sass: {

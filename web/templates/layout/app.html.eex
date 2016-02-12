@@ -12,17 +12,7 @@
   </head>
 
   <body>
-    <nav class="top-nav">
-      <div class="top-nav__brand">
-        <a href="/">
-          <img src="/images/artisan-logo.png" />
-        </a>
-      </div>
-    </nav>
-
-    <main class="container">
-        <%= render @view_module, @view_template, assigns %>
-    </main>
+    <div id="mount"></div>
 
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
