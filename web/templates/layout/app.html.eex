@@ -14,7 +14,7 @@
   <body>
     <nav class="top-nav">
       <div class="top-nav__brand">
-        <img src="/images/artisan-logo@2x.png" />
+        <img src="/images/artisan-logo.png" />
       </div>
     </nav>
 
