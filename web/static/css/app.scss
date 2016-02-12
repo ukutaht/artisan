@@ -5,6 +5,7 @@
 @import "base";
 @import "dashboard";
 @import "board";
+@import "buttons";
 
 .container {
   @include outer-container(80%);

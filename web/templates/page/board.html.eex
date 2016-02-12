@@ -24,12 +24,12 @@
 
   <div class="board__actions">
     <div class="board__actions__left">
-      <a href="javascript://">← Show Backglog</a>
+      <a href="javascript://">← Show Backlog</a>
     </div>
 
     <div class="board__actions__right">
-      <button>Complete iteration</button>
-      <button>Add story</button>
+      <button class="button primary">Complete iteration</button>
+      <button class="button primary">Add story</button>
     </div>
   </div>
 

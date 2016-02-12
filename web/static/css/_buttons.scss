@@ -1,0 +1,25 @@
+.button {
+  padding: 0.6em 2em;
+  border-radius: 3px;
+  border: none;
+  color: $inverted;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 300;
+  text-align: center;
+  line-height: 1.5em;
+  @include transition(background-color 100ms ease-in-out);
+
+  &:focus {
+    outline: none;
+  }
+
+  &.primary {
+    background: $light-blue;
+    box-shadow: inset 0 -3px 0 darken($light-blue, 10%);
+
+    &:hover {
+      background: darken($light-blue, 5%);
+    }
+  }
+}
