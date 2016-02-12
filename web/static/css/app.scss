@@ -10,3 +10,7 @@
 .container {
   @include outer-container(80%);
 }
+
+.padded-icon {
+  padding-right: 5px;
+}

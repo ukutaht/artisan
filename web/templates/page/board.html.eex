@@ -24,12 +24,14 @@
 
   <div class="board__actions">
     <div class="board__actions__left">
-      <a href="javascript://">← Show Backlog</a>
+      <a href="javascript://"><i class="padded-icon ion-chevron-left"></i> Show Backlog</a>
     </div>
 
     <div class="board__actions__right">
       <button class="button primary">Complete iteration</button>
-      <button class="button primary">Add story</button>
+      <button class="button primary">
+        <i class="padded-icon ion-plus"></i> Add story
+      </button>
     </div>
   </div>
 

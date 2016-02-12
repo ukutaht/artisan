@@ -1,4 +1,14 @@
 .top-nav {
+  padding-left: 10%;
+  padding-right: 10%;
   height: 60px;
   background: $darkest-grey;
+
+  &__brand {
+    transform: translateY(1em);
+
+    img {
+      width: 120px;
+    }
+  }
 }
