@@ -11,8 +11,12 @@
   @include outer-container(80%);
 }
 
-.padded-icon {
+.right-padded-icon {
   padding-right: 5px;
+}
+
+.left-padded-icon {
+  padding-left: 5px;
 }
 
 .truncated-text {

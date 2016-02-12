@@ -48,10 +48,17 @@
   }
 
   &__column {
-    @include span-columns(4);
     margin-top: 25px;
     min-height: 500px;
     border-right: 1px dashed $border-grey;
+
+    &--3 {
+      @include span-columns(4);
+    }
+
+    &--4 {
+      @include span-columns(3);
+    }
 
     &:last-of-type {
       border-right: none;

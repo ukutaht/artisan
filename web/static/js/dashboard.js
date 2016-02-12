@@ -16,19 +16,19 @@ class Dashboard extends React.Component {
             <li className="projects-list__item">
               <Link to="/board">Racingbreaks</Link>
               <Link to="javascript://" className="projects-list__item__settings">
-                <i className="ion-gear-b padded-icon"></i>Settings
+                <i className="ion-gear-b right-padded-icon"></i>Settings
               </Link>
             </li>
             <li className="projects-list__item">
               <Link to="/board">Faros</Link>
               <Link to="javascript://" className="projects-list__item__settings">
-                <i className="ion-gear-b padded-icon"></i>Settings
+                <i className="ion-gear-b right-padded-icon"></i>Settings
               </Link>
             </li>
             <li className="projects-list__item">
               <Link to="/board">Artisan</Link>
               <Link to="javascript://" className="projects-list__item__settings">
-                <i className="ion-gear-b padded-icon"></i>Settings
+                <i className="ion-gear-b right-padded-icon"></i>Settings
               </Link>
             </li>
           </ul>
