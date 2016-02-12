@@ -2,7 +2,7 @@
   &__nav {
     @include row();
     margin-top: 25px;
-    border-bottom: 1px solid $grey;
+    border-bottom: 1px solid $border-grey;
 
     &__breadcrumb {
       @include span-columns(10);
@@ -46,7 +46,8 @@
   &__column {
     @include span-columns(4);
     margin-top: 25px;
-    border-right: 1px solid $light-grey;
+    min-height: 500px;
+    border-right: 1px dashed $border-grey;
 
     &:last-of-type {
       border-right: none;
