@@ -59,10 +59,6 @@ const columnTitles = {
   completed: "Completed"
 }
 
-const visibleColumns = [
-  "ready", "working", "completed"
-]
-
 class StoryCard extends React.Component {
   name() { return this.props.story.name }
   number() { return this.props.story.number }
