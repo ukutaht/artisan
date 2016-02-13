@@ -53,11 +53,11 @@
     border-right: 1px dashed $border-grey;
 
     &--3 {
-      @include span-columns(4);
+      @include span-columns(4, $display: block-collapse);
     }
 
     &--4 {
-      @include span-columns(3);
+      @include span-columns(3, $display: block-collapse);
     }
 
     &:last-of-type {
