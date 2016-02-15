@@ -6,7 +6,32 @@ class StoryModal extends React.Component {
     this.story = props.story;
   }
 
+  componentWillReceiveProps(props) {
+    if (props.visible) {
+      this.listenForEscape()
+    } else {
+      this.stopListeningForEscape()
+    }
+  }
+
+  listenForEscape() {
+    document.onkeydown = function(evt) {
+        evt = evt || window.event;
+        if (evt.keyCode == 27) {
+            this.props.onClose()
+        }
+    }.bind(this)
+  }
+
+  stopListeningForEscape() {
+    document.onkeydown = null
+  }
+
   render() {
+    if (!this.props.visible) {
+      return null
+    }
+
     return (
         <div className="modal-container">
           <div className="modal">

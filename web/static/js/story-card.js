@@ -39,7 +39,7 @@ class StoryCard extends React.Component {
             <i className="ion-person"></i>
           </div>
         </li>
-        {modal}
+      <StoryModal visible={this.state.showModal} story={this.story} onClose={this.hideModal.bind(this)} />
       </div>
     )
   }
