@@ -64,14 +64,25 @@ class Board extends React.Component {
     this.setState({visibleColumns: this.state.visibleColumns.shift()});
   }
 
-  render() {
-    var backlogLink;
+  backlogLink() {
     if (this.isBacklogVisible()) {
-      backlogLink = <a href="javascript://" onClick={this.hideBacklog.bind(this)}>Hide Backlog <i className="left-padded-icon ion-chevron-right"></i></a>
+      return (
+        <a href="javascript://" onClick={this.hideBacklog.bind(this)}>
+          Hide Backlog
+          <i className="left-padded-icon ion-chevron-right"></i>
+        </a>
+      )
     } else {
-      backlogLink = <a href="javascript://" onClick={this.showBacklog.bind(this)}><i className="right-padded-icon ion-chevron-left"></i> Show Backlog</a>
+      return (
+        <a href="javascript://" onClick={this.showBacklog.bind(this)}>
+          <i className="right-padded-icon ion-chevron-left"></i>
+          Show Backlog
+        </a>
+      )
     }
+  }
 
+  render() {
     return (
       <div className="board">
         <div className="board__nav">
@@ -98,7 +109,7 @@ class Board extends React.Component {
 
         <div className="board__actions">
           <div className="board__actions__left">
-            { backlogLink }
+            { this.backlogLink() }
           </div>
 
           <div className="board__actions__right">
