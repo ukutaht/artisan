@@ -21,20 +21,20 @@ class StoryModal extends React.Component {
     }
   }
 
-  componentWillReceiveProps(props) {
-    if (props.visible) {
-      this.listenForEscape()
-    } else {
-      this.stopListeningForEscape()
-    }
+  componentDidMount() {
+    this.listenForEscape()
+  }
+
+  componentWillUnmount() {
+    this.stopListeningForEscape()
   }
 
   listenForEscape() {
     document.onkeydown = function(evt) {
-        evt = evt || window.event;
-        if (evt.keyCode == 27) {
-            this.props.onClose()
-        }
+      evt = evt || window.event;
+      if (evt.keyCode == 27) {
+          this.props.onClose()
+      }
     }.bind(this)
   }
 
@@ -78,10 +78,6 @@ class StoryModal extends React.Component {
   }
 
   render() {
-    if (!this.props.visible) {
-      return null
-    }
-
     return (
         <div className="modal-container">
           <div className="modal">

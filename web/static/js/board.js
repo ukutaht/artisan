@@ -109,8 +109,7 @@ class Board extends React.Component {
   renderAddStoryModal() {
     if (this.state.addStoryIsOpen) {
       return (
-        <StoryModal visible={this.state.addStoryIsOpen}
-                    story={new Story()}
+        <StoryModal story={new Story()}
                     onClose={this.closeAddStory.bind(this)}
                     onSubmit={this.addStory.bind(this)}
                     header="Add story"

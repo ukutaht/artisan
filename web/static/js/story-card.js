@@ -32,13 +32,25 @@ class StoryCard extends React.Component {
     }
   }
 
+  renderModal() {
+    if (this.state.showModal) {
+      return (
+        <StoryModal story={this.props.story}
+                    onClose={this.hideModal.bind(this)}
+                    onSubmit={this.updateStory.bind(this)}
+                    header="Edit story"
+                    buttonText="Update" />
+      )
+    }
+  }
+
   render() {
     return (
       <div>
         <li className="stories-list__item">
           <div>
             <a href="javascript://" title={this.props.story.name} className="truncated-text" onClick={this.showModal.bind(this)}>
-              #{this.props.story.number} {this.props.story.name}
+              {this.props.story.number}. {this.props.story.name}
             </a>
             {this.displayEstimate()}
           </div>
@@ -46,7 +58,7 @@ class StoryCard extends React.Component {
             <i className="ion-person"></i>
           </div>
         </li>
-      <StoryModal visible={this.state.showModal} story={this.props.story} onClose={this.hideModal.bind(this)} onSubmit={this.updateStory.bind(this)} header="Edit story" buttonText="Update"/>
+        {this.renderModal()}
       </div>
     )
   }
