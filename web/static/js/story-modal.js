@@ -1,4 +1,12 @@
 import React from 'react'
+import Pert from './pert'
+import Immutable from 'immutable'
+
+const largestAllowedEstimate = 9999999999999999999
+
+function isDigit(val) {
+  return /^[0-9]+$/.test(val)
+}
 
 class StoryModal extends React.Component {
   constructor(props) {
@@ -7,6 +15,9 @@ class StoryModal extends React.Component {
       name: props.story.name,
       number: props.story.number,
       estimate: props.story.estimate,
+      optimistic: props.story.optimistic,
+      realistic: props.story.realistic,
+      pessimistic: props.story.pessimistic,
     }
   }
 
@@ -40,6 +51,32 @@ class StoryModal extends React.Component {
     this.setState({name: e.target.value})
   }
 
+  extractEstimate(e, estimate) {
+    if (isDigit(e.target.value)) {
+      return Math.min(Number(e.target.value), largestAllowedEstimate)
+    } else if (e.target.value === "") {
+      return null
+    } else {
+      return this.state[estimate]
+    }
+  }
+
+  estimateChanged(type) {
+    return function(e) {
+      let newEstimate = this.extractEstimate(e, type)
+      let estimateData = Immutable.Map(this.state).set(type, newEstimate)
+
+      this.setState({
+        [type]: newEstimate,
+        estimate: Pert.estimate(estimateData.toJS())
+      })
+    }.bind(this)
+  }
+
+  displayEstimate(estimate) {
+    return this.state[estimate] == null ? "" : this.state[estimate].toFixed()
+  }
+
   render() {
     if (!this.props.visible) {
       return null
@@ -57,7 +94,7 @@ class StoryModal extends React.Component {
                 <div className="eight-columns">
                   <section className="form-group">
                     <label>Name</label>
-                    <input type="text" name="name" value={this.state.name} onChange={this.nameChanged.bind(this)}/>
+                    <input type="text" value={this.state.name} onChange={this.nameChanged.bind(this)}/>
                   </section>
 
                   <label>Acceptance criteria</label>
@@ -68,19 +105,19 @@ class StoryModal extends React.Component {
                   <div className="estimate-form">
                     <section className="estimate-form__group">
                       <label className="estimate-form__left">Optimistic:</label>
-                      <input type="text" className="estimate-form__right" />
+                      <input type="text" className="estimate-form__right" value={this.displayEstimate('optimistic')} onChange={this.estimateChanged('optimistic')} />
                     </section>
                     <section className="estimate-form__group">
                       <label className="estimate-form__left">Realistic:</label>
-                      <input type="text" className="estimate-form__right" />
+                      <input type="text" className="estimate-form__right" value={this.displayEstimate('realistic')} onChange={this.estimateChanged('realistic')} />
                     </section>
                     <section className="estimate-form__group">
                       <label className="estimate-form__left">Pessimistic:</label>
-                      <input type="text" className="estimate-form__right" />
+                      <input type="text" className="estimate-form__right" value={this.displayEstimate('pessimistic')} onChange={this.estimateChanged('pessimistic')}/>
                     </section>
                     <section className="estimate-form__total">
                       <label className="estimate-form__left">Estimate:</label>
-                      <span className="estimate-form__right">4.5</span>
+                      <span className="estimate-form__right">{this.state.estimate}</span>
                     </section>
                   </div>
 

@@ -21,6 +21,17 @@ class StoryCard extends React.Component {
     this.hideModal()
   }
 
+  displayEstimate() {
+    if (this.props.story.estimate !== null) {
+      return (
+       <span className="stories-list__item__estimate">
+         <i className="ion-connection-bars right-padded-icon"></i>
+         {this.props.story.estimate}
+       </span>
+      )
+    }
+  }
+
   render() {
     return (
       <div>
@@ -29,9 +40,7 @@ class StoryCard extends React.Component {
             <a href="javascript://" title={this.props.story.name} className="truncated-text" onClick={this.showModal.bind(this)}>
               #{this.props.story.number} {this.props.story.name}
             </a>
-            <span className="stories-list__item__estimate">
-              <i className="ion-connection-bars right-padded-icon"></i>{this.props.story.estimate}
-            </span>
+            {this.displayEstimate()}
           </div>
           <div className="stories-list__item__assignee-line">
             <i className="ion-person"></i>
