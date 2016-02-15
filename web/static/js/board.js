@@ -5,7 +5,7 @@ import StoryCard from './story-card'
 const columns = {
   backlog: [
     {
-      name: "BUG: No hotels found returns 503",
+      name: "Find better way of organizing web helpers",
       number: 1,
       estimate: 1.75
     },

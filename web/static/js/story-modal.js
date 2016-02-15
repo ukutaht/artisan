@@ -44,7 +44,7 @@ class StoryModal extends React.Component {
                 <div className="eight-columns">
                   <section className="form-group">
                     <label>Name</label>
-                    <input type="text" name="name" />
+                    <input type="text" name="name" defaultValue={this.story.name}/>
                   </section>
 
                   <label>Acceptance criteria</label>
