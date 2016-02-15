@@ -3,7 +3,11 @@ import React from 'react'
 class StoryModal extends React.Component {
   constructor(props) {
     super(props);
-    this.story = props.story;
+    this.state = {
+      name: props.story.name,
+      number: props.story.number,
+      estimate: props.story.estimate,
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -27,6 +31,15 @@ class StoryModal extends React.Component {
     document.onkeydown = null
   }
 
+  handleSubmit(e) {
+    e.preventDefault()
+    this.props.onSubmit(this.props.story.merge(this.state))
+  }
+
+  nameChanged(e) {
+    this.setState({name: e.target.value})
+  }
+
   render() {
     if (!this.props.visible) {
       return null
@@ -36,15 +49,15 @@ class StoryModal extends React.Component {
         <div className="modal-container">
           <div className="modal">
             <header className="modal__header">
-              <h4>#{this.story.number} {this.story.name}</h4>
+              <h4>Edit story</h4>
               <i className="ion-android-close modal__close" onClick={this.props.onClose}></i>
             </header>
             <div className="modal__body row">
-              <form>
+              <form onSubmit={this.handleSubmit.bind(this)}>
                 <div className="eight-columns">
                   <section className="form-group">
                     <label>Name</label>
-                    <input type="text" name="name" defaultValue={this.story.name}/>
+                    <input type="text" name="name" value={this.state.name} onChange={this.nameChanged.bind(this)}/>
                   </section>
 
                   <label>Acceptance criteria</label>

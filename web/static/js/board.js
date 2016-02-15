@@ -1,57 +1,74 @@
 import React from "react"
 import Link from 'react-router/lib/Link'
+import Immutable from 'immutable'
+
 import StoryCard from './story-card'
 
-const columns = {
-  backlog: [
-    {
+const Story = new Immutable.Record({
+    name: '',
+    number: null,
+    estimate: null,
+    column: 'backlog'
+})
+
+const columns = Immutable.Map({
+  backlog: Immutable.List([
+    new Story({
       name: "Find better way of organizing web helpers",
       number: 1,
-      estimate: 1.75
-    },
-    {
+      estimate: 1.75,
+      column: "backlog",
+    }),
+    new Story({
       name: "Add a ticket type for a non-JCR event",
       number: 2,
-      estimate: 3.00
-    },
-    {
+      estimate: 3.00,
+      column: "backlog",
+    }),
+    new Story({
       name: "Child ages: make the new designs work",
       number: 3,
-      estimate: 5.5
-    },
-  ],
-  ready: [
-    {
+      estimate: 5.5,
+      column: "backlog",
+    }),
+  ]),
+  ready: Immutable.List([
+    new Story({
       name: "BUG: No hotels found returns 503",
       number: 1,
-      estimate: 1.75
-    },
-    {
+      estimate: 1.75,
+      column: "ready",
+    }),
+    new Story({
       name: "Add a ticket type for a non-JCR event",
       number: 2,
-      estimate: 3.00
-    },
-  ],
-  working: [
-    {
+      estimate: 3.00,
+      column: "ready",
+    }),
+  ]),
+  working: Immutable.List([
+    new Story({
       name: "Add a ticket type for a non-JCR event",
       number: 2,
-      estimate: 3.00
-    },
-  ],
-  completed: [
-    {
+      estimate: 3.00,
+      column: "working",
+    }),
+  ]),
+  completed: Immutable.List([
+    new Story({
       name: "Add a ticket type for a non-JCR event",
       number: 2,
-      estimate: 3.00
-    },
-    {
+      estimate: 3.00,
+      column: "completed",
+    }),
+    new Story({
       name: "Child ages: make the new designs work",
       number: 3,
-      estimate: 5.5
-    },
-  ]
-}
+      estimate: 5.5,
+      column: "completed",
+    }),
+  ])
+})
 
 const columnTitles = {
   backlog: "Backlog",
@@ -66,7 +83,19 @@ const viewWithBacklog = ["backlog", "ready", "working", "completed"]
 class Board extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {visibleColumns: viewWithoutBacklog};
+    this.state = {
+      visibleColumns: viewWithoutBacklog,
+      columns: columns
+    };
+  }
+
+  updateStory(story) {
+    let updatedColumns = this.state.columns.update(story.column, (column) => {
+      let index = column.findIndex((existing) => existing.number == story.number)
+      return column.update(index, (existing) => existing.merge(story))
+    })
+
+    this.setState({columns: updatedColumns})
   }
 
   renderColumn(column, count) {
@@ -76,7 +105,7 @@ class Board extends React.Component {
           <h3>{ columnTitles[column] }</h3>
         </div>
         <ul className="stories-list">
-          { columns[column].map((story) => <StoryCard key={story.number} story={story} />)}
+          { this.state.columns.get(column).map((story) => <StoryCard key={story.number} story={story} onUpdate={this.updateStory.bind(this)} />)}
         </ul>
       </div>
     )
