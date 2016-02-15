@@ -1,5 +1,6 @@
 import React from "react"
 import { Link } from 'react-router'
+import StoryCard from './story-card'
 
 const columns = {
   backlog: [
@@ -57,30 +58,6 @@ const columnTitles = {
   ready: "Ready",
   working: "Working",
   completed: "Completed"
-}
-
-class StoryCard extends React.Component {
-  name() { return this.props.story.name }
-  number() { return this.props.story.number }
-  estimate() { return this.props.story.estimate }
-
-  render() {
-    return (
-      <li className="stories-list__item">
-        <div>
-          <Link to="javascript://" title={this.name()} className="truncated-text">
-            #{this.number()} {this.name()}
-          </Link>
-          <span className="stories-list__item__estimate">
-            <i className="ion-connection-bars right-padded-icon"></i>{this.estimate()}
-          </span>
-        </div>
-        <div className="stories-list__item__assignee-line">
-          <i className="ion-person"></i>
-        </div>
-      </li>
-    )
-  }
 }
 
 const viewWithoutBacklog = ["ready", "working", "completed"]

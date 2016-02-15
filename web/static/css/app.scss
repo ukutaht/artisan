@@ -1,11 +1,11 @@
 @import "bourbon";
 @import "neat";
 @import "settings";
-@import "top-nav";
 @import "base";
+@import "buttons";
+@import "top-nav";
 @import "dashboard";
 @import "board";
-@import "buttons";
 
 .container {
   @include outer-container(80%);
