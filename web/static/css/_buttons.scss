@@ -1,7 +1,7 @@
 .button {
   margin-right: 10px;
   margin-left: 10px;
-  padding: 0.5em 2em;
+  padding: 0.5em 1.5em;
   border-radius: 3px;
   border: none;
   color: $inverted;
@@ -10,7 +10,7 @@
   font-weight: 300;
   text-align: center;
   line-height: 1.5em;
-  @include transition(background-color 100ms ease-in-out);
+  @include transition(background-color 75ms ease-in-out);
 
   &:focus {
     outline: none;
@@ -18,7 +18,6 @@
 
   &.primary {
     background: $light-blue;
-    box-shadow: inset 0 -3px 0 darken($light-blue, 10%);
 
     &:hover {
       background: darken($light-blue, 5%);
