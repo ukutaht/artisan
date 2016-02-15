@@ -46,7 +46,7 @@ class StoryCard extends React.Component {
             <i className="ion-person"></i>
           </div>
         </li>
-      <StoryModal visible={this.state.showModal} story={this.props.story} onClose={this.hideModal.bind(this)} onSubmit={this.updateStory.bind(this)}/>
+      <StoryModal visible={this.state.showModal} story={this.props.story} onClose={this.hideModal.bind(this)} onSubmit={this.updateStory.bind(this)} header="Edit story" buttonText="Update"/>
       </div>
     )
   }

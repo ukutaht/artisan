@@ -1,14 +1,6 @@
 import Immutable from 'immutable'
 
-const Story = new Immutable.Record({
-    name: '',
-    number: null,
-    estimate: null,
-    optimistic: null,
-    realistic: null,
-    pessimistic: null,
-    column: 'backlog'
-})
+import Story from './story'
 
 
 const columns = Immutable.Map({
@@ -44,7 +36,7 @@ const columns = Immutable.Map({
   ready: Immutable.List([
     new Story({
       name: "BUG: No hotels found returns 503",
-      number: 1,
+      number: 4,
       optimistic: 1,
       realistic: 2,
       pessimistic: 2,
@@ -53,7 +45,7 @@ const columns = Immutable.Map({
     }),
     new Story({
       name: "Allow admin to write description for events.",
-      number: 2,
+      number: 5,
       optimistic: 1,
       realistic: 2,
       pessimistic: 4,
@@ -64,7 +56,7 @@ const columns = Immutable.Map({
   working: Immutable.List([
     new Story({
       name: "[BUG] dev serving of CSS-referenced image assets",
-      number: 2,
+      number: 6,
       optimistic: 1,
       realistic: 2,
       pessimistic: 3,
@@ -75,12 +67,12 @@ const columns = Immutable.Map({
   completed: Immutable.List([
     new Story({
       name: "Move GA snippet to end of <head>",
-      number: 2,
+      number: 7,
       column: "completed",
     }),
     new Story({
       name: "Fix 'contact us'",
-      number: 3,
+      number: 8,
       optimistic: 1,
       realistic: 1,
       pessimistic: 1,
@@ -94,14 +86,20 @@ const columns = Immutable.Map({
 class StoryService {
   constructor() {
     this.columns = columns;
+    this.number  = 8
   }
 
-  all() {
+  byColumn() {
     return columns
   }
 
   update(story) {
     return story;
+  }
+
+  add(story) {
+    this.number += 1
+    return story.merge({number: this.number})
   }
 }
 

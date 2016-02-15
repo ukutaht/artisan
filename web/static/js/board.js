@@ -4,6 +4,8 @@ import Immutable from 'immutable'
 
 import StoryCard from './story-card'
 import StoryService from './story-service'
+import StoryModal from './story-modal'
+import Story from './story'
 
 const columnTitles = {
   backlog: "Backlog",
@@ -19,7 +21,8 @@ class Board extends React.Component {
     super(props);
     this.state = {
       visibleColumns: Immutable.List(["ready", "working", "completed"]),
-      columns: stories.all()
+      columns: stories.byColumn(),
+      addStoryIsOpen: false
     };
   }
 
@@ -82,9 +85,44 @@ class Board extends React.Component {
     }
   }
 
+  openAddStory() {
+    this.setState({addStoryIsOpen: true})
+  }
+
+  closeAddStory() {
+    this.setState({addStoryIsOpen: false})
+  }
+
+  addStory(story) {
+    let firstColumn = this.state.visibleColumns.first()
+    let fullStory   = stories.add(
+      story.merge({column: firstColumn})
+    )
+
+    let updatedColumns = this.state.columns.update(firstColumn, (column) => {
+      return column.unshift(fullStory)
+    })
+
+    this.setState({columns: updatedColumns, addStoryIsOpen: false})
+  }
+
+  renderAddStoryModal() {
+    if (this.state.addStoryIsOpen) {
+      return (
+        <StoryModal visible={this.state.addStoryIsOpen}
+                    story={new Story()}
+                    onClose={this.closeAddStory.bind(this)}
+                    onSubmit={this.addStory.bind(this)}
+                    header="Add story"
+                    buttonText="Create" />
+      )
+    }
+  }
+
   render() {
     return (
       <div className="board">
+        { this.renderAddStoryModal() }
         <div className="board__nav">
           <ul className="board__nav__breadcrumb">
             <li>
@@ -114,13 +152,14 @@ class Board extends React.Component {
 
           <div className="board__actions__right">
             <button className="button primary">Complete iteration</button>
-            <button className="button primary">
+            <button className="button primary" onClick={this.openAddStory.bind(this)}>
               <i className="right-padded-icon ion-plus"></i> Add story
             </button>
           </div>
         </div>
 
         { this.renderColumns() }
+
       </div>
     )
   }

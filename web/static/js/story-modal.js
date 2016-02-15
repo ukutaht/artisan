@@ -86,7 +86,7 @@ class StoryModal extends React.Component {
         <div className="modal-container">
           <div className="modal">
             <header className="modal__header">
-              <h4>Edit story</h4>
+              <h4>{this.props.header}</h4>
               <i className="ion-android-close modal__close" onClick={this.props.onClose}></i>
             </header>
             <div className="modal__body row">
@@ -136,7 +136,7 @@ class StoryModal extends React.Component {
                     <input type="text" name="name" placeholder="Comma-separated"/>
                   </section>
 
-                  <button className="button primary save-story-button">Update Story</button>
+                  <button className="button primary save-story-button">{this.props.buttonText}</button>
                 </div>
               </form>
             </div>
