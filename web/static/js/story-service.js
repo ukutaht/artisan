@@ -2,7 +2,6 @@ import Immutable from 'immutable'
 
 import Story from './story'
 
-
 const columns = Immutable.Map({
   backlog: Immutable.List([
     new Story({
@@ -12,7 +11,7 @@ const columns = Immutable.Map({
       realistic: 1,
       pessimistic: 2,
       estimate: 1.5,
-      column: "backlog",
+      column: "backlog"
     }),
     new Story({
       name: "Add a ticket type for a non-JCR event",
@@ -31,17 +30,19 @@ const columns = Immutable.Map({
       pessimistic: 3,
       estimate: 2.75,
       column: "backlog",
+      tags: ['design']
     }),
   ]),
   ready: Immutable.List([
     new Story({
-      name: "BUG: No hotels found returns 503",
+      name: "No hotels found returns 503",
       number: 4,
       optimistic: 1,
       realistic: 2,
       pessimistic: 2,
       estimate: 2.25,
       column: "ready",
+      tags: ['bug']
     }),
     new Story({
       name: "Allow admin to write description for events.",
@@ -55,13 +56,14 @@ const columns = Immutable.Map({
   ]),
   working: Immutable.List([
     new Story({
-      name: "[BUG] dev serving of CSS-referenced image assets",
+      name: "Dev serving of CSS-referenced image assets",
       number: 6,
       optimistic: 1,
       realistic: 2,
       pessimistic: 3,
       estimate: 2.75,
       column: "working",
+      tags: ['bug']
     }),
   ]),
   completed: Immutable.List([

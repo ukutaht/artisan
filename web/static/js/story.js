@@ -7,7 +7,8 @@ const Story = new Immutable.Record({
     optimistic: null,
     realistic: null,
     pessimistic: null,
-    column: 'backlog'
+    column: 'backlog',
+    tags: []
 })
 
 export default Story
