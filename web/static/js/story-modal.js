@@ -8,6 +8,16 @@ function isDigit(val) {
   return /^[0-9]+$/.test(val)
 }
 
+function joinTags(tags) {
+  return Immutable.List(tags).join(",")
+}
+
+function splitTags(tags) {
+  return Immutable.List(tags.split(","))
+    .map((tag) => tag.replace(/^\s+|\s+$/g, ''))
+    .filter((tag) => tag !== '')
+}
+
 class StoryModal extends React.Component {
   constructor(props) {
     super(props);
@@ -18,6 +28,7 @@ class StoryModal extends React.Component {
       optimistic: props.story.optimistic,
       realistic: props.story.realistic,
       pessimistic: props.story.pessimistic,
+      tags: joinTags(props.story.tags)
     }
   }
 
@@ -44,11 +55,15 @@ class StoryModal extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    this.props.onSubmit(this.props.story.merge(this.state))
+    this.props.onSubmit(this.props.story.merge(this.state, {tags: splitTags(this.state.tags)}))
   }
 
   nameChanged(e) {
     this.setState({name: e.target.value})
+  }
+
+  tagsChanged(e) {
+    this.setState({tags: e.target.value})
   }
 
   extractEstimate(e, estimate) {
@@ -129,7 +144,7 @@ class StoryModal extends React.Component {
 
                   <section className="form-group">
                     <label>Tags</label>
-                    <input type="text" name="name" placeholder="Comma-separated"/>
+                    <input type="text" placeholder="Comma-separated" value={this.state.tags} onChange={this.tagsChanged.bind(this)}/>
                   </section>
 
                   <button className="button primary save-story-button">{this.props.buttonText}</button>

@@ -11,7 +11,8 @@ const columns = Immutable.Map({
       realistic: 1,
       pessimistic: 2,
       estimate: 1.5,
-      column: "backlog"
+      column: "backlog",
+      row: 0
     }),
     new Story({
       name: "Add a ticket type for a non-JCR event",
@@ -21,6 +22,7 @@ const columns = Immutable.Map({
       pessimistic: 3,
       estimate: 3,
       column: "backlog",
+      row: 1
     }),
     new Story({
       name: "Child ages: make the new designs work",
@@ -30,6 +32,7 @@ const columns = Immutable.Map({
       pessimistic: 3,
       estimate: 2.75,
       column: "backlog",
+      row: 2,
       tags: ['design']
     }),
   ]),
@@ -42,6 +45,7 @@ const columns = Immutable.Map({
       pessimistic: 2,
       estimate: 2.25,
       column: "ready",
+      row: 0,
       tags: ['bug']
     }),
     new Story({
@@ -52,6 +56,7 @@ const columns = Immutable.Map({
       pessimistic: 4,
       estimate: 3.25,
       column: "ready",
+      row: 1,
     }),
   ]),
   working: Immutable.List([
@@ -63,6 +68,7 @@ const columns = Immutable.Map({
       pessimistic: 3,
       estimate: 2.75,
       column: "working",
+      row: 0,
       tags: ['bug']
     }),
   ]),
@@ -71,6 +77,7 @@ const columns = Immutable.Map({
       name: "Move GA snippet to end of <head>",
       number: 7,
       column: "completed",
+      row: 0,
     }),
     new Story({
       name: "Fix 'contact us'",
@@ -80,6 +87,7 @@ const columns = Immutable.Map({
       pessimistic: 1,
       estimate: 1,
       column: "completed",
+      row: 1,
     }),
   ])
 })

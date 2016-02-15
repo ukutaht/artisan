@@ -8,7 +8,8 @@ const Story = new Immutable.Record({
     realistic: null,
     pessimistic: null,
     column: 'backlog',
-    tags: []
+    row: 0,
+    tags: [],
 })
 
 export default Story
