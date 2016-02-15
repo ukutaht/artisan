@@ -1,5 +1,6 @@
-import React from "react"
+import React from 'react'
 import Link from 'react-router/lib/Link'
+import Immutable from 'immutable'
 
 import StoryCard from './story-card'
 import StoryService from './story-service'
@@ -11,15 +12,13 @@ const columnTitles = {
   completed: "Completed"
 }
 
-const viewWithoutBacklog = ["ready", "working", "completed"]
-const viewWithBacklog = ["backlog", "ready", "working", "completed"]
 const stories = new StoryService()
 
 class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      visibleColumns: viewWithoutBacklog,
+      visibleColumns: Immutable.List(["ready", "working", "completed"]),
       columns: stories.all()
     };
   }
@@ -49,20 +48,20 @@ class Board extends React.Component {
   }
 
   renderColumns() {
-    let count = this.state.visibleColumns.length
+    let count = this.state.visibleColumns.size
     return this.state.visibleColumns.map((column) => this.renderColumn(column, count))
   }
 
   isBacklogVisible() {
-    return this.state.visibleColumns[0] === "backlog";
+    return this.state.visibleColumns.first() === "backlog";
   }
 
   showBacklog() {
-    this.setState({visibleColumns: viewWithBacklog});
+    this.setState({visibleColumns: this.state.visibleColumns.unshift("backlog")});
   }
 
   hideBacklog() {
-    this.setState({visibleColumns: viewWithoutBacklog});
+    this.setState({visibleColumns: this.state.visibleColumns.shift()});
   }
 
   render() {
