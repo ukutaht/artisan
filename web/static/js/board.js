@@ -125,12 +125,8 @@ class Board extends React.Component {
     return (
       <div className="board">
         { this.renderAddStoryModal() }
-        <div className="board__nav">
+        <nav className="board__nav">
           <ul className="board__nav__breadcrumb">
-            <li>
-              <Link to="javascript://">Projects</Link>
-            </li>
-
             <li>
               <span>Faros</span>
             </li>
@@ -145,7 +141,7 @@ class Board extends React.Component {
             <option>Story board</option>
             <option>Full backlog</option>
           </select>
-        </div>
+        </nav>
 
         <div className="board__actions">
           <div className="board__actions__left">

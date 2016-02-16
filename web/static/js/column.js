@@ -34,7 +34,7 @@ class Column extends React.Component {
   updatePosition(evt) {
     evt.from.insertBefore(evt.item, _nextSibling);
 
-    this.props.onDrag(evt.item.dataset.number, evt.from.dataset.column, evt.to.dataset.column, evt.oldIndex, evt.newIndex)
+    this.props.onDrag(Number(evt.item.dataset.number), evt.from.dataset.column, evt.to.dataset.column, evt.oldIndex, evt.newIndex)
   }
 
   componentWillUnmount() {
