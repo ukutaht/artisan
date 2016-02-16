@@ -46,25 +46,23 @@ class StoryCard extends React.Component {
 
   render() {
     return (
-      <div>
-        <li className="story-card">
-          <div>
-            <a href="javascript://" title={this.props.story.name} className="truncated-text" onClick={this.showModal.bind(this)}>
-              {this.props.story.number}. {this.props.story.name}
-            </a>
-            {this.displayEstimate()}
-          </div>
-          <div className="story-card__second-line">
-            <ul className="story-card__tags">
-              {this.props.story.tags.map((tag) => {
-                return <li className="story-card__tags__item" key={tag}>{tag}</li>
-              })}
-            </ul>
-            <i className="ion-person story-card__second-line__assignee"></i>
-          </div>
-        </li>
+      <li className="story-card">
+        <div>
+          <a href="javascript://" title={this.props.story.name} className="truncated-text" onClick={this.showModal.bind(this)}>
+            {this.props.story.number}. {this.props.story.name}
+          </a>
+          {this.displayEstimate()}
+        </div>
+        <div className="story-card__second-line">
+          <ul className="story-card__tags">
+            {this.props.story.tags.map((tag) => {
+              return <li className="story-card__tags__item" key={tag}>{tag}</li>
+            })}
+          </ul>
+          <i className="ion-person story-card__second-line__assignee"></i>
+        </div>
         {this.renderModal()}
-      </div>
+      </li>
     )
   }
 }

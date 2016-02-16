@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'react-router/lib/Link'
 import Immutable from 'immutable'
+import Sortable from 'sortablejs'
 
 import StoryCard from './story-card'
 import StoryService from './story-service'
@@ -24,6 +25,20 @@ class Board extends React.Component {
       columns: stories.byColumn(),
       addStoryIsOpen: false
     };
+  }
+
+  componentDidMount() {
+    let columns = Immutable.List(document.getElementsByClassName("stories-list"))
+    this._sortables = columns.map((column) => Sortable.create(column, {
+      group: 'stories',
+      chosenClass: 'story-card--dragging',
+      ghostClass: 'story-card--placeholder'
+    }))
+  }
+
+  componentWillUnmount() {
+    this._sortables.forEach((sortable) => sortable.destroy())
+    this._sortables = null;
   }
 
   updateStory(story) {
