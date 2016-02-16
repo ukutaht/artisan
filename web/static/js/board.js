@@ -1,19 +1,12 @@
 import React from 'react'
 import Link from 'react-router/lib/Link'
 import Immutable from 'immutable'
-import Sortable from 'sortablejs'
 
+import Column from './column'
 import StoryCard from './story-card'
 import StoryService from './story-service'
 import StoryModal from './story-modal'
 import Story from './story'
-
-const columnTitles = {
-  backlog: "Backlog",
-  ready: "Ready",
-  working: "Working",
-  completed: "Completed"
-}
 
 const stories = new StoryService()
 
@@ -27,20 +20,6 @@ class Board extends React.Component {
     };
   }
 
-  componentDidMount() {
-    let columns = Immutable.List(document.getElementsByClassName("stories-list"))
-    this._sortables = columns.map((column) => Sortable.create(column, {
-      group: 'stories',
-      chosenClass: 'story-card--dragging',
-      ghostClass: 'story-card--placeholder'
-    }))
-  }
-
-  componentWillUnmount() {
-    this._sortables.forEach((sortable) => sortable.destroy())
-    this._sortables = null;
-  }
-
   updateStory(story) {
     let updated = stories.update(story);
 
@@ -52,22 +31,31 @@ class Board extends React.Component {
     this.setState({columns: updatedColumns})
   }
 
-  renderColumn(column, count) {
-    return (
-      <div className={"board__column board__column--" + count} key={column}>
-        <div className="board__column__header">
-          <h3>{ columnTitles[column] }</h3>
-        </div>
-        <ul className="stories-list">
-          { this.state.columns.get(column).map((story) => <StoryCard key={story.number} story={story} onUpdate={this.updateStory.bind(this)} />)}
-        </ul>
-      </div>
-    )
+  storyDragged(storyNumber, from, to, oldIndex, newIndex) {
+    let story = this.state.columns.get(from).find((story) => story.number == storyNumber)
+
+    let updatedColumns = this.state.columns
+      .update(from, (column) => {
+        return column.remove(oldIndex)
+      })
+      .update(to, (column) => {
+        return column.slice(0, newIndex).push(story).concat(column.slice(newIndex, column.size))
+      })
+
+    this.setState({columns: updatedColumns})
   }
 
   renderColumns() {
     let count = this.state.visibleColumns.size
-    return this.state.visibleColumns.map((column) => this.renderColumn(column, count))
+
+    return this.state.visibleColumns.map((column) => {
+      return <Column stories={this.state.columns.get(column)}
+              key={column}
+              count={count}
+              name={column}
+              onDrag={this.storyDragged.bind(this)}/>
+
+    })
   }
 
   isBacklogVisible() {
