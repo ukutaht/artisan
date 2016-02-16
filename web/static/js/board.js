@@ -31,9 +31,9 @@ class Board extends React.Component {
     this.setState({columns: updatedColumns})
   }
 
-  updateRowNumbers(column) {
+  updatePositions(column) {
     return column.map((story, index) => {
-      return story.merge({row: index})
+      return story.merge({position: index})
     })
   }
 
@@ -42,10 +42,10 @@ class Board extends React.Component {
 
     let updatedColumns = this.state.columns
       .update(from, (column) => {
-        return this.updateRowNumbers(column.remove(oldIndex))
+        return this.updatePositions(column.remove(oldIndex))
       })
       .update(to, (column) => {
-        return this.updateRowNumbers(
+        return this.updatePositions(
           column.slice(0, newIndex).push(story).concat(column.slice(newIndex, column.size))
         )
       })

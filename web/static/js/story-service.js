@@ -11,7 +11,7 @@ const stories = Immutable.List([
     pessimistic: 2,
     estimate: 1.5,
     state: "backlog",
-    row: 0
+    position: 0
   }),
   new Story({
     name: "Add a ticket type for a non-JCR event",
@@ -21,7 +21,7 @@ const stories = Immutable.List([
     pessimistic: 3,
     estimate: 3,
     state: "backlog",
-    row: 1
+    position: 1
   }),
   new Story({
     name: "Child ages: make the new designs work",
@@ -31,7 +31,7 @@ const stories = Immutable.List([
     pessimistic: 3,
     estimate: 2.75,
     state: "backlog",
-    row: 2,
+    position: 2,
     tags: ['design']
   }),
   new Story({
@@ -42,7 +42,7 @@ const stories = Immutable.List([
     pessimistic: 2,
     estimate: 2.25,
     state: "ready",
-    row: 0,
+    position: 0,
     tags: ['bug']
   }),
   new Story({
@@ -53,7 +53,7 @@ const stories = Immutable.List([
     pessimistic: 4,
     estimate: 3.25,
     state: "ready",
-    row: 1,
+    position: 1,
   }),
   new Story({
     name: "Dev serving of CSS-referenced image assets",
@@ -63,14 +63,14 @@ const stories = Immutable.List([
     pessimistic: 3,
     estimate: 2.75,
     state: "working",
-    row: 0,
+    position: 0,
     tags: ['bug']
   }),
   new Story({
     name: "Move GA snippet to end of <head>",
     number: 7,
     state: "completed",
-    row: 0,
+    position: 0,
   }),
   new Story({
     name: "Fix 'contact us'",
@@ -80,7 +80,7 @@ const stories = Immutable.List([
     pessimistic: 1,
     estimate: 1,
     state: "completed",
-    row: 1,
+    position: 1,
   }),
 ])
 
