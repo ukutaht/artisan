@@ -31,15 +31,23 @@ class Board extends React.Component {
     this.setState({columns: updatedColumns})
   }
 
+  updateRowNumbers(column) {
+    return column.map((story, index) => {
+      return story.merge({row: index})
+    })
+  }
+
   storyDragged(storyNumber, from, to, oldIndex, newIndex) {
     let story = this.state.columns.get(from).find((story) => story.number == storyNumber)
 
     let updatedColumns = this.state.columns
       .update(from, (column) => {
-        return column.remove(oldIndex)
+        return this.updateRowNumbers(column.remove(oldIndex))
       })
       .update(to, (column) => {
-        return column.slice(0, newIndex).push(story).concat(column.slice(newIndex, column.size))
+        return this.updateRowNumbers(
+          column.slice(0, newIndex).push(story).concat(column.slice(newIndex, column.size))
+        )
       })
 
     this.setState({columns: updatedColumns})
