@@ -23,7 +23,7 @@ class Board extends React.Component {
   updateStory(story) {
     let updated = stories.update(story);
 
-    let updatedColumns = this.state.columns.update(story.column, (column) => {
+    let updatedColumns = this.state.columns.update(story.state, (column) => {
       let index = column.findIndex((existing) => existing.number == story.number)
       return column.update(index, (existing) => existing.merge(story))
     })
@@ -61,7 +61,9 @@ class Board extends React.Component {
               key={column}
               count={count}
               name={column}
-              onDrag={this.storyDragged.bind(this)}/>
+              onDrag={this.storyDragged.bind(this)}
+              onUpdateStory={this.updateStory.bind(this)}
+              />
 
     })
   }
@@ -107,7 +109,7 @@ class Board extends React.Component {
   addStory(story) {
     let firstColumn = this.state.visibleColumns.first()
     let fullStory   = stories.add(
-      story.merge({column: firstColumn})
+      story.merge({state: firstColumn})
     )
 
     let updatedColumns = this.state.columns.update(firstColumn, (column) => {

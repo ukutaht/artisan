@@ -10,7 +10,7 @@ const stories = Immutable.List([
     realistic: 1,
     pessimistic: 2,
     estimate: 1.5,
-    column: "backlog",
+    state: "backlog",
     row: 0
   }),
   new Story({
@@ -20,7 +20,7 @@ const stories = Immutable.List([
     realistic: 3,
     pessimistic: 3,
     estimate: 3,
-    column: "backlog",
+    state: "backlog",
     row: 1
   }),
   new Story({
@@ -30,7 +30,7 @@ const stories = Immutable.List([
     realistic: 2,
     pessimistic: 3,
     estimate: 2.75,
-    column: "backlog",
+    state: "backlog",
     row: 2,
     tags: ['design']
   }),
@@ -41,7 +41,7 @@ const stories = Immutable.List([
     realistic: 2,
     pessimistic: 2,
     estimate: 2.25,
-    column: "ready",
+    state: "ready",
     row: 0,
     tags: ['bug']
   }),
@@ -52,7 +52,7 @@ const stories = Immutable.List([
     realistic: 2,
     pessimistic: 4,
     estimate: 3.25,
-    column: "ready",
+    state: "ready",
     row: 1,
   }),
   new Story({
@@ -62,14 +62,14 @@ const stories = Immutable.List([
     realistic: 2,
     pessimistic: 3,
     estimate: 2.75,
-    column: "working",
+    state: "working",
     row: 0,
     tags: ['bug']
   }),
   new Story({
     name: "Move GA snippet to end of <head>",
     number: 7,
-    column: "completed",
+    state: "completed",
     row: 0,
   }),
   new Story({
@@ -79,7 +79,7 @@ const stories = Immutable.List([
     realistic: 1,
     pessimistic: 1,
     estimate: 1,
-    column: "completed",
+    state: "completed",
     row: 1,
   }),
 ])
@@ -92,7 +92,7 @@ class StoryService {
   }
 
   byColumn() {
-    return this.stories.groupBy((story) => story.column)
+    return this.stories.groupBy((story) => story.state)
   }
 
   update(story) {
