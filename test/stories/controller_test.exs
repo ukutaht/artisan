@@ -12,7 +12,6 @@ defmodule Artisan.StoryControllerTest do
     optimistic: 1,
     realistic: 1,
     pessimistic: 2,
-    position: 1,
     tags: ["bug"]
   }
 
@@ -31,7 +30,6 @@ defmodule Artisan.StoryControllerTest do
     assert res["optimistic"] == 1
     assert res["realistic"] == 1
     assert res["pessimistic"] == 2
-    assert res["position"] == 1
     assert res["tags"] == ["bug"]
   end
 

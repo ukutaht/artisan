@@ -3,7 +3,9 @@ defmodule Artisan.Stories do
   alias Artisan.Story
 
   def create(attrs) do
-    %Story{number: count() + 1}
+    shift_positions(from s in Story)
+
+    %Story{number: count() + 1, position: 0}
       |> Story.changeset(attrs)
       |> Repo.insert
   end
@@ -16,5 +18,9 @@ defmodule Artisan.Stories do
 
   def count do
     Repo.aggregate(Story, :count, :id)
+  end
+
+  def shift_positions(query) do
+    Repo.update_all(query, inc: [position: 1])
   end
 end

@@ -20,7 +20,7 @@ defmodule Artisan.Story do
 
   def changeset(story, attributes) do
     story
-    |> cast(attributes, [:name, :estimate, :optimistic, :realistic, :pessimistic, :position, :tags, :state])
+    |> cast(attributes, [:name, :estimate, :optimistic, :realistic, :pessimistic, :tags, :state])
     |> validate_required([:name])
   end
 end
