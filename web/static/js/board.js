@@ -43,7 +43,7 @@ class Board extends React.Component {
     })
   }
 
-  storyDragged(storyNumber, from, to, oldIndex, newIndex) {
+  storyDragged(storyNumber, from, to, oldIndex, newIndex, done) {
     let story = this.state.columns.get(from).find((story) => story.number == storyNumber)
 
     let updatedColumns = this.state.columns
@@ -56,6 +56,7 @@ class Board extends React.Component {
         )
       })
 
+    done()
     this.setState({columns: updatedColumns})
   }
 

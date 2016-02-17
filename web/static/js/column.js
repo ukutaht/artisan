@@ -4,6 +4,7 @@ import Sortable from 'sortablejs'
 import StoryCard from './story-card'
 
 var _nextSibling;
+var _ghost;
 
 const columnTitles = {
   backlog: "Backlog",
@@ -18,7 +19,7 @@ class Column extends React.Component {
   }
 
   componentDidMount() {
-    this._sortableInstance = Sortable.create(this.refs.sortable, {
+    this.sortableInstance = Sortable.create(this.refs.sortable, {
       onStart: this.onStart.bind(this),
       onAdd: this.updatePosition.bind(this),
       onUpdate: this.updatePosition.bind(this),
@@ -29,16 +30,32 @@ class Column extends React.Component {
 
   onStart(evt) {
     _nextSibling = evt.item.nextElementSibling;
+    _ghost = this.refs.sortable.getElementsByClassName('story-card--placeholder')[0].cloneNode(true)
   }
 
   updatePosition(evt) {
-    evt.from.insertBefore(evt.item, _nextSibling);
+    evt.to.insertBefore(_ghost, evt.to.children[evt.newIndex]);
+    let react_placeholder = evt.from.insertBefore(evt.item, _nextSibling);
+    react_placeholder.style.display = "none";
 
-    this.props.onDrag(Number(evt.item.dataset.number), evt.from.dataset.column, evt.to.dataset.column, evt.oldIndex, evt.newIndex)
+    this.sortableInstance.option('disabled', true)
+
+    this.props.onDrag(Number(evt.item.dataset.number),
+                      evt.from.dataset.column,
+                      evt.to.dataset.column,
+                      evt.oldIndex,
+                      evt.newIndex,
+                      () => this.cleanUpDrag(evt, react_placeholder))
+  }
+
+  cleanUpDrag(evt, react_placeholder) {
+    this.sortableInstance.option('disabled', false)
+    evt.to.removeChild(_ghost)
+    if (evt.from == evt.to) react_placeholder.style.display = "block"
   }
 
   componentWillUnmount() {
-    this._sortableInstance.destroy()
+    this.sortableInstance.destroy()
   }
 
   render() {
