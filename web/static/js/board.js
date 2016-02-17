@@ -15,7 +15,7 @@ class Board extends React.Component {
     super(props)
     this.state = {
       visibleColumns: Immutable.List(["ready", "working", "completed"]),
-      columns: Immutable.fromJS({ready: [], working: [], completed: []}),
+      columns: Immutable.fromJS({backlog: [], ready: [], working: [], completed: []}),
       addStoryIsOpen: false
     }
   }
