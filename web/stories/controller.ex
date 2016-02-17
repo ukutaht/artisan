@@ -10,7 +10,7 @@ defmodule Artisan.StoryController do
   end
 
   def create(conn, %{"story" => story}) do
-    nr = Repo.all(Story) |> Enum.count
+    nr = Repo.aggregate(Story, :count, :id)
     story = Story.changeset(%Story{number: nr + 1}, story)
 
     case story |> Repo.insert do
