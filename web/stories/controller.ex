@@ -1,4 +1,4 @@
-defmodule Artisan.StoryController do
+defmodule Artisan.Stories.Controller do
   use Artisan.Web, :controller
   alias Artisan.Repo
   alias Artisan.Story

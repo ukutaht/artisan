@@ -1,4 +1,4 @@
-defmodule Artisan.StoryView do
+defmodule Artisan.Stories.View do
   def render("all.json", %{stories: stories}) do
     stories
   end
