@@ -27,14 +27,14 @@ class Board extends React.Component {
   }
 
   updateStory(story) {
-    let updated = stories.update(story);
+    stories.update(story, (updated) => {
+      let updatedColumns = this.state.columns.update(updated.state, (column) => {
+        let index = column.findIndex((existing) => existing.number == updated.number)
+        return column.update(index, (existing) => existing.merge(updated))
+      })
 
-    let updatedColumns = this.state.columns.update(story.state, (column) => {
-      let index = column.findIndex((existing) => existing.number == story.number)
-      return column.update(index, (existing) => existing.merge(story))
-    })
-
-    this.setState({columns: updatedColumns})
+      this.setState({columns: updatedColumns})
+    });
   }
 
   updatePositions(column) {

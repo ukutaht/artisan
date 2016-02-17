@@ -16,8 +16,9 @@ defmodule Artisan.Router do
   scope "/api", Artisan do
     pipe_through :api
 
-    get "/stories", StoryController, :all
+    get "/stories",  StoryController, :all
     post "/stories", StoryController, :create
+    put "/stories/:id",  StoryController, :update
   end
 
   scope "/", Artisan do

@@ -14,8 +14,10 @@ class StoryService {
     })
   }
 
-  update(story) {
-    return story;
+  update(story, callback) {
+    Request.put(`/api/stories/${story.id}`).send({story: story}).end((err, res) => {
+      callback(new Story(res.body))
+    })
   }
 
   add(story, callback) {

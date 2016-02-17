@@ -1,7 +1,8 @@
 import Immutable from 'immutable'
 
 const Story = new Immutable.Record({
-    name: '',
+    id: null,
+    name: null,
     number: null,
     estimate: null,
     optimistic: null,

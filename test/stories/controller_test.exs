@@ -5,18 +5,23 @@ defmodule Artisan.StoryControllerTest do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Artisan.Repo)
   end
 
+  @valid_story_params %{
+    name: "name",
+    state: "ready",
+    estimate: 2.25,
+    optimistic: 1,
+    realistic: 1,
+    pessimistic: 2,
+    position: 1,
+    tags: ["bug"]
+  }
+
+  @invalid_story_params %{
+    name: nil
+  }
+
   test "creates a story when valid" do
-    story_params = %{
-      name: "name",
-      state: "ready",
-      estimate: 2.25,
-      optimistic: 1,
-      realistic: 1,
-      pessimistic: 2,
-      position: 1,
-      tags: ["bug"]
-    }
-    conn = conn() |> post("/api/stories", %{story: story_params})
+    conn = conn() |> post("/api/stories", %{story: @valid_story_params})
 
     res = json_response(conn, 200)
 
@@ -31,10 +36,29 @@ defmodule Artisan.StoryControllerTest do
   end
 
   test "does not create a story when invalid" do
-    story_params = %{
-      name: nil
-    }
-    conn = conn() |> post("/api/stories", %{story: story_params})
+    conn = conn() |> post("/api/stories", %{story: @invalid_story_params})
+
+    res = json_response(conn, 400)
+
+    assert res["errors"] == %{"name" => "can't be blank"}
+  end
+
+  test "updates story when valid" do
+    create = conn() |> post("/api/stories", %{story: @valid_story_params})
+    %{"id" => id} = json_response(create, 200)
+
+    conn = conn() |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name"}})
+
+    res = json_response(conn, 200)
+
+    assert res["name"] == "new name"
+  end
+
+  test "does not update a story when invalid" do
+    create = conn() |> post("/api/stories", %{story: @valid_story_params})
+    id = json_response(create, 200)["id"]
+
+    conn = conn() |> put("/api/stories/#{id}", %{story: @invalid_story_params})
 
     res = json_response(conn, 400)
 
