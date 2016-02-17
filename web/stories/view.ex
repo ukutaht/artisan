@@ -8,6 +8,6 @@ defmodule Artisan.Stories.View do
   end
 
   def render("errors.json", %{errors: errors}) do
-    %{errors: Enum.into(errors.errors, %{})}
+    %{errors: Enum.into(errors, %{})}
   end
 end

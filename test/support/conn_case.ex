@@ -17,7 +17,6 @@ defmodule Artisan.ConnCase do
 
   using do
     quote do
-      # Import conveniences for testing with connections
       use Phoenix.ConnTest
 
       alias Artisan.Repo
@@ -27,7 +26,6 @@ defmodule Artisan.ConnCase do
 
       import Artisan.Router.Helpers
 
-      # The default endpoint for testing
       @endpoint Artisan.Endpoint
     end
   end
