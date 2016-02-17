@@ -85,7 +85,7 @@
   @include user-select(none);
   cursor: move;
 
-  &--placeholder {
+  &--ghost {
 	  background: rgba(0,0,0,0.1);
   }
 

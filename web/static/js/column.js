@@ -24,13 +24,13 @@ class Column extends React.Component {
       onAdd: this.updatePosition.bind(this),
       onUpdate: this.updatePosition.bind(this),
       group: "stories",
-      ghostClass: 'story-card--placeholder',
+      ghostClass: 'story-card--ghost',
     });
   }
 
   onStart(evt) {
     _nextSibling = evt.item.nextElementSibling;
-    _ghost = this.refs.sortable.getElementsByClassName('story-card--placeholder')[0].cloneNode(true)
+    _ghost = this.refs.sortable.getElementsByClassName('story-card--ghost')[0].cloneNode(true)
   }
 
   updatePosition(evt) {
