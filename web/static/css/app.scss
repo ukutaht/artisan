@@ -20,10 +20,5 @@
 }
 
 .truncated-text {
-  display: inline-block;
-  white-space: nowrap;
-  width: 75%;
-  overflow: hidden;
-  -o-text-overflow: ellipsis;
-  text-overflow:    ellipsis;
+  @include ellipsis(80%);
 }
