@@ -50,7 +50,6 @@ defmodule Artisan.Web do
       use Phoenix.HTML
 
       import Artisan.Router.Helpers
-      import Artisan.ErrorHelpers
       import Artisan.Gettext
     end
   end

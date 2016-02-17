@@ -12,12 +12,18 @@ const stories = new StoryService()
 
 class Board extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       visibleColumns: Immutable.List(["ready", "working", "completed"]),
-      columns: stories.byColumn(),
+      columns: Immutable.fromJS({ready: [], working: [], completed: []}),
       addStoryIsOpen: false
-    };
+    }
+  }
+
+  componentDidMount() {
+    stories.getByColumn((columns) => {
+      this.setState({columns: this.state.columns.merge(columns)})
+    })
   }
 
   updateStory(story) {
@@ -108,15 +114,14 @@ class Board extends React.Component {
 
   addStory(story) {
     let firstColumn = this.state.visibleColumns.first()
-    let fullStory   = stories.add(
-      story.merge({state: firstColumn})
-    )
 
-    let updatedColumns = this.state.columns.update(firstColumn, (column) => {
-      return column.unshift(fullStory)
+    stories.add(story.merge({state: firstColumn}), (created) => {
+      let updatedColumns = this.state.columns.update(firstColumn, (column) => {
+        return column.unshift(created)
+      })
+
+      this.setState({columns: updatedColumns, addStoryIsOpen: false})
     })
-
-    this.setState({columns: updatedColumns, addStoryIsOpen: false})
   }
 
   renderAddStoryModal() {
