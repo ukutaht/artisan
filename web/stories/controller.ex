@@ -1,7 +1,6 @@
 defmodule Artisan.Stories.Controller do
   use Artisan.Web, :controller
   alias Artisan.Repo
-  alias Artisan.Story
   alias Artisan.Stories
 
   def all(conn, _params) do
@@ -23,6 +22,17 @@ defmodule Artisan.Stories.Controller do
     {numeric_id, _} = Integer.parse(id)
 
     case Stories.update(numeric_id, story_params) do
+      {:ok, updated} ->
+        conn |> render("one.json", %{story: updated})
+      {:error, changeset} ->
+        conn |> put_status(400) |> render("errors.json", changeset)
+    end
+  end
+
+  def move(conn, %{"state" => state, "index" => index, "id" => id}) do
+    {numeric_id, _} = Integer.parse(id)
+
+    case Stories.move(numeric_id, state, index) do
       {:ok, updated} ->
         conn |> render("one.json", %{story: updated})
       {:error, changeset} ->

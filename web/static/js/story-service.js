@@ -8,7 +8,7 @@ class StoryService {
     Request.get('/api/stories').end((err, res) => {
       let stories = Immutable.List(res.body)
         .map((s) => new Story(s))
-        .sort((s) => s.position)
+        .sortBy((s) => s.position)
         .groupBy((s) => s.state)
 
       callback(stories)
@@ -17,6 +17,14 @@ class StoryService {
 
   update(story, callback) {
     Request.put(`/api/stories/${story.id}`).send({story: story}).end((err, res) => {
+      callback(new Story(res.body))
+    })
+  }
+
+  move(story, state, index, callback) {
+    Request.post(`/api/stories/${story.id}/move`)
+           .send({state: state, index: index})
+           .end((err, res) => {
       callback(new Story(res.body))
     })
   }

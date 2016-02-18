@@ -46,18 +46,20 @@ class Board extends React.Component {
   storyDragged(storyNumber, from, to, oldIndex, newIndex, done) {
     let story = this.state.columns.get(from).find((story) => story.number == storyNumber)
 
-    let updatedColumns = this.state.columns
-      .update(from, (column) => {
-        return this.updatePositions(column.remove(oldIndex))
-      })
-      .update(to, (column) => {
-        return this.updatePositions(
-          column.slice(0, newIndex).push(story).concat(column.slice(newIndex, column.size))
-        )
-      })
+    stories.move(story, to, newIndex, (updated) => {
+      let updatedColumns = this.state.columns
+        .update(from, (column) => {
+          return this.updatePositions(column.remove(oldIndex))
+        })
+        .update(to, (column) => {
+          return this.updatePositions(
+            column.slice(0, newIndex).push(updated).concat(column.slice(newIndex, column.size))
+          )
+        })
 
-    done()
-    this.setState({columns: updatedColumns})
+      done()
+      this.setState({columns: updatedColumns})
+    })
   }
 
   renderColumns() {

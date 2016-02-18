@@ -23,4 +23,9 @@ defmodule Artisan.Story do
     |> cast(attributes, [:name, :estimate, :optimistic, :realistic, :pessimistic, :tags, :state])
     |> validate_required([:name])
   end
+
+  def change_position(story, position) do
+    story
+    |> cast(%{position: position}, [:position])
+  end
 end
