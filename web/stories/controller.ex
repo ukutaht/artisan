@@ -1,11 +1,6 @@
 defmodule Artisan.Stories.Controller do
   use Artisan.Web, :controller
-  alias Artisan.Repo
   alias Artisan.Stories
-
-  def all(conn, _params) do
-    conn |> json(Repo.all(Artisan.Story))
-  end
 
   def by_state(conn, _params) do
     conn |> json(Stories.by_state())
