@@ -19,6 +19,12 @@ defmodule Artisan.StoryControllerTest do
     name: nil
   }
 
+  def create_story do
+    conn()
+      |> post("/api/stories", %{story: @valid_story_params})
+      |> json_response(200)
+  end
+
   test "creates a story when valid" do
     conn = conn() |> post("/api/stories", %{story: @valid_story_params})
 
@@ -42,8 +48,7 @@ defmodule Artisan.StoryControllerTest do
   end
 
   test "updates story when valid" do
-    create = conn() |> post("/api/stories", %{story: @valid_story_params})
-    %{"id" => id} = json_response(create, 200)
+    %{"id" => id} = create_story()
 
     conn = conn() |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name"}})
 
@@ -53,13 +58,34 @@ defmodule Artisan.StoryControllerTest do
   end
 
   test "does not update a story when invalid" do
-    create = conn() |> post("/api/stories", %{story: @valid_story_params})
-    id = json_response(create, 200)["id"]
+    %{"id" => id} = create_story()
 
     conn = conn() |> put("/api/stories/#{id}", %{story: @invalid_story_params})
 
     res = json_response(conn, 400)
 
     assert res["errors"] == %{"name" => "can't be blank"}
+  end
+
+  test "moves a story" do
+    %{"id" => id} = create_story()
+
+    res = conn()
+      |> post("/api/stories/#{id}/move", %{state: "working", index: 0})
+      |> json_response(200)
+
+    assert res["state"] == "working"
+  end
+
+  test "gets stories by state" do
+    created = create_story()
+
+    res = conn()
+      |> get("/api/stories/by-state")
+      |> json_response(200)
+
+    [found] = res["ready"]
+
+    assert found == created
   end
 end

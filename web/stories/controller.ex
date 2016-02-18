@@ -9,6 +9,10 @@ defmodule Artisan.Stories.Controller do
     render(conn, "all.json", %{stories: stories})
   end
 
+  def by_state(conn, _params) do
+    render(conn, "all.json", %{stories: Stories.by_state()})
+  end
+
   def create(conn, %{"story" => story_params}) do
     case Stories.create(story_params) do
       {:ok, created} ->

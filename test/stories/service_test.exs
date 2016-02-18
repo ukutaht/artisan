@@ -27,7 +27,7 @@ defmodule Artisan.StoriesTest do
   end
 
   def find_in_state(state) do
-    Repo.all(from s in Story, where: s.state == ^state, order_by: s.position)
+    Stories.by_state()[state]
   end
 
   test "creates a story with valid params" do
@@ -63,6 +63,26 @@ defmodule Artisan.StoriesTest do
     {:ok, created} = Stories.create(@valid_story_params)
 
     assert match?({:error, _}, Stories.update(created.id, %{name: nil}))
+  end
+
+  test "finds all by state" do
+    ready = create_in_state("ready")
+    working = create_in_state("working")
+
+    %{"ready" => [found_in_ready], "working" => [found_in_working]} = Stories.by_state()
+
+    assert found_in_ready.id == ready.id
+    assert found_in_working.id == working.id
+  end
+
+  test "orders stories by position in states" do
+    old = create_in_state("ready")
+    new = create_in_state("ready")
+
+    %{"ready" => [found1, found2]} = Stories.by_state()
+
+    assert found1.id == new.id
+    assert found2.id == old.id
   end
 
   test "moving to same state same index is a no-op" do
