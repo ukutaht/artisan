@@ -59,6 +59,12 @@ defmodule Artisan.StoriesTest do
     assert Repo.get(Story, updated.id).name == "new name"
   end
 
+  test "does not update a story with invalid params" do
+    {:ok, created} = Stories.create(@valid_story_params)
+
+    assert match?({:error, _}, Stories.update(created.id, %{name: nil}))
+  end
+
   test "moving to same state same index is a no-op" do
     second = create_in_state("working")
     first  = create_in_state("working")
