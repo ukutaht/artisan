@@ -3,7 +3,6 @@ import Link from 'react-router/lib/Link'
 import Immutable from 'immutable'
 
 import Column from './column'
-import StoryCard from './story-card'
 import StoryService from './story-service'
 import StoryModal from './story-modal'
 import Story from './story'
