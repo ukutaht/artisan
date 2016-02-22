@@ -29,4 +29,8 @@ defmodule Artisan.ConnCase do
       @endpoint Artisan.Endpoint
     end
   end
+
+  setup _ do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Artisan.Repo)
+  end
 end

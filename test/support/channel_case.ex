@@ -31,11 +31,7 @@ defmodule Artisan.ChannelCase do
     end
   end
 
-  setup tags do
-    unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(Artisan.Repo, [])
-    end
-
-    :ok
+  setup _ do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Artisan.Repo)
   end
 end

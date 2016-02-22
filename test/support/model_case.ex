@@ -25,6 +25,10 @@ defmodule Artisan.ModelCase do
     end
   end
 
+  setup _ do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Artisan.Repo)
+  end
+
   @doc """
   Helper for returning list of errors in model when passed certain data.
 

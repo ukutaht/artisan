@@ -3,10 +3,6 @@ defmodule Artisan.StoriesTest do
   alias Artisan.Stories
   alias Artisan.Story
 
-  setup do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Artisan.Repo)
-  end
-
   @valid_story_params %{
     name: "name",
     state: "ready",

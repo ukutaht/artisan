@@ -1,10 +1,6 @@
 defmodule Artisan.StoryControllerTest do
   use Artisan.ConnCase
 
-  setup do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Artisan.Repo)
-  end
-
   @valid_story_params %{
     name: "name",
     state: "ready",
