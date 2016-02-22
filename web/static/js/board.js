@@ -4,8 +4,8 @@ import Immutable from 'immutable'
 
 import Column from './column'
 import StoryService from './story-service'
-import StoryModal from './story-modal'
-import Story from './story'
+import StoryModal from './stories/modal'
+import Story from './stories/story'
 
 const stories = new StoryService()
 

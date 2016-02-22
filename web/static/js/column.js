@@ -1,7 +1,7 @@
 import React from 'react'
 import Sortable from 'sortablejs'
 
-import StoryCard from './story-card'
+import StoryCard from './stories/card'
 
 var _nextSibling;
 var _ghost;

@@ -1,6 +1,7 @@
 import React from 'react'
-import Pert from './pert'
 import Immutable from 'immutable'
+
+import Pert from './pert'
 
 const largestAllowedEstimate = 9999999999999999999
 

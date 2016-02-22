@@ -1,7 +1,7 @@
 import Immutable from 'immutable'
 import Request from 'superagent'
 
-import Story from './story'
+import Story from './stories/story'
 
 function convertStories(key, val) {
   var isStory = Immutable.Iterable.isKeyed(val) && val.has('id');

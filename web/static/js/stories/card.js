@@ -1,8 +1,8 @@
 import React from 'react'
 import Link from 'react-router/lib/Link'
-import StoryModal from './story-modal'
+import StoryModal from './modal'
 
-class StoryCard extends React.Component {
+class Card extends React.Component {
   constructor(props) {
     super(props);
     this.state = {showModal: false}
@@ -67,4 +67,4 @@ class StoryCard extends React.Component {
   }
 }
 
-export default StoryCard
+export default Card
