@@ -11,6 +11,10 @@ defmodule Artisan.Projects.Controller do
     end
   end
 
+  def all(conn, _params) do
+    conn |> json(Projects.all)
+  end
+
   defp invalid(conn, %{errors: errors}) do
     conn |> put_status(400) |> json(%{errors: Enum.into(errors, %{})})
   end

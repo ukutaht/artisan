@@ -7,5 +7,9 @@ defmodule Artisan.Projects do
       |> Project.changeset(params)
       |> Repo.insert
   end
+
+  def all do
+    Repo.all(Project)
+  end
 end
 

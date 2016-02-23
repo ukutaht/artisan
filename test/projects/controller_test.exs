@@ -12,4 +12,14 @@ defmodule Artisan.Projects.ControllerTest do
 
     assert res["name"] == "name"
   end
+
+  test "gets all projects" do
+    conn() |> post("/api/projects", %{project: @valid_project_params})
+
+    res = conn()
+      |> get("/api/projects")
+      |> json_response(200)
+
+    assert Enum.count(res) == 1
+  end
 end

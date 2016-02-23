@@ -22,6 +22,7 @@ defmodule Artisan.Router do
     get "/stories/by-state",  Stories.Controller, :by_state
 
     post "/projects", Projects.Controller, :create
+    get "/projects", Projects.Controller, :all
   end
 
   scope "/", Artisan do

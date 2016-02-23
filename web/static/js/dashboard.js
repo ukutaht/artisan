@@ -1,7 +1,24 @@
-import React from "react"
+import Immutable from 'immutable'
+import React from 'react'
 import Link from 'react-router/lib/Link'
 
+import ProjectService from './project-service'
+
+const projects = new ProjectService()
+
 class Dashboard extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {projects: Immutable.List()}
+  }
+
+  componentDidMount() {
+    projects.all((projects) => {
+      console.log(projects.toJS())
+      this.setState({projects: projects})
+    })
+  }
+
   render() {
     return (
       <div>
@@ -18,24 +35,17 @@ class Dashboard extends React.Component {
           </div>
 
           <ul className="projects-list">
-            <li className="projects-list__item">
-              <Link to="/board">Racingbreaks</Link>
-              <Link to="javascript://" className="projects-list__item__settings">
-                <i className="ion-gear-b right-padded-icon"></i>Settings
-              </Link>
-            </li>
-            <li className="projects-list__item">
-              <Link to="/board">Faros</Link>
-              <Link to="javascript://" className="projects-list__item__settings">
-                <i className="ion-gear-b right-padded-icon"></i>Settings
-              </Link>
-            </li>
-            <li className="projects-list__item">
-              <Link to="/board">Artisan</Link>
-              <Link to="javascript://" className="projects-list__item__settings">
-                <i className="ion-gear-b right-padded-icon"></i>Settings
-              </Link>
-            </li>
+            { this.state.projects.map((project) => {
+                return (
+                  <li className="projects-list__item" key={project.id}>
+                    <Link to="/board">{project.name}</Link>
+                    <Link to="javascript://" className="projects-list__item__settings">
+                      <i className="ion-gear-b right-padded-icon"></i>Settings
+                    </Link>
+                  </li>
+                )
+              })
+            }
           </ul>
         </div>
       </div>
