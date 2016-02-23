@@ -20,6 +20,8 @@ defmodule Artisan.Router do
     put "/stories/:id",  Stories.Controller, :update
     post "/stories/:id/move",  Stories.Controller, :move
     get "/stories/by-state",  Stories.Controller, :by_state
+
+    post "/projects", Projects.Controller, :create
   end
 
   scope "/", Artisan do

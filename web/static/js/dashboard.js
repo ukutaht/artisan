@@ -10,7 +10,12 @@ class Dashboard extends React.Component {
         </div>
 
         <div className="dashboard-column">
-          <h2 className="dashboard-column__header">Current Projects</h2>
+          <div className="dashboard-column__header">
+            <h2 className="inline-block">Projects</h2>
+            <Link to="/projects/new">
+              <button className="button primary create-project no-margin">Create project</button>
+            </Link>
+          </div>
 
           <ul className="projects-list">
             <li className="projects-list__item">

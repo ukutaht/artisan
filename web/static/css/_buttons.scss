@@ -24,3 +24,7 @@
     }
   }
 }
+
+.full-width {
+  @include fill-parent;
+}

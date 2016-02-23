@@ -6,6 +6,7 @@
 @import "top-nav";
 @import "dashboard";
 @import "board";
+@import "projects";
 
 .container {
   @include outer-container(80%);

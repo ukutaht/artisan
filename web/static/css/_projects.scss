@@ -1,0 +1,14 @@
+.new-project-form {
+  margin: 60px auto;
+  max-width: 400px;
+
+  &__header {
+    display: inline-block;
+    width: 50%;
+
+    &--right {
+      float: right;
+      transform: translateY(35px);
+    }
+  }
+}

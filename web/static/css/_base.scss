@@ -7,34 +7,41 @@ body {
 }
 
 h1 {
-  font-size: 47px;
-  line-height: 63px;
-  font-weight: 400;
+  font-size: 38px;
+  line-height: $line-height * 2;
+  margin-top: $line-height;
 }
 
 h2 {
-  font-size: 32px;
-  line-height: 42px;
+  font-size: 27px;
+  line-height: $line-height * 2;
+  margin-top: $line-height;
 }
 
 h3 {
-  font-size: 21px;
-  line-height: 21px;
+  font-size: 20px;
+  line-height: $line-height;
+  margin-top: $line-height;
 }
 
 h4 {
-  font-size: 17px;
-  line-height: 21px;
+  font-size: 14px;
+  line-height: $line-height;
+  margin-top: $line-height;
 }
 
 h5 {
+  font-style: italic;
   font-size: 14px;
-  line-height: 21px;
+  line-height: $line-height;
+  margin-top: $line-height;
 }
 
 h1, h2, h3, h4, h5 {
   font-weight: 300;
+  margin-bottom: $line-height;
 }
+
 
 ul {
   padding: 0;

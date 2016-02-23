@@ -6,6 +6,19 @@
   }
 }
 
+.inline-block {
+  display: inline-block;
+}
+
+.create-project {
+  float: right;
+  transform: translateY(26px);
+}
+
+.no-margin {
+  margin: 0;
+}
+
 .projects-list {
   &__item {
     padding: 10px;
