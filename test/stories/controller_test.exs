@@ -15,14 +15,27 @@ defmodule Artisan.StoryControllerTest do
     name: nil
   }
 
-  def create_story do
+  def create_story(%{"id" => project_id}) do
     conn()
-      |> post("/api/stories", %{story: @valid_story_params})
+      |> post("/api/projects/#{project_id}/stories", %{story: @valid_story_params})
       |> json_response(200)
   end
 
+  def create_project do
+    conn()
+      |> post("/api/projects", %{project: %{name: "Project name"}})
+      |> json_response(200)
+  end
+
+  setup do
+    project = create_project()
+
+    {:ok, project: project}
+  end
+
   test "creates a story when valid" do
-    conn = conn() |> post("/api/stories", %{story: @valid_story_params})
+    %{"id" => project_id} = create_project()
+    conn = conn() |> post("/api/projects/#{project_id}/stories", %{story: @valid_story_params})
 
     res = json_response(conn, 200)
 
@@ -36,15 +49,16 @@ defmodule Artisan.StoryControllerTest do
   end
 
   test "does not create a story when invalid" do
-    conn = conn() |> post("/api/stories", %{story: @invalid_story_params})
+    %{"id" => project_id} = create_project()
+    conn = conn() |> post("/api/projects/#{project_id}/stories", %{story: @invalid_story_params})
 
     res = json_response(conn, 400)
 
     assert res["errors"] == %{"name" => "can't be blank"}
   end
 
-  test "updates story when valid" do
-    %{"id" => id} = create_story()
+  test "updates story when valid", %{project: project} do
+    %{"id" => id} = create_story(project)
 
     conn = conn() |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name"}})
 
@@ -53,8 +67,8 @@ defmodule Artisan.StoryControllerTest do
     assert res["name"] == "new name"
   end
 
-  test "does not update a story when invalid" do
-    %{"id" => id} = create_story()
+  test "does not update a story when invalid", %{project: project} do
+    %{"id" => id} = create_story(project)
 
     conn = conn() |> put("/api/stories/#{id}", %{story: @invalid_story_params})
 
@@ -63,8 +77,8 @@ defmodule Artisan.StoryControllerTest do
     assert res["errors"] == %{"name" => "can't be blank"}
   end
 
-  test "moves a story" do
-    %{"id" => id} = create_story()
+  test "moves a story", %{project: project} do
+    %{"id" => id} = create_story(project)
 
     res = conn()
       |> post("/api/stories/#{id}/move", %{state: "working", index: 0})
@@ -73,8 +87,8 @@ defmodule Artisan.StoryControllerTest do
     assert res["state"] == "working"
   end
 
-  test "gets stories by state" do
-    created = create_story()
+  test "gets stories by state", %{project: project} do
+    created = create_story(project)
 
     res = conn()
       |> get("/api/stories/by-state")

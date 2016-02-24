@@ -16,8 +16,8 @@ function convertStories(key, val) {
 }
 
 class StoryService {
-  getByColumn(callback) {
-    Request.get('/api/stories/by-state').end((err, res) => {
+  getByColumn(projectId, callback) {
+    Request.get(`/api/projects/${projectId}/stories`).end((err, res) => {
       callback(Immutable.fromJS(res.body, convertStories))
     })
   }
@@ -36,8 +36,8 @@ class StoryService {
     })
   }
 
-  add(story, callback) {
-    Request.post('/api/stories').send({story: story}).end((err, res) => {
+  add(projectId, story, callback) {
+    Request.post(`/api/projects/${projectId}/stories`).send({story: story}).end((err, res) => {
       callback(new Story(res.body))
     })
   }

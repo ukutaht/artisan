@@ -1,10 +1,11 @@
 import React from "react"
+import browserHistory from 'react-router/lib/browserHistory'
 
 import ProjectService from './project-service'
 
 const projects = new ProjectService()
 
-class NewProjectForm extends React.Component {
+class NewProject extends React.Component {
   constructor(props) {
     super(props)
     this.state = {name: ""}
@@ -13,7 +14,7 @@ class NewProjectForm extends React.Component {
   submit(e) {
     e.preventDefault()
     projects.create(this.state, (project) => {
-      console.log(project)
+      browserHistory.push(`/projects/${project.id}`)
     })
   }
 
@@ -41,4 +42,4 @@ class NewProjectForm extends React.Component {
   }
 }
 
-export default NewProjectForm
+export default NewProject

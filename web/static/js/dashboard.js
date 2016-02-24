@@ -14,7 +14,6 @@ class Dashboard extends React.Component {
 
   componentDidMount() {
     projects.all((projects) => {
-      console.log(projects.toJS())
       this.setState({projects: projects})
     })
   }
@@ -38,7 +37,7 @@ class Dashboard extends React.Component {
             { this.state.projects.map((project) => {
                 return (
                   <li className="projects-list__item" key={project.id}>
-                    <Link to="/board">{project.name}</Link>
+                    <Link to={`projects/${project.id}`}>{project.name}</Link>
                     <Link to="javascript://" className="projects-list__item__settings">
                       <i className="ion-gear-b right-padded-icon"></i>Settings
                     </Link>
