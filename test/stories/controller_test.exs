@@ -91,7 +91,7 @@ defmodule Artisan.StoryControllerTest do
     created = create_story(project)
 
     res = conn()
-      |> get("/api/stories/by-state")
+      |> get("/api/projects/1/stories")
       |> json_response(200)
 
     [found] = res["ready"]
