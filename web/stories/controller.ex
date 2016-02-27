@@ -2,12 +2,14 @@ defmodule Artisan.Stories.Controller do
   use Artisan.Web, :controller
   alias Artisan.Stories
 
-  def by_state(conn, _params) do
-    conn |> json(Stories.by_state())
+  def by_state(conn, %{"project_id" => project_id}) do
+    conn |> json(Stories.by_state(project_id))
   end
 
-  def create(conn, %{"story" => story_params}) do
-    case Stories.create(story_params) do
+  def create(conn, %{"story" => story_params, "project_id" => project_id}) do
+    {numeric_id, _} = Integer.parse(project_id)
+
+    case Stories.create(numeric_id, story_params) do
       {:ok, created} ->
         conn |> json(created)
       {:error, changeset} ->

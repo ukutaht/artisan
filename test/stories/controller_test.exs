@@ -40,6 +40,7 @@ defmodule Artisan.StoryControllerTest do
     res = json_response(conn, 200)
 
     assert res["name"] == "name"
+    assert res["project_id"] == project_id
     assert res["state"] == "ready"
     assert res["estimate"] == 2.25
     assert res["optimistic"] == 1
@@ -91,7 +92,7 @@ defmodule Artisan.StoryControllerTest do
     created = create_story(project)
 
     res = conn()
-      |> get("/api/projects/1/stories")
+      |> get("/api/projects/#{project["id"]}/stories")
       |> json_response(200)
 
     [found] = res["ready"]

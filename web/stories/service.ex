@@ -2,22 +2,18 @@ defmodule Artisan.Stories do
   use Artisan.Web, :model
   alias Artisan.Story
 
-  @doc """
-    The positions are actually stored in ascending order,
-    but since `Enum.group_by` reverses the order of each
-    group, the query needs to be descending.
-  """
-  def by_state do
+  def by_state(project_id) do
     Repo.all(from s in Story,
+      where: s.project_id == ^project_id,
       order_by: [desc: s.position]
     )
     |> Enum.group_by(&(&1.state))
   end
 
-  def create(attrs) do
+  def create(project_id, attrs) do
     increment_positions(from s in Story)
 
-    %Story{number: count() + 1, position: 0}
+    %Story{number: count() + 1, position: 0, project_id: project_id}
       |> Story.changeset(attrs)
       |> Repo.insert
   end
