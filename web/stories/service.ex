@@ -13,7 +13,7 @@ defmodule Artisan.Stories do
   def create(project_id, attrs) do
     increment_positions(from s in Story)
 
-    %Story{number: count() + 1, position: 0, project_id: project_id}
+    %Story{number: next_number(project_id), position: 0, project_id: project_id}
       |> Story.changeset(attrs)
       |> Repo.insert
   end
@@ -38,6 +38,11 @@ defmodule Artisan.Stories do
       |> Story.changeset(%{state: state})
       |> Story.change_position(new_position)
       |> Repo.update
+  end
+
+  defp next_number(project_id) do
+    q = from(s in Story, where: s.project_id == ^project_id)
+    Repo.aggregate(q, :count, :id) + 1
   end
 
   defp shift_others(pivot, state) do

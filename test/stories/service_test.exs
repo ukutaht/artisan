@@ -47,6 +47,18 @@ defmodule Artisan.StoriesTest do
     assert found2.id == old.id
   end
 
+  test "number is generater per-project", %{project: project} do
+    {:ok, project2} = Artisan.Projects.create(%{name: "name"})
+
+    {:ok, story1} = Stories.create(project.id, @valid_story_params)
+    {:ok, story2} = Stories.create(project2.id, @valid_story_params)
+    {:ok, story3} = Stories.create(project.id, @valid_story_params)
+
+    assert story1.number == 1
+    assert story2.number == 1
+    assert story3.number == 2
+  end
+
   test "does not create a story with invalid params", %{project: project} do
     {:error, _} = Stories.create(project.id, @invalid_story_params)
 
