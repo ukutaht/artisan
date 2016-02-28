@@ -68,6 +68,23 @@ defmodule Artisan.StoryControllerTest do
     assert res["name"] == "new name"
   end
 
+  test "broadcasts story update", %{project: project} do
+    %{"id" => id} = create_story(project)
+    topic = "boards:#{project["id"]}"
+
+    Artisan.Endpoint.subscribe(self, topic)
+
+    conn() |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name"}})
+
+    updated = Repo.get(Artisan.Story, id)
+
+    assert_receive %Phoenix.Socket.Broadcast{
+      topic: ^topic,
+      event: "update:story",
+      payload: ^updated
+    }
+  end
+
   test "does not update a story when invalid", %{project: project} do
     %{"id" => id} = create_story(project)
 
