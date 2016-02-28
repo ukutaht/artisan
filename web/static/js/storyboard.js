@@ -10,7 +10,7 @@ import BoardSocket from './board-socket'
 
 const stories = new StoryService()
 
-class Board extends React.Component {
+class StoryBoard extends React.Component {
   constructor(props) {
     super(props)
     this.projectId = this.props.routeParams.projectId
@@ -185,4 +185,4 @@ class Board extends React.Component {
   }
 }
 
-export default Board
+export default StoryBoard

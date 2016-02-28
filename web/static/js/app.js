@@ -8,7 +8,7 @@ import browserHistory from 'react-router/lib/browserHistory'
 import Layout from "./layout"
 import Dashboard from "./dashboard"
 import NewProject from "./new-project"
-import ProjectBoard from "./project-board"
+import StoryBoard from "./storyboard"
 
 let mountNode = document.getElementById('mount')
 
@@ -17,7 +17,7 @@ render((
     <Route path="/" component={Layout}>
       <IndexRoute component={Dashboard} />
       <Route path="projects/new" component={NewProject} />
-      <Route path="projects/:projectId" component={ProjectBoard} />
+      <Route path="projects/:projectId" component={StoryBoard} />
     </Route>
   </Router>
 ), mountNode)
