@@ -1,30 +1,18 @@
 import Immutable from 'immutable'
 import Request from 'superagent'
 
-import Story from './stories/story'
-
-function convertStories(key, val) {
-  var isStory = Immutable.Iterable.isKeyed(val) && val.has('id');
-
-  if (Immutable.Iterable.isKeyed(val) && val.has('id')) {
-    return new Story(val);
-  } else if (Immutable.Iterable.isKeyed(val)) {
-    return val.toMap()
-  } else {
-    return val.toList()
-  }
-}
+import parseStories from './stories/parse'
 
 class StoryService {
   getByColumn(projectId, callback) {
     Request.get(`/api/projects/${projectId}/stories`).end((err, res) => {
-      callback(Immutable.fromJS(res.body, convertStories))
+      callback(parseStories(res.body))
     })
   }
 
   update(story, callback) {
     Request.put(`/api/stories/${story.id}`).send({story: story}).end((err, res) => {
-      callback(new Story(res.body))
+      callback(parseStories(res.body))
     })
   }
 
@@ -32,13 +20,13 @@ class StoryService {
     Request.post(`/api/stories/${story.id}/move`)
            .send({state: state, index: index})
            .end((err, res) => {
-      callback(Immutable.fromJS(res.body, convertStories))
+      callback(parseStories(res.body))
     })
   }
 
   add(projectId, story, callback) {
     Request.post(`/api/projects/${projectId}/stories`).send({story: story}).end((err, res) => {
-      callback(new Story(res.body))
+      callback(parseStories(res.body))
     })
   }
 }
