@@ -16,8 +16,8 @@ class StoryService {
     })
   }
 
-  move(story, state, index, callback) {
-    Request.post(`/api/stories/${story.id}/move`)
+  move(storyId, state, index, callback) {
+    Request.post(`/api/stories/${storyId}/move`)
            .send({state: state, index: index})
            .end((err, res) => {
       callback(parseStories(res.body))

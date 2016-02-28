@@ -46,7 +46,7 @@ class Card extends React.Component {
 
   render() {
     return (
-      <li className="story-card" data-number={this.props.story.number}>
+      <li className="story-card" data-id={this.props.story.id}>
         <div>
           <a href="javascript://" title={this.props.story.name} className="truncated-text" onClick={this.showModal.bind(this)}>
             {this.props.story.number}. {this.props.story.name}

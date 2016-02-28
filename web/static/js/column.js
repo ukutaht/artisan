@@ -29,6 +29,7 @@ class Column extends React.Component {
   }
 
   onStart(evt) {
+    this.props.onDragStart()
     _nextSibling = evt.item.nextElementSibling;
     _ghost = this.refs.sortable.getElementsByClassName('story-card--ghost')[0].cloneNode(true)
   }
@@ -40,7 +41,7 @@ class Column extends React.Component {
 
     this.sortableInstance.option('disabled', true)
 
-    this.props.onDrag(Number(evt.item.dataset.number),
+    this.props.onDrag(Number(evt.item.dataset.id),
                       evt.from.dataset.column,
                       evt.to.dataset.column,
                       evt.oldIndex,

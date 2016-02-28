@@ -14,6 +14,7 @@ class StoryBoard extends React.Component {
   constructor(props) {
     super(props)
     this.projectId = this.props.routeParams.projectId
+    this.remoteMovesAllowed = true
     this.state = {
       visibleColumns: Immutable.List(["ready", "working", "completed"]),
       columns: Immutable.fromJS({backlog: [], ready: [], working: [], completed: []}),
@@ -47,17 +48,24 @@ class StoryBoard extends React.Component {
     this.setState({columns: updatedColumns})
   }
 
-  storyDragged(storyNumber, from, to, oldIndex, newIndex, done) {
-    let story = this.state.columns.get(from).find((story) => story.number == storyNumber)
-
-    stories.move(story, to, newIndex, (updated) => {
+  storyDragged(storyId, from, to, oldIndex, newIndex, done) {
+    stories.move(storyId, to, newIndex, (updated) => {
       done()
+      this.remoteMovesAllowed = true
       this.doMoveStory(updated)
     })
   }
 
+  disallowRemoveMoves() {
+    this.remoteMovesAllowed = false
+  }
+
   doMoveStory(updatedColumns) {
-    this.setState({columns: this.state.columns.merge(updatedColumns)})
+    if (this.remoteMovesAllowed) {
+      this.setState({
+        columns: this.state.columns.merge(updatedColumns)
+      })
+    }
   }
 
   renderColumns() {
@@ -68,6 +76,7 @@ class StoryBoard extends React.Component {
               key={column}
               count={count}
               name={column}
+              onDragStart={this.disallowRemoveMoves.bind(this)}
               onDrag={this.storyDragged.bind(this)}
               onUpdateStory={this.updateStory.bind(this)}
               />
