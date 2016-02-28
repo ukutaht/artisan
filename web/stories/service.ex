@@ -2,12 +2,24 @@ defmodule Artisan.Stories do
   use Artisan.Web, :model
   alias Artisan.Story
 
+  @empty_states %{
+    "backlog" => [],
+    "ready" => [],
+    "working" => [],
+    "completed" => []
+  }
+
   def by_state(project_id) do
     Repo.all(from s in Story,
       where: s.project_id == ^project_id,
       order_by: [desc: s.position]
     )
     |> Enum.group_by(&(&1.state))
+    |> into_empty_states
+  end
+
+  defp into_empty_states(found) do
+    Map.merge(@empty_states, found)
   end
 
   def create(project_id, attrs) do
@@ -34,10 +46,17 @@ defmodule Artisan.Stories do
     new_position = calculate_pivot(story, state, index)
     shift_others(new_position, state)
 
-    story
+    result = story
       |> Story.changeset(%{state: state})
       |> Story.change_position(new_position)
       |> Repo.update
+
+    case result do
+      {:ok, updated} ->
+        {:ok, updated.project_id, by_state(updated.project_id)}
+      {:error, error} ->
+        {:error, error}
+    end
   end
 
   defp next_number(project_id) do

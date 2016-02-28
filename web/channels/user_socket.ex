@@ -1,10 +1,8 @@
 defmodule Artisan.UserSocket do
   use Phoenix.Socket
 
-  ## Channels
-  # channel "rooms:*", Artisan.RoomChannel
+  channel "boards:*", Artisan.BoardChannel
 
-  ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
   # transport :longpoll, Phoenix.Transports.LongPoll
 

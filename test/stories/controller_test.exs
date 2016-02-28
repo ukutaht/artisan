@@ -85,7 +85,24 @@ defmodule Artisan.StoryControllerTest do
       |> post("/api/stories/#{id}/move", %{state: "working", index: 0})
       |> json_response(200)
 
-    assert res["state"] == "working"
+    assert Enum.count(res["working"]) == 1
+  end
+
+  test "broadcasts a story move to clients", %{project: project} do
+    %{"id" => id} = create_story(project)
+    topic = "boards:#{project["id"]}"
+
+    Artisan.Endpoint.subscribe(self, topic)
+
+    conn() |> post("/api/stories/#{id}/move", %{state: "working", index: 0})
+
+    stories = Artisan.Stories.by_state(project["id"])
+
+    assert_receive %Phoenix.Socket.Broadcast{
+      topic: ^topic,
+      event: "move:story",
+      payload: ^stories
+    }
   end
 
   test "gets stories by state", %{project: project} do

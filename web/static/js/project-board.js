@@ -6,6 +6,7 @@ import Column from './column'
 import StoryService from './story-service'
 import StoryModal from './stories/modal'
 import Story from './stories/story'
+import BoardSocket from './board-socket'
 
 const stories = new StoryService()
 
@@ -24,17 +25,25 @@ class Board extends React.Component {
     stories.getByColumn(this.projectId, (columns) => {
       this.setState({columns: this.state.columns.merge(columns)})
     })
+
+    let boardSocket = new BoardSocket(this.projectId)
+    boardSocket.join({
+      onUpdateStory: this.doUpdateStory.bind(this),
+      onMoveStory: this.doMoveStory.bind(this)
+    })
   }
 
   updateStory(story) {
-    stories.update(story, (updated) => {
-      let updatedColumns = this.state.columns.update(updated.state, (column) => {
-        let index = column.findIndex((existing) => existing.number == updated.number)
-        return column.update(index, (existing) => existing.merge(updated))
-      })
+    stories.update(story, this.doUpdateStory.bind(this));
+  }
 
-      this.setState({columns: updatedColumns})
-    });
+  doUpdateStory(story) {
+    let updatedColumns = this.state.columns.update(story.state, (column) => {
+      let index = column.findIndex((existing) => existing.number == story.number)
+      return column.update(index, (existing) => existing.merge(story))
+    })
+
+    this.setState({columns: updatedColumns})
   }
 
   updatePositions(column) {
@@ -47,19 +56,13 @@ class Board extends React.Component {
     let story = this.state.columns.get(from).find((story) => story.number == storyNumber)
 
     stories.move(story, to, newIndex, (updated) => {
-      let updatedColumns = this.state.columns
-        .update(from, (column) => {
-          return this.updatePositions(column.remove(oldIndex))
-        })
-        .update(to, (column) => {
-          return this.updatePositions(
-            column.slice(0, newIndex).push(updated).concat(column.slice(newIndex, column.size))
-          )
-        })
-
       done()
-      this.setState({columns: updatedColumns})
+      this.doMoveStory(updated)
     })
+  }
+
+  doMoveStory(updatedColumns) {
+    this.setState({columns: this.state.columns.merge(updatedColumns)})
   }
 
   renderColumns() {

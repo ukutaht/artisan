@@ -95,7 +95,7 @@ defmodule Artisan.StoriesTest do
 
     found = Stories.by_state(project.id)
 
-    assert Enum.count(found) == 0
+    assert Enum.all?(found, fn({_col, stories}) -> Enum.empty?(stories) end)
   end
 
   test "orders stories by position in states", %{project: project} do
@@ -112,7 +112,7 @@ defmodule Artisan.StoriesTest do
     second = create_in_state(project.id, "working")
     first  = create_in_state(project.id, "working")
 
-    {:ok, _} = Stories.move(first.id, "working", 0)
+    {:ok, _, _} = Stories.move(first.id, "working", 0)
     [found1, found2] = find_in_state(project.id, "working")
 
     assert found1.id == first.id
@@ -122,7 +122,7 @@ defmodule Artisan.StoriesTest do
   test "moves a story to an empty state", %{project: project} do
     story = create_in_state(project.id, "ready")
 
-    {:ok, _} = Stories.move(story.id, "working", 0)
+    {:ok, _, _} = Stories.move(story.id, "working", 0)
     [found1] = find_in_state(project.id, "working")
 
     assert found1.id == story.id
@@ -132,7 +132,7 @@ defmodule Artisan.StoriesTest do
     second = create_in_state(project.id, "working")
     first  = create_in_state(project.id, "working")
 
-    {:ok, _} = Stories.move(first.id, "working", 1)
+    {:ok, _, _} = Stories.move(first.id, "working", 1)
     [found1, found2] = find_in_state(project.id, "working")
 
     assert found1.id == second.id
@@ -143,7 +143,7 @@ defmodule Artisan.StoriesTest do
     second = create_in_state(project.id, "working")
     first  = create_in_state(project.id, "working")
 
-    {:ok, _} = Stories.move(second.id, "working", 0)
+    {:ok, _, _} = Stories.move(second.id, "working", 0)
     [found1, found2] = find_in_state(project.id, "working")
 
     assert found1.id == second.id
@@ -155,7 +155,7 @@ defmodule Artisan.StoriesTest do
     second = create_in_state(project.id, "working")
     first  = create_in_state(project.id, "working")
 
-    {:ok, _} = Stories.move(first.id, "working", 1)
+    {:ok, _, _} = Stories.move(first.id, "working", 1)
     [found1, found2, found3] = find_in_state(project.id, "working")
 
     assert found1.id == second.id
@@ -170,7 +170,7 @@ defmodule Artisan.StoriesTest do
     second = create_in_state(project.id, "working")
     first  = create_in_state(project.id, "working")
 
-    {:ok, _} = Stories.move(story.id, "working", 2)
+    {:ok, _, _} = Stories.move(story.id, "working", 2)
 
     [found1, found2, found3] = find_in_state(project.id, "working")
 
@@ -184,7 +184,7 @@ defmodule Artisan.StoriesTest do
     second = create_in_state(project.id, "working")
     first  = create_in_state(project.id, "working")
 
-    {:ok, _} = Stories.move(story.id, "working", 0)
+    {:ok, _, _} = Stories.move(story.id, "working", 0)
 
     [found1, found2, found3] = find_in_state(project.id, "working")
 
@@ -198,7 +198,7 @@ defmodule Artisan.StoriesTest do
     second = create_in_state(project.id, "working")
     first  = create_in_state(project.id, "working")
 
-    {:ok, _} = Stories.move(story.id, "working", 1)
+    {:ok, _, _} = Stories.move(story.id, "working", 1)
 
     [found1, found2, found3] = find_in_state(project.id, "working")
 
@@ -211,7 +211,7 @@ defmodule Artisan.StoriesTest do
     ready = create_in_state(project.id, "ready")
     working  = create_in_state(project.id, "working")
 
-    {:ok, _} = Stories.move(ready.id, "working", 100)
+    {:ok, _, _} = Stories.move(ready.id, "working", 100)
 
     [found1, found2] = find_in_state(project.id, "working")
 

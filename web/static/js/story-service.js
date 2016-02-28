@@ -32,7 +32,7 @@ class StoryService {
     Request.post(`/api/stories/${story.id}/move`)
            .send({state: state, index: index})
            .end((err, res) => {
-      callback(new Story(res.body))
+      callback(Immutable.fromJS(res.body, convertStories))
     })
   }
 
