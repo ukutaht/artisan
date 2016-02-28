@@ -11,6 +11,7 @@ defmodule Artisan.Stories.Controller do
 
     case Stories.create(numeric_id, story_params) do
       {:ok, created} ->
+        broadcast(created.project_id, "add:story", created)
         conn |> json(created)
       {:error, changeset} ->
         conn |> invalid(changeset)
@@ -22,7 +23,7 @@ defmodule Artisan.Stories.Controller do
 
     case Stories.update(numeric_id, story_params) do
       {:ok, updated} ->
-        Artisan.Endpoint.broadcast!("boards:#{updated.project_id}", "update:story", updated)
+        broadcast(updated.project_id, "update:story", updated)
         conn |> json(updated)
       {:error, changeset} ->
         conn |> invalid(changeset)
@@ -34,11 +35,15 @@ defmodule Artisan.Stories.Controller do
 
     case Stories.move(numeric_id, state, index) do
       {:ok, project_id, updated} ->
-        Artisan.Endpoint.broadcast!("boards:#{project_id}", "move:story", updated)
+        broadcast(project_id, "move:story", updated)
         conn |> json(updated)
       {:error, changeset} ->
         conn |> invalid(changeset)
     end
+  end
+
+  defp broadcast(project_id, event, payload) do
+    Artisan.Endpoint.broadcast!("boards:#{project_id}", event, payload)
   end
 
   defp invalid(conn, %{errors: errors}) do

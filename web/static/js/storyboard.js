@@ -28,8 +28,9 @@ class StoryBoard extends React.Component {
 
     let boardSocket = new BoardSocket(this.projectId)
     boardSocket.join({
+      onAddStory: this.receiveStoryAdd.bind(this),
       onUpdateStory: this.doUpdateStory.bind(this),
-      onMoveStory: this.doMoveStory.bind(this)
+      onMoveStory: this.doMoveStory.bind(this),
     })
   }
 
@@ -44,12 +45,6 @@ class StoryBoard extends React.Component {
     })
 
     this.setState({columns: updatedColumns})
-  }
-
-  updatePositions(column) {
-    return column.map((story, index) => {
-      return story.merge({position: index})
-    })
   }
 
   storyDragged(storyNumber, from, to, oldIndex, newIndex, done) {
@@ -116,6 +111,14 @@ class StoryBoard extends React.Component {
 
   closeAddStory() {
     this.setState({addStoryIsOpen: false})
+  }
+
+  receiveStoryAdd(story) {
+    let updatedColumns = this.state.columns.update(story.state, (column) => {
+      return column.unshift(story)
+    })
+
+    this.setState({columns: updatedColumns})
   }
 
   addStory(story) {

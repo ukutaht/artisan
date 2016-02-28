@@ -33,20 +33,35 @@ defmodule Artisan.StoryControllerTest do
     {:ok, project: project}
   end
 
-  test "creates a story when valid" do
-    %{"id" => project_id} = create_project()
-    conn = conn() |> post("/api/projects/#{project_id}/stories", %{story: @valid_story_params})
+  test "creates a story when valid", %{project: project} do
+    conn = conn() |> post("/api/projects/#{project["id"]}/stories", %{story: @valid_story_params})
 
     res = json_response(conn, 200)
 
     assert res["name"] == "name"
-    assert res["project_id"] == project_id
+    assert res["project_id"] == project["id"]
     assert res["state"] == "ready"
     assert res["estimate"] == 2.25
     assert res["optimistic"] == 1
     assert res["realistic"] == 1
     assert res["pessimistic"] == 2
     assert res["tags"] == ["bug"]
+  end
+
+  test "broadcasts story create", %{project: project} do
+    topic = "boards:#{project["id"]}"
+
+    Artisan.Endpoint.subscribe(self, topic)
+
+    conn() |> post("/api/projects/#{project["id"]}/stories", %{story: @valid_story_params})
+
+    created = Repo.last(Artisan.Story)
+
+    assert_receive %Phoenix.Socket.Broadcast{
+      topic: ^topic,
+      event: "add:story",
+      payload: ^created
+    }
   end
 
   test "does not create a story when invalid" do

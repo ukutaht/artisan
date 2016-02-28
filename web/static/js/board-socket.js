@@ -1,6 +1,12 @@
 import {Socket} from "phoenix"
 import parseStories from './stories/parse'
 
+function parseThen(f) {
+  return (data) => {
+    return f(parseStories(data))
+  }
+}
+
 class BoardSocket {
   constructor(projectId) {
     this.projectId = projectId
@@ -15,10 +21,9 @@ class BoardSocket {
     let channel = socket.channel(`boards:${this.projectId}`, {})
     channel.join()
 
-    channel.on("update:story", callbacks.onUpdateStory)
-    channel.on("move:story", (updatedColumns) => {
-      callbacks.onMoveStory(parseStories(updatedColumns))
-    })
+    channel.on("update:story", parseThen(callbacks.onUpdateStory))
+    channel.on("add:story",    parseThen(callbacks.onAddStory))
+    channel.on("move:story",   parseThen(callbacks.onMoveStory))
   }
 }
 
