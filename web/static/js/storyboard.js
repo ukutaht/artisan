@@ -87,7 +87,6 @@ class StoryBoard extends React.Component {
               onStoryClick={this.showUpdateModal.bind(this)}
               onDragStart={this.disallowMoves.bind(this)}
               onDrag={this.storyDragged.bind(this)}
-              onUpdateStory={this.updateStory.bind(this)}
               />
 
     })
@@ -170,7 +169,6 @@ class StoryBoard extends React.Component {
 
   renderEditStoryModal() {
     if (this.state.editingStory) {
-      console.log(this.state.editingStory)
       return (
         <StoryModal story={this.state.editingStory}
                     onClose={this.closeEditStory.bind(this)}

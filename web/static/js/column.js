@@ -71,7 +71,6 @@ class Column extends React.Component {
               return <StoryCard
                 key={story.number}
                 story={story}
-                onUpdate={this.props.onUpdateStory}
                 onClick={this.props.onStoryClick}
               />
             })

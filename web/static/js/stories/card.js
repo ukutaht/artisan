@@ -22,6 +22,10 @@ class Card extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps) {
+    return nextProps.story != this.props.story
+  }
+
   render() {
     return (
       <li className="story-card" data-id={this.props.story.id}>
