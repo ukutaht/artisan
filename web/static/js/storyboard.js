@@ -9,6 +9,7 @@ import Story from './stories/story'
 import BoardSocket from './board-socket'
 
 const stories = new StoryService()
+const allColumns = Immutable.List(["backlog", "ready", "working", "completed"])
 
 class StoryBoard extends React.Component {
   constructor(props) {
@@ -79,16 +80,16 @@ class StoryBoard extends React.Component {
   renderColumns() {
     let count = this.state.visibleColumns.size
 
-    return this.state.visibleColumns.map((column) => {
+    return allColumns.map((column) => {
       return <Column stories={this.state.columns.get(column)}
               key={column}
               count={count}
               name={column}
+              isVisible={this.state.visibleColumns.contains(column)}
               onStoryClick={this.showUpdateModal.bind(this)}
               onDragStart={this.disallowMoves.bind(this)}
               onDrag={this.storyDragged.bind(this)}
               />
-
     })
   }
 

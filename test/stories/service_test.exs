@@ -207,6 +207,22 @@ defmodule Artisan.StoriesTest do
     assert found3.id == second.id
   end
 
+  test "moves a story only within the project", %{project: project} do
+    {:ok, project2} = Artisan.Projects.create(%{name: "project"})
+
+    second = create_in_state(project.id, "ready")
+    first = create_in_state(project.id, "ready")
+
+    create_in_state(project2.id, "ready")
+
+    {:ok, _, _} = Stories.move(first.id, "ready", 1)
+
+    [found1, found2] = find_in_state(project.id, "ready")
+
+    assert found1.id == second.id
+    assert found2.id == first.id
+  end
+
   test "indexing into very large numbers just goes to the end", %{project: project} do
     ready = create_in_state(project.id, "ready")
     working  = create_in_state(project.id, "working")
