@@ -72,6 +72,7 @@ class Column extends React.Component {
                 key={story.number}
                 story={story}
                 onUpdate={this.props.onUpdateStory}
+                onClick={this.props.onStoryClick}
               />
             })
           }

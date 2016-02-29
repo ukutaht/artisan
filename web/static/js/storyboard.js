@@ -18,7 +18,8 @@ class StoryBoard extends React.Component {
     this.state = {
       visibleColumns: Immutable.List(["ready", "working", "completed"]),
       columns: Immutable.fromJS({backlog: [], ready: [], working: [], completed: []}),
-      addStoryIsOpen: false
+      addStoryIsOpen: false,
+      editingStory: null
     }
   }
 
@@ -36,7 +37,10 @@ class StoryBoard extends React.Component {
   }
 
   updateStory(story) {
-    stories.update(story, this.doUpdateStory.bind(this));
+    stories.update(story, (updated) => {
+      this.setState({editingStory: null})
+      this.doUpdateStory(updated)
+    });
   }
 
   doUpdateStory(story) {
@@ -56,7 +60,7 @@ class StoryBoard extends React.Component {
     })
   }
 
-  disallowRemoveMoves() {
+  disallowMoves() {
     this.movesAllowed = false
   }
 
@@ -68,6 +72,10 @@ class StoryBoard extends React.Component {
     }
   }
 
+  showUpdateModal(story) {
+    this.setState({editingStory: story})
+  }
+
   renderColumns() {
     let count = this.state.visibleColumns.size
 
@@ -76,7 +84,8 @@ class StoryBoard extends React.Component {
               key={column}
               count={count}
               name={column}
-              onDragStart={this.disallowRemoveMoves.bind(this)}
+              onStoryClick={this.showUpdateModal.bind(this)}
+              onDragStart={this.disallowMoves.bind(this)}
               onDrag={this.storyDragged.bind(this)}
               onUpdateStory={this.updateStory.bind(this)}
               />
@@ -155,10 +164,28 @@ class StoryBoard extends React.Component {
     }
   }
 
+  closeEditStory() {
+    this.setState({editingStory: null})
+  }
+
+  renderEditStoryModal() {
+    if (this.state.editingStory) {
+      console.log(this.state.editingStory)
+      return (
+        <StoryModal story={this.state.editingStory}
+                    onClose={this.closeEditStory.bind(this)}
+                    onSubmit={this.updateStory.bind(this)}
+                    header="Edit story"
+                    buttonText="Update" />
+      )
+    }
+  }
+
   render() {
     return (
       <div className="board">
         { this.renderAddStoryModal() }
+        { this.renderEditStoryModal() }
         <nav className="board__nav">
           <ul className="board__nav__breadcrumb">
             <li>
