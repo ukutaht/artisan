@@ -9,8 +9,7 @@ defmodule Artisan.Stories.Ordering do
     vacate_position(story.project_id, new_position, state)
 
     story
-      |> Story.changeset(%{state: state})
-      |> Story.change_position(new_position)
+      |> Story.change_position(state, new_position)
       |> Repo.update
   end
 

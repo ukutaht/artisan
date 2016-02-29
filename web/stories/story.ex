@@ -19,14 +19,20 @@ defmodule Artisan.Story do
     timestamps
   end
 
-  def changeset(story, attributes) do
+  def new(story, attributes) do
     story
     |> cast(attributes, [:name, :estimate, :optimistic, :realistic, :pessimistic, :tags, :state])
     |> validate_required([:name])
   end
 
-  def change_position(story, position) do
+  def edit(story, attributes) do
     story
-    |> cast(%{position: position}, [:position])
+    |> cast(attributes, [:name, :estimate, :optimistic, :realistic, :pessimistic, :tags])
+    |> validate_required([:name])
+  end
+
+  def change_position(story, state, position) do
+    story
+    |> cast(%{position: position, state: state}, [:position, :state])
   end
 end

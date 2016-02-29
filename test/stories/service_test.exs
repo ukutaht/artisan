@@ -78,6 +78,16 @@ defmodule Artisan.StoriesTest do
     assert match?({:error, _}, Stories.update(created.id, %{name: nil}))
   end
 
+  test "does not update stories position or state", %{project: project} do
+    {:ok, created} = Stories.create(project.id, @valid_story_params)
+    {:ok, updated} = Stories.update(created.id, %{state: "new state", position: 999})
+
+    found = Repo.get(Story, updated.id)
+
+    assert found.state != "new state"
+    assert found.position != 999
+  end
+
   test "finds all by state", %{project: project} do
     ready = create_in_state(project.id, "ready")
     working = create_in_state(project.id, "working")

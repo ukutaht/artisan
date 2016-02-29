@@ -25,7 +25,7 @@ defmodule Artisan.Stories do
 
   def create(project_id, attrs) do
     changeset = %Story{number: next_number(project_id), position: 0, project_id: project_id}
-      |> Story.changeset(attrs)
+      |> Story.new(attrs)
 
     if changeset.valid? do
       Ordering.vacate_position(project_id, 0, changeset.changes.state)
@@ -37,7 +37,7 @@ defmodule Artisan.Stories do
 
   def update(id, attrs) do
     Repo.get(Story, id)
-      |> Story.changeset(attrs)
+      |> Story.edit(attrs)
       |> Repo.update
   end
 
