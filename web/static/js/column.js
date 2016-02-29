@@ -42,9 +42,7 @@ class Column extends React.Component {
     this.sortableInstance.option('disabled', true)
 
     this.props.onDrag(Number(evt.item.dataset.id),
-                      evt.from.dataset.column,
                       evt.to.dataset.column,
-                      evt.oldIndex,
                       evt.newIndex,
                       () => this.cleanUpDrag(evt, react_placeholder))
   }

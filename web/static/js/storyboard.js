@@ -52,8 +52,8 @@ class StoryBoard extends React.Component {
     this.setState({columns: updatedColumns})
   }
 
-  storyDragged(storyId, from, to, oldIndex, newIndex, done) {
-    stories.move(storyId, to, newIndex, (updated) => {
+  storyDragged(storyId, toColumn, toIndex, done) {
+    stories.move(storyId, toColumn, toIndex, (updated) => {
       done()
       this.movesAllowed = true
       this.doMoveStory(updated)
