@@ -5,6 +5,7 @@ import StoryCard from './stories/card'
 
 var _nextSibling;
 var _ghost;
+var _dragging = false;
 
 const columnTitles = {
   backlog: "Backlog",
@@ -16,6 +17,7 @@ const columnTitles = {
 class Column extends React.Component {
   constructor(props) {
     super(props)
+    this.dragging = false
   }
 
   componentDidMount() {
@@ -29,7 +31,7 @@ class Column extends React.Component {
   }
 
   onStart(evt) {
-    this.props.onDragStart()
+    _dragging    = true
     _nextSibling = evt.item.nextElementSibling;
     _ghost = this.refs.sortable.getElementsByClassName('story-card--ghost')[0].cloneNode(true)
   }
@@ -50,11 +52,16 @@ class Column extends React.Component {
   cleanUpDrag(evt, react_placeholder) {
     this.sortableInstance.option('disabled', false)
     evt.to.removeChild(_ghost)
+    _dragging = false
     if (evt.from == evt.to) react_placeholder.style.display = "block"
   }
 
   componentWillUnmount() {
     this.sortableInstance.destroy()
+  }
+
+  shouldComponentUpdate() {
+    return !_dragging
   }
 
   render() {

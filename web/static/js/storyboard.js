@@ -15,7 +15,6 @@ class StoryBoard extends React.Component {
   constructor(props) {
     super(props)
     this.projectId = this.props.routeParams.projectId
-    this.movesAllowed = true
     this.state = {
       visibleColumns: Immutable.List(["ready", "working", "completed"]),
       columns: Immutable.fromJS({backlog: [], ready: [], working: [], completed: []}),
@@ -56,21 +55,14 @@ class StoryBoard extends React.Component {
   storyDragged(storyId, toColumn, toIndex, done) {
     stories.move(storyId, toColumn, toIndex, (updated) => {
       done()
-      this.movesAllowed = true
       this.doMoveStory(updated)
     })
   }
 
-  disallowMoves() {
-    this.movesAllowed = false
-  }
-
   doMoveStory(updatedColumns) {
-    if (this.movesAllowed) {
-      this.setState({
-        columns: this.state.columns.merge(updatedColumns)
-      })
-    }
+    this.setState({
+      columns: this.state.columns.merge(updatedColumns)
+    })
   }
 
   showUpdateModal(story) {
@@ -87,7 +79,6 @@ class StoryBoard extends React.Component {
               name={column}
               isVisible={this.state.visibleColumns.contains(column)}
               onStoryClick={this.showUpdateModal.bind(this)}
-              onDragStart={this.disallowMoves.bind(this)}
               onDrag={this.storyDragged.bind(this)}
               />
     })
