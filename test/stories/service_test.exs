@@ -34,7 +34,7 @@ defmodule Artisan.StoriesTest do
   test "creates a story with valid params", %{project: project} do
     {:ok, _} = Stories.create(project.id, @valid_story_params)
 
-    assert Stories.count() == 1
+    assert Repo.aggregate(Story, :count, :id) == 1
   end
 
   test "story is created in the first position, order maintained", %{project: project} do
@@ -47,7 +47,7 @@ defmodule Artisan.StoriesTest do
     assert found2.id == old.id
   end
 
-  test "number is generater per-project", %{project: project} do
+  test "number is generated per-project", %{project: project} do
     {:ok, project2} = Artisan.Projects.create(%{name: "name"})
 
     {:ok, story1} = Stories.create(project.id, @valid_story_params)
@@ -62,7 +62,7 @@ defmodule Artisan.StoriesTest do
   test "does not create a story with invalid params", %{project: project} do
     {:error, _} = Stories.create(project.id, @invalid_story_params)
 
-    assert Stories.count() == 0
+    assert Repo.aggregate(Story, :count, :id) == 0
   end
 
   test "updates a story with valid params", %{project: project} do
@@ -96,142 +96,5 @@ defmodule Artisan.StoriesTest do
     found = Stories.by_state(project.id)
 
     assert Enum.all?(found, fn({_col, stories}) -> Enum.empty?(stories) end)
-  end
-
-  test "orders stories by position in states", %{project: project} do
-    old = create_in_state(project.id, "ready")
-    new = create_in_state(project.id, "ready")
-
-    [found1, found2] = find_in_state(project.id, "ready")
-
-    assert found1.id == new.id
-    assert found2.id == old.id
-  end
-
-  test "moving to same state same index is a no-op", %{project: project} do
-    second = create_in_state(project.id, "working")
-    first  = create_in_state(project.id, "working")
-
-    {:ok, _, _} = Stories.move(first.id, "working", 0)
-    [found1, found2] = find_in_state(project.id, "working")
-
-    assert found1.id == first.id
-    assert found2.id == second.id
-  end
-
-  test "moves a story to an empty state", %{project: project} do
-    story = create_in_state(project.id, "ready")
-
-    {:ok, _, _} = Stories.move(story.id, "working", 0)
-    [found1] = find_in_state(project.id, "working")
-
-    assert found1.id == story.id
-  end
-
-  test "moves a story to bottom", %{project: project} do
-    second = create_in_state(project.id, "working")
-    first  = create_in_state(project.id, "working")
-
-    {:ok, _, _} = Stories.move(first.id, "working", 1)
-    [found1, found2] = find_in_state(project.id, "working")
-
-    assert found1.id == second.id
-    assert found2.id == first.id
-  end
-
-  test "moves a story to top", %{project: project} do
-    second = create_in_state(project.id, "working")
-    first  = create_in_state(project.id, "working")
-
-    {:ok, _, _} = Stories.move(second.id, "working", 0)
-    [found1, found2] = find_in_state(project.id, "working")
-
-    assert found1.id == second.id
-    assert found2.id == first.id
-  end
-
-  test "moves a story to middle", %{project: project} do
-    third = create_in_state(project.id, "working")
-    second = create_in_state(project.id, "working")
-    first  = create_in_state(project.id, "working")
-
-    {:ok, _, _} = Stories.move(first.id, "working", 1)
-    [found1, found2, found3] = find_in_state(project.id, "working")
-
-    assert found1.id == second.id
-    assert found2.id == first.id
-    assert found3.id == third.id
-
-    assert found1.position != found2.position
-  end
-
-  test "moves a story to the bottom of a different state", %{project: project} do
-    story = create_in_state(project.id, "ready")
-    second = create_in_state(project.id, "working")
-    first  = create_in_state(project.id, "working")
-
-    {:ok, _, _} = Stories.move(story.id, "working", 2)
-
-    [found1, found2, found3] = find_in_state(project.id, "working")
-
-    assert found1.id == first.id
-    assert found2.id == second.id
-    assert found3.id == story.id
-  end
-
-  test "moves a story to the top of a different state", %{project: project} do
-    story = create_in_state(project.id, "ready")
-    second = create_in_state(project.id, "working")
-    first  = create_in_state(project.id, "working")
-
-    {:ok, _, _} = Stories.move(story.id, "working", 0)
-
-    [found1, found2, found3] = find_in_state(project.id, "working")
-
-    assert found1.id == story.id
-    assert found2.id == first.id
-    assert found3.id == second.id
-  end
-
-  test "moves a story to the middle of a different state", %{project: project} do
-    story = create_in_state(project.id, "ready")
-    second = create_in_state(project.id, "working")
-    first  = create_in_state(project.id, "working")
-
-    {:ok, _, _} = Stories.move(story.id, "working", 1)
-
-    [found1, found2, found3] = find_in_state(project.id, "working")
-
-    assert found1.id == first.id
-    assert found2.id == story.id
-    assert found3.id == second.id
-  end
-
-  test "moves a story only within the project", %{project: project} do
-    {:ok, project2} = Artisan.Projects.create(%{name: "project"})
-
-    second = create_in_state(project.id, "ready")
-    first = create_in_state(project.id, "ready")
-
-    create_in_state(project2.id, "ready")
-
-    {:ok, _, _} = Stories.move(first.id, "ready", 1)
-
-    [found1, found2] = find_in_state(project.id, "ready")
-
-    assert found1.id == second.id
-    assert found2.id == first.id
-  end
-
-  test "indexing into very large numbers just goes to the end", %{project: project} do
-    ready = create_in_state(project.id, "ready")
-    working  = create_in_state(project.id, "working")
-
-    {:ok, _, _} = Stories.move(ready.id, "working", 100)
-
-    [found1, found2] = find_in_state(project.id, "working")
-
-    assert found1.id == working.id
-    assert found2.id == ready.id
   end
 end
