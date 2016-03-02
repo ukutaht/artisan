@@ -21,8 +21,8 @@ defmodule Artisan.Story do
 
   def new(story, attributes) do
     story
-    |> cast(attributes, [:name, :estimate, :optimistic, :realistic, :pessimistic, :tags, :state])
-    |> validate_required([:name])
+    |> cast(attributes, [:name, :estimate, :optimistic, :realistic, :pessimistic, :tags, :state, :project_id])
+    |> validate_required([:name, :project_id])
   end
 
   def edit(story, attributes) do

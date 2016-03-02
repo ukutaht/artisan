@@ -5,7 +5,7 @@ import parseStories from './stories/parse'
 
 class StoryService {
   getByColumn(projectId, callback) {
-    Request.get(`/api/projects/${projectId}/iterations/current/stories`).end((err, res) => {
+    Request.get(`/api/projects/${projectId}/iterations/current`).end((err, res) => {
       callback(parseStories(res.body))
     })
   }
@@ -25,7 +25,7 @@ class StoryService {
   }
 
   add(projectId, story, callback) {
-    Request.post(`/api/projects/${projectId}/stories`).send({story: story}).end((err, res) => {
+    Request.post(`/api/stories`).send({story: story}).end((err, res) => {
       callback(parseStories(res.body))
     })
   }

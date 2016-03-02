@@ -16,8 +16,10 @@ defmodule Artisan.StoryControllerTest do
   }
 
   def create_story(%{"id" => project_id}) do
+    story = Map.put(@valid_story_params, :project_id, project_id)
+
     conn()
-      |> post("/api/projects/#{project_id}/stories", %{story: @valid_story_params})
+      |> post("/api/stories", %{story: story})
       |> json_response(200)
   end
 
@@ -34,7 +36,9 @@ defmodule Artisan.StoryControllerTest do
   end
 
   test "creates a story when valid", %{project: project} do
-    conn = conn() |> post("/api/projects/#{project["id"]}/stories", %{story: @valid_story_params})
+    story = Map.put(@valid_story_params, :project_id, project["id"])
+
+    conn = conn() |> post("/api/stories", %{story: story})
 
     res = json_response(conn, 200)
 
@@ -53,8 +57,7 @@ defmodule Artisan.StoryControllerTest do
 
     Artisan.Endpoint.subscribe(self, topic)
 
-    conn() |> post("/api/projects/#{project["id"]}/stories", %{story: @valid_story_params})
-
+    create_story(project)
     created = Repo.last(Artisan.Story)
 
     assert_receive %Phoenix.Socket.Broadcast{
@@ -64,9 +67,10 @@ defmodule Artisan.StoryControllerTest do
     }
   end
 
-  test "does not create a story when invalid" do
-    %{"id" => project_id} = create_project()
-    conn = conn() |> post("/api/projects/#{project_id}/stories", %{story: @invalid_story_params})
+  test "does not create a story when invalid", %{project: project} do
+    story = Map.put(@invalid_story_params, :project_id, project["id"])
+
+    conn = conn() |> post("/api/stories", %{story: story})
 
     res = json_response(conn, 400)
 
@@ -141,7 +145,7 @@ defmodule Artisan.StoryControllerTest do
     created = create_story(project)
 
     res = conn()
-      |> get("/api/projects/#{project["id"]}/iterations/current/stories")
+      |> get("/api/projects/#{project["id"]}/iterations/current")
       |> json_response(200)
 
     [found] = res["ready"]

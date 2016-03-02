@@ -17,10 +17,10 @@ defmodule Artisan.Router do
     pipe_through :api
 
     put "/stories/:id",  Stories.Controller, :update
+    post "/stories", Stories.Controller, :create
     post "/stories/:id/move",  Stories.Controller, :move
 
-    get "/projects/:project_id/iterations/current/stories",  Stories.Controller, :current
-    post "/projects/:project_id/stories", Stories.Controller, :create
+    get "/projects/:project_id/iterations/current",  Stories.Controller, :current
 
     post "/projects", Projects.Controller, :create
     get "/projects", Projects.Controller, :all

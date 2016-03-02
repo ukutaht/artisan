@@ -131,11 +131,13 @@ class StoryBoard extends React.Component {
   }
 
   addStory(story) {
-    let firstColumn = this.state.visibleColumns.first()
-    let storyWithColumn = story.merge({state: firstColumn})
+    let storyWithData = story.merge({
+      state: this.state.visibleColumns.first(),
+      project_id: this.projectId
+    })
 
-    stories.add(this.projectId, storyWithColumn, (created) => {
-      let updatedColumns = this.state.columns.update(firstColumn, (column) => {
+    stories.add(this.projectId, storyWithData, (created) => {
+      let updatedColumns = this.state.columns.update(created.state, (column) => {
         return column.unshift(created)
       })
 
