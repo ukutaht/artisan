@@ -137,11 +137,11 @@ defmodule Artisan.StoryControllerTest do
     }
   end
 
-  test "gets stories by state", %{project: project} do
+  test "gets stories for the current iteration", %{project: project} do
     created = create_story(project)
 
     res = conn()
-      |> get("/api/projects/#{project["id"]}/stories")
+      |> get("/api/projects/#{project["id"]}/iterations/current/stories")
       |> json_response(200)
 
     [found] = res["ready"]
