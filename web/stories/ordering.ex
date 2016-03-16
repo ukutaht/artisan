@@ -18,10 +18,8 @@ defmodule Artisan.Stories.Ordering do
   end
 
   def vacate_many(project_id, position, state, amount) do
-    query = from(s in Story,
-      where: s.project_id == ^project_id,
-      where: s.state == ^state
-      and s.position >= ^position
+    query = from(s in active_stories(project_id, state),
+      where: s.position >= ^position
     )
     increment_positions(query, amount)
   end
@@ -34,9 +32,7 @@ defmodule Artisan.Stories.Ordering do
   end
 
   defp position_at(%{project_id: project_id}, state, index) do
-    Repo.first(from s in Story,
-      where: s.project_id == ^project_id,
-      where: s.state == ^state,
+    Repo.first(from s in active_stories(project_id, state),
       order_by: s.position,
       offset: ^index,
       select: s.position
@@ -58,5 +54,13 @@ defmodule Artisan.Stories.Ordering do
 
   defp increment_positions(query, amount) do
     Repo.update_all(query, inc: [position: amount])
+  end
+
+  defp active_stories(project_id, state) do
+    from(s in Story,
+      where: s.project_id == ^project_id,
+      where: s.state == ^state,
+      where: is_nil(s.completed_in)
+    )
   end
 end

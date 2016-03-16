@@ -52,20 +52,12 @@ defmodule Artisan.Stories do
   end
 
   def mark_completed_in(iteration) do
-    q = from(s in Story,
-      where: s.project_id == ^iteration.project_id,
-      where: is_nil(s.completed_in),
-      where: s.state == "completed"
-    )
-
-    Repo.update_all(q, set: [completed_in: iteration.id])
+    active_stories(iteration.project_id, "completed")
+      |> Repo.update_all(set: [completed_in: iteration.id])
   end
 
   def move_working_to_ready(project_id) do
-    q = from(s in Story,
-      where: s.project_id == ^project_id,
-      where: s.state == "working"
-    )
+    q = active_stories(project_id, "working")
 
     max_pos = Repo.aggregate(q, :max, :position) || 0
     Ordering.vacate_many(project_id, 0, "ready", max_pos)
@@ -84,5 +76,13 @@ defmodule Artisan.Stories do
   defp next_number(project_id) do
     q = from(s in Story, where: s.project_id == ^project_id)
     Repo.aggregate(q, :count, :id) + 1
+  end
+
+  defp active_stories(project_id, state) do
+    from(s in Story,
+      where: s.project_id == ^project_id,
+      where: s.state == ^state,
+      where: is_nil(s.completed_in)
+    )
   end
 end
