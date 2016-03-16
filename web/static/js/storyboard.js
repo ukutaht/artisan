@@ -79,7 +79,6 @@ class StoryBoard extends React.Component {
   }
 
   renderBacklogLink() {
-    console.log(this.canToggleBacklog())
     if (!this.canToggleBacklog()) return null
 
     if (this.isBacklogVisible()) {

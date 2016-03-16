@@ -13,6 +13,7 @@ defmodule Artisan.Stories do
   def by_state(project_id) do
     Repo.all(from s in Story,
       where: s.project_id == ^project_id,
+      where: is_nil(s.completed_in),
       order_by: [desc: s.position]
     )
     |> Enum.group_by(&(&1.state))
@@ -48,6 +49,25 @@ defmodule Artisan.Stories do
       {:error, error} ->
         {:error, error}
     end
+  end
+
+  def mark_completed_in(iteration) do
+    q = from(s in Story,
+      where: s.project_id == ^iteration.project_id,
+      where: is_nil(s.completed_in),
+      where: s.state == "completed"
+    )
+
+    Repo.update_all(q, set: [completed_in: iteration.id])
+  end
+
+  def completed_in(iteration_id) do
+    Repo.all(from s in Story,
+      where: s.completed_in == ^iteration_id,
+      order_by: [desc: s.position]
+    )
+    |> Enum.group_by(&(&1.state))
+    |> into_empty_states
   end
 
   defp next_number(project_id) do

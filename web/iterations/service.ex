@@ -3,9 +3,11 @@ defmodule Artisan.Iterations do
   alias Artisan.Iteration
 
   def create_for(project_id) do
-    %Iteration{number: next_number(project_id), state: "planning"}
+    {:ok, iteration} = %Iteration{number: next_number(project_id), state: "planning"}
       |> Iteration.changeset(%{project_id: project_id})
       |> Repo.insert
+
+    {:ok, %{iteration: iteration, stories: stories_for(iteration)}}
   end
 
   def current(project_id) do
@@ -14,9 +16,7 @@ defmodule Artisan.Iterations do
       order_by: [desc: i.number]
     )
 
-    stories = Artisan.Stories.by_state(project_id)
-
-    %{iteration: iteration, stories: stories}
+    %{iteration: iteration, stories: stories_for(iteration)}
   end
 
   def start(iteration_id) do
@@ -26,9 +26,21 @@ defmodule Artisan.Iterations do
   end
 
   def complete(iteration_id) do
-    Repo.get(Iteration, iteration_id)
+    {:ok, updated} = Repo.get(Iteration, iteration_id)
       |> Iteration.changeset(%{state: "completed"})
       |> Repo.update
+
+    Artisan.Stories.mark_completed_in(updated)
+
+    {:ok, %{iteration: updated, stories: stories_for(updated)}}
+  end
+
+  defp stories_for(%Iteration{state: "completed", id: id}) do
+    Artisan.Stories.completed_in(id)
+  end
+
+  defp stories_for(%Iteration{project_id: project_id}) do
+    Artisan.Stories.by_state(project_id)
   end
 
   defp next_number(project_id) do

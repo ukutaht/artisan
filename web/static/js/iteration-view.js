@@ -77,9 +77,10 @@ class IterationView extends React.Component {
   }
 
   newIteration() {
-    iterations.create(this.projectId, (updated) => {
+    iterations.create(this.projectId, (res) => {
       this.setState({
-        iteration: updated,
+        iteration: res.get('iteration'),
+        stories: res.get('stories')
       })
     })
   }
@@ -93,9 +94,10 @@ class IterationView extends React.Component {
   }
 
   completeIteration() {
-    iterations.complete(this.state.iteration.id, (updated) => {
+    iterations.complete(this.state.iteration.id, (res) => {
       this.setState({
-        iteration: updated,
+        iteration: res.get('iteration'),
+        stories: res.get('stories')
       })
     })
   }

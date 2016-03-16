@@ -107,4 +107,58 @@ defmodule Artisan.StoriesTest do
 
     assert Enum.all?(found, fn({_col, stories}) -> Enum.empty?(stories) end)
   end
+
+  test "does not find stories that were completed in a previous iteration", %{project: project} do
+    {:ok, %{iteration: iteration}} = Artisan.Iterations.create_for(project.id)
+    create_in_state(project.id, "completed")
+    Stories.mark_completed_in(iteration)
+
+    found = Stories.by_state(project.id)
+
+    assert Enum.all?(found, fn({_col, stories}) -> Enum.empty?(stories) end)
+  end
+
+  test "marks stories as completed in", %{project: project} do
+    {:ok, %{iteration: iteration}} = Artisan.Iterations.create_for(project.id)
+    working = create_in_state(project.id, "working")
+    completed = create_in_state(project.id, "completed")
+
+    Stories.mark_completed_in(iteration)
+
+    assert Repo.get(Story, completed.id).completed_in == iteration.id
+    assert Repo.get(Story, working.id).completed_in == nil
+  end
+
+  test "stories are not marked twice", %{project: project} do
+    {:ok, %{iteration: iteration1}} = Artisan.Iterations.create_for(project.id)
+    completed = create_in_state(project.id, "completed")
+
+    Stories.mark_completed_in(iteration1)
+
+    {:ok, %{iteration: iteration2}} = Artisan.Iterations.create_for(project.id)
+    Stories.mark_completed_in(iteration2)
+
+    assert Repo.get(Story, completed.id).completed_in == iteration1.id
+  end
+
+  test "stories are only marked within the project", %{project: project} do
+    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project"})
+    {:ok, %{iteration: iteration}} = Artisan.Iterations.create_for(project.id)
+    completed_in_project2 = create_in_state(project2.id, "completed")
+
+    Stories.mark_completed_in(iteration)
+
+    assert Repo.get(Story, completed_in_project2.id).completed_in == nil
+  end
+
+  test "gets stories completed in an iteration", %{project: project} do
+    {:ok, %{iteration: iteration}} = Artisan.Iterations.create_for(project.id)
+    completed = create_in_state(project.id, "completed")
+    create_in_state(project.id, "working")
+
+    Stories.mark_completed_in(iteration)
+    %{"completed" => [found]} = Stories.completed_in(iteration.id)
+
+    assert found.id == completed.id
+  end
 end

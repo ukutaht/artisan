@@ -31,7 +31,7 @@ defmodule Artisan.Iterations.ControllerTest do
       |> post("/api/iterations/#{iteration["id"]}/complete")
       |> json_response(200)
 
-    assert res["state"] == "completed"
+    assert res["iteration"]["state"] == "completed"
   end
 
   test "creates a new iteration", %{project: project} do
@@ -39,11 +39,11 @@ defmodule Artisan.Iterations.ControllerTest do
       |> post("/api/projects/#{project["id"]}/iterations/create")
       |> json_response(200)
 
-    assert res["state"] == "planning"
+    assert res["iteration"]["state"] == "planning"
   end
 
   test "starts new iteration", %{project: project} do
-    created = conn
+    %{"iteration" => created} = conn
       |> post("/api/projects/#{project["id"]}/iterations/create")
       |> json_response(200)
 
