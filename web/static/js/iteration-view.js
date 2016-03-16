@@ -1,10 +1,12 @@
 import React from 'react'
 
 import StoryService from './story-service'
+import IterationService from './iterations/service'
 import StoryBoard from './storyboard'
 import BoardSocket from './board-socket'
 
 const stories = new StoryService()
+const iterations = new IterationService()
 
 class IterationView extends React.Component {
   constructor(props) {
@@ -17,7 +19,7 @@ class IterationView extends React.Component {
   }
 
   componentDidMount() {
-    stories.getByColumn(this.projectId, (res) => {
+    iterations.current(this.projectId, (res) => {
       this.setState({
         iteration: res.get('iteration'),
         stories: res.get('stories')
@@ -75,7 +77,7 @@ class IterationView extends React.Component {
   }
 
   newIteration() {
-    stories.newIteration(this.projectId, (updated) => {
+    iterations.create(this.projectId, (updated) => {
       this.setState({
         iteration: updated,
       })
@@ -83,7 +85,7 @@ class IterationView extends React.Component {
   }
 
   startIteration() {
-    stories.startIteration(this.state.iteration.id, (updated) => {
+    iterations.start(this.state.iteration.id, (updated) => {
       this.setState({
         iteration: updated,
       })
@@ -91,7 +93,7 @@ class IterationView extends React.Component {
   }
 
   completeIteration() {
-    stories.completeIteration(this.state.iteration.id, (updated) => {
+    iterations.complete(this.state.iteration.id, (updated) => {
       this.setState({
         iteration: updated,
       })

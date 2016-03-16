@@ -1,7 +1,7 @@
 import Immutable from 'immutable'
 
 import Story from './story'
-import Iteration from '../iteration'
+import Iteration from '../iterations/iteration'
 
 function convertStories(key, val) {
   var isStory = Immutable.Iterable.isKeyed(val) && val.has('id');
