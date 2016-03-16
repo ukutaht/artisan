@@ -14,16 +14,21 @@ defmodule Artisan.Stories.Ordering do
   end
 
   def vacate_position(project_id, position, state) do
-    increment_positions(from s in Story,
+    vacate_many(project_id, position, state, 1)
+  end
+
+  def vacate_many(project_id, position, state, amount) do
+    query = from(s in Story,
       where: s.project_id == ^project_id,
       where: s.state == ^state
       and s.position >= ^position
     )
+    increment_positions(query, amount)
   end
 
 
   defp calculate_pivot(story, state, index) do
-    pivot = position_at(story, state, index) || next_position(state)
+    pivot = position_at(story, state, index) || next_position(story.project_id, state)
 
     if moving_down?(story, state, pivot), do: pivot + 1, else: pivot
   end
@@ -38,8 +43,11 @@ defmodule Artisan.Stories.Ordering do
     )
   end
 
-  defp next_position(state) do
-    q = from(s in Story, where: s.state == ^state)
+  defp next_position(project_id, state) do
+    q = from(s in Story,
+      where: s.project_id == ^project_id,
+      where: s.state == ^state
+    )
     max_pos = Repo.aggregate(q, :max, :position) || 0
     max_pos + 1
   end
@@ -48,7 +56,7 @@ defmodule Artisan.Stories.Ordering do
     story.state == state && story.position < new_position
   end
 
-  defp increment_positions(query) do
-    Repo.update_all(query, inc: [position: 1])
+  defp increment_positions(query, amount) do
+    Repo.update_all(query, inc: [position: amount])
   end
 end

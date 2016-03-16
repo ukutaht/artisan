@@ -67,8 +67,8 @@ defmodule Artisan.Stories do
       where: s.state == "working"
     )
 
-    max_pos = Repo.aggregate(q, :max, :position)
-    Ordering.vacate_position(project_id, max_pos, "ready")
+    max_pos = Repo.aggregate(q, :max, :position) || 0
+    Ordering.vacate_many(project_id, 0, "ready", max_pos)
     Repo.update_all(q, set: [state: "ready"])
   end
 

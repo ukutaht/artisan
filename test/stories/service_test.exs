@@ -177,11 +177,15 @@ defmodule Artisan.StoriesTest do
   end
 
   test "ensures that there are no position clashes when moving from working to ready", %{project: project} do
-    working = Repo.insert!(%Story{position: 1, state: "working", name: "name", number: 1, project_id: project.id})
+    working1 = Repo.insert!(%Story{position: 1, state: "working", name: "name", number: 1, project_id: project.id})
+    working2 = Repo.insert!(%Story{position: 100, state: "working", name: "name", number: 1, project_id: project.id})
     ready = Repo.insert!(%Story{position: 1, state: "ready", name: "name", number: 1, project_id: project.id})
 
     Stories.move_working_to_ready(project.id)
+    %{"ready" => [found1, found2, found3]} = Stories.by_state(project.id)
 
-    assert Repo.get(Story, working.id).position != Repo.get(Story, ready.id).position
+    assert found1.id == working1.id
+    assert found2.id == working2.id
+    assert found3.id == ready.id
   end
 end
