@@ -106,7 +106,7 @@ class StoryModal extends React.Component {
                 <div className="eight-columns">
                   <section className="form-group">
                     <label>Name</label>
-                    <input type="text" value={this.state.name} onChange={this.nameChanged.bind(this)}/>
+                    <input autoFocus="true" type="text" value={this.state.name} onChange={this.nameChanged.bind(this)}/>
                   </section>
 
                   <label>Acceptance criteria</label>
