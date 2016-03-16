@@ -1,87 +1,65 @@
 import React from 'react'
-import Link from 'react-router/lib/Link'
 import Immutable from 'immutable'
 
 import Column from './column'
-import StoryService from './story-service'
 import StoryModal from './stories/modal'
 import Story from './stories/story'
-import BoardSocket from './board-socket'
 
-const stories = new StoryService()
 const allColumns = Immutable.List(["backlog", "ready", "working", "completed"])
+
+const iterationColumns = Immutable.fromJS({
+  planning: ["backlog", "ready"],
+  working: ["ready", "working", "completed"],
+  completed: ["completed"]
+})
+
+const canToggleBacklog = Immutable.fromJS({
+  planning: false,
+  working: true,
+  completed: false
+})
 
 class StoryBoard extends React.Component {
   constructor(props) {
     super(props)
-    this.projectId = this.props.routeParams.projectId
     this.state = {
-      visibleColumns: Immutable.List(["ready", "working", "completed"]),
-      columns: Immutable.fromJS({backlog: [], ready: [], working: [], completed: []}),
+      visibleColumns: iterationColumns.get(props.iteration.state),
       addStoryIsOpen: false,
       editingStory: null
     }
   }
 
-  componentDidMount() {
-    stories.getByColumn(this.projectId, (columns) => {
-      this.setState({columns: this.state.columns.merge(columns)})
-    })
-
-    let boardSocket = new BoardSocket(this.projectId)
-    boardSocket.join({
-      onAddStory: this.receiveStoryAdd.bind(this),
-      onUpdateStory: this.doUpdateStory.bind(this),
-      onMoveStory: this.doMoveStory.bind(this),
-    })
-  }
-
-  updateStory(story) {
-    stories.update(story, (updated) => {
-      this.setState({editingStory: null})
-      this.doUpdateStory(updated)
-    });
-  }
-
-  doUpdateStory(story) {
-    let updatedColumns = this.state.columns.update(story.state, (column) => {
-      let index = column.findIndex((existing) => existing.number == story.number)
-      return column.update(index, (existing) => existing.merge(story))
-    })
-
-    this.setState({columns: updatedColumns})
-  }
-
-  storyDragged(storyId, toColumn, toIndex, done) {
-    stories.move(storyId, toColumn, toIndex, (updated) => {
-      done()
-      this.doMoveStory(updated)
-    })
-  }
-
-  doMoveStory(updatedColumns) {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.iteration.state != this.props.iteration.state)
     this.setState({
-      columns: this.state.columns.merge(updatedColumns)
+      visibleColumns: iterationColumns.get(nextProps.iteration.state)
     })
   }
 
-  showUpdateModal(story) {
+  openEditStory(story) {
     this.setState({editingStory: story})
   }
 
-  renderColumns() {
-    let count = this.state.visibleColumns.size
+  closeEditStory() {
+    this.setState({editingStory: null})
+  }
 
-    return allColumns.map((column) => {
-      return <Column stories={this.state.columns.get(column)}
-              key={column}
-              count={count}
-              name={column}
-              isVisible={this.state.visibleColumns.contains(column)}
-              onStoryClick={this.showUpdateModal.bind(this)}
-              onDrag={this.storyDragged.bind(this)}
-              />
-    })
+  updateStory(story) {
+    this.props.updateStory(story)
+    this.setState({editingStory: null})
+  }
+
+  openAddStory() {
+    this.setState({addStoryIsOpen: true})
+  }
+
+  closeAddStory() {
+    this.setState({addStoryIsOpen: false})
+  }
+
+  addStory(story) {
+    this.props.addStory(story)
+    this.setState({addStoryIsOpen: false})
   }
 
   isBacklogVisible() {
@@ -96,7 +74,14 @@ class StoryBoard extends React.Component {
     this.setState({visibleColumns: this.state.visibleColumns.shift()});
   }
 
-  backlogLink() {
+  canToggleBacklog() {
+    return canToggleBacklog.get(this.props.iteration.state)
+  }
+
+  renderBacklogLink() {
+    console.log(this.canToggleBacklog())
+    if (!this.canToggleBacklog()) return null
+
     if (this.isBacklogVisible()) {
       return (
         <a href="javascript://" onClick={this.hideBacklog.bind(this)}>
@@ -114,51 +99,16 @@ class StoryBoard extends React.Component {
     }
   }
 
-  openAddStory() {
-    this.setState({addStoryIsOpen: true})
-  }
-
-  closeAddStory() {
-    this.setState({addStoryIsOpen: false})
-  }
-
-  receiveStoryAdd(story) {
-    let updatedColumns = this.state.columns.update(story.state, (column) => {
-      return column.unshift(story)
-    })
-
-    this.setState({columns: updatedColumns})
-  }
-
-  addStory(story) {
-    let storyWithData = story.merge({
-      state: this.state.visibleColumns.first(),
-      project_id: this.projectId
-    })
-
-    stories.add(this.projectId, storyWithData, (created) => {
-      let updatedColumns = this.state.columns.update(created.state, (column) => {
-        return column.unshift(created)
-      })
-
-      this.setState({columns: updatedColumns, addStoryIsOpen: false})
-    })
-  }
-
   renderAddStoryModal() {
     if (this.state.addStoryIsOpen) {
       return (
-        <StoryModal story={new Story()}
+        <StoryModal story={new Story({state: this.state.visibleColumns.first()})}
                     onClose={this.closeAddStory.bind(this)}
                     onSubmit={this.addStory.bind(this)}
                     header="Add story"
                     buttonText="Create" />
       )
     }
-  }
-
-  closeEditStory() {
-    this.setState({editingStory: null})
   }
 
   renderEditStoryModal() {
@@ -173,11 +123,57 @@ class StoryBoard extends React.Component {
     }
   }
 
+  renderColumns() {
+    let count = this.state.visibleColumns.size
+
+    return this.state.visibleColumns.map((column) => {
+      return <Column stories={this.props.stories.get(column)}
+              key={column}
+              count={count}
+              name={column}
+              onStoryClick={this.openEditStory.bind(this)}
+              onDrag={this.props.moveStory}
+              />
+    })
+  }
+
+  renderActions() {
+    if (this.props.iteration.state == "completed") {
+      return (
+        <button className="button primary"
+                onClick={this.props.newIteration}>
+          Start new iteration
+        </button>
+      )
+    } else if (this.props.iteration.state == "planning") {
+      return (
+        <div>
+          <button className="button primary" onClick={this.props.startIteration}>
+            Start iteration
+          </button>
+          <button className="button primary" onClick={this.openAddStory.bind(this)}>
+            <i className="right-padded-icon ion-plus"></i> Add story
+          </button>
+        </div>
+      )
+    }
+    else {
+      return (
+        <div>
+          <button className="button primary" onClick={this.props.completeIteration}>
+            Complete iteration
+          </button>
+          <button className="button primary" onClick={this.openAddStory.bind(this)}>
+            <i className="right-padded-icon ion-plus"></i> Add story
+          </button>
+        </div>
+      )
+    }
+  }
+
   render() {
     return (
       <div className="board">
-        { this.renderAddStoryModal() }
-        { this.renderEditStoryModal() }
         <nav className="board__nav">
           <ul className="board__nav__breadcrumb">
             <li>
@@ -198,19 +194,17 @@ class StoryBoard extends React.Component {
 
         <div className="board__actions">
           <div className="board__actions__left">
-            { this.backlogLink() }
+            { this.renderBacklogLink() }
           </div>
 
           <div className="board__actions__right">
-            <button className="button primary">Complete iteration</button>
-            <button className="button primary" onClick={this.openAddStory.bind(this)}>
-              <i className="right-padded-icon ion-plus"></i> Add story
-            </button>
+            { this.renderActions() }
           </div>
         </div>
 
         { this.renderColumns() }
-
+        { this.renderAddStoryModal() }
+        { this.renderEditStoryModal() }
       </div>
     )
   }

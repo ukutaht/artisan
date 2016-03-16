@@ -2,10 +2,6 @@ defmodule Artisan.Stories.Controller do
   use Artisan.Web, :controller
   alias Artisan.Stories
 
-  def current(conn, %{"project_id" => project_id}) do
-    conn |> json(Stories.by_state(project_id))
-  end
-
   def create(conn, %{"story" => story_params}) do
     case Stories.create(story_params["project_id"], story_params) do
       {:ok, created} ->

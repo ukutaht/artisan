@@ -4,6 +4,7 @@ defmodule Artisan.Repo.Migrations.AddIterations do
   def change do
     create table(:iterations) do
       add :number, :integer, null: false
+      add :state, :string, null: false
       add :project_id, references(:projects), null: false
 
       timestamps

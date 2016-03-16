@@ -35,6 +35,7 @@
 
     &__left {
       @include span-columns(6);
+      min-height: 1px;
     }
 
     &__right {
@@ -51,6 +52,10 @@
     margin-top: 25px;
     border-right: 1px dashed $border-grey;
 
+    &--2 {
+      @include span-columns(6, $display: block-collapse);
+    }
+
     &--3 {
       @include span-columns(4, $display: block-collapse);
     }
@@ -62,7 +67,6 @@
     &:last-of-type {
       border-right: none;
     }
-
 
     &__header {
       text-align: center;

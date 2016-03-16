@@ -148,7 +148,7 @@ defmodule Artisan.StoryControllerTest do
       |> get("/api/projects/#{project["id"]}/iterations/current")
       |> json_response(200)
 
-    [found] = res["ready"]
+    [found] = res["stories"]["ready"]
 
     assert found == created
   end

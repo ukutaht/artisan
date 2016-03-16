@@ -14,13 +14,59 @@ defmodule Artisan.IterationsTest do
     assert Repo.aggregate(Iteration, :count, :id) == 1
   end
 
+  test "iterations start out in planning state", %{project: project} do
+    {:ok, created} = Iterations.create_for(project.id)
+
+    assert created.state == "planning"
+  end
+
   test "auto-increments the iteration number", %{project: project} do
     {:ok, first} = Iterations.create_for(project.id)
     {:ok, second} = Iterations.create_for(project.id)
-    {:ok, third} = Iterations.create_for(project.id)
 
     assert first.number == 1
     assert second.number == 2
-    assert third.number == 3
+  end
+
+  test "completes an iteration", %{project: project} do
+    {:ok, created} = Iterations.create_for(project.id)
+    {:ok, updated} = Iterations.complete(created.id)
+
+    assert updated.state == "completed"
+  end
+
+  test "starts an iteration", %{project: project} do
+    {:ok, created} = Iterations.create_for(project.id)
+    {:ok, updated} = Iterations.start(created.id)
+
+    assert updated.state == "working"
+  end
+
+  test "gets current iteration for project", %{project: project} do
+    {:ok, first} = Iterations.create_for(project.id)
+    Iterations.complete(first.id)
+    {:ok, second} = Iterations.create_for(project.id)
+
+    %{iteration: current} = Iterations.current(project.id)
+
+    assert current.id == second.id
+  end
+
+  test "incomplete iteration includes incomplete stories", %{project: project} do
+    Iterations.create_for(project.id)
+    Artisan.Stories.create(project.id, %{name: "name", state: "ready"})
+
+    %{stories: %{"ready" => ready}} = Iterations.current(project.id)
+
+    assert Enum.count(ready) == 1
+  end
+
+  test "incomplete iteration includes completed stories", %{project: project} do
+    Iterations.create_for(project.id)
+    Artisan.Stories.create(project.id, %{name: "name", state: "completed"})
+
+    %{stories: %{"completed" => completed}} = Iterations.current(project.id)
+
+    assert Enum.count(completed) == 1
   end
 end

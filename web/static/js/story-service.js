@@ -10,6 +10,24 @@ class StoryService {
     })
   }
 
+  newIteration(projectId, callback) {
+    Request.post(`/api/projects/${projectId}/iterations/create`).end((err, res) => {
+      callback(parseStories(res.body))
+    })
+  }
+
+  startIteration(iterationId, callback) {
+    Request.post(`/api/iterations/${iterationId}/start`).end((err, res) => {
+      callback(parseStories(res.body))
+    })
+  }
+
+  completeIteration(iterationId, callback) {
+    Request.post(`/api/iterations/${iterationId}/complete`).end((err, res) => {
+      callback(parseStories(res.body))
+    })
+  }
+
   update(story, callback) {
     Request.put(`/api/stories/${story.id}`).send({story: story}).end((err, res) => {
       callback(parseStories(res.body))

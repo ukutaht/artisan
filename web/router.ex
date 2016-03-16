@@ -16,14 +16,18 @@ defmodule Artisan.Router do
   scope "/api", Artisan do
     pipe_through :api
 
+    post "/projects", Projects.Controller, :create
+    get "/projects", Projects.Controller, :all
+
+    get "/projects/:project_id/iterations/current",  Iterations.Controller, :current
+    post "/projects/:project_id/iterations/create",  Iterations.Controller, :create
+
+    post "/iterations/:iteration_id/complete", Iterations.Controller, :complete
+    post "/iterations/:iteration_id/start", Iterations.Controller, :start
+
     put "/stories/:id",  Stories.Controller, :update
     post "/stories", Stories.Controller, :create
     post "/stories/:id/move",  Stories.Controller, :move
-
-    get "/projects/:project_id/iterations/current",  Stories.Controller, :current
-
-    post "/projects", Projects.Controller, :create
-    get "/projects", Projects.Controller, :all
   end
 
   scope "/", Artisan do
