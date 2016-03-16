@@ -48,6 +48,14 @@ defmodule Artisan.IterationsTest do
     assert Repo.get(Artisan.Story, completed.id).completed_in == iteration.id
   end
 
+  test "working stories are moved to ready when completing", %{project: project} do
+    iteration = create_iteration(project.id)
+    {:ok, working} = Artisan.Stories.create(project.id, %{name: "name", state: "working"})
+    Iterations.complete(iteration.id)
+
+    assert Repo.get(Artisan.Story, working.id).state == "ready"
+  end
+
   test "starts an iteration", %{project: project} do
     created = create_iteration(project.id)
     {:ok, updated} = Iterations.start(created.id)

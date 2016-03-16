@@ -161,4 +161,27 @@ defmodule Artisan.StoriesTest do
 
     assert found.id == completed.id
   end
+
+  test "moves working stories back to ready", %{project: project} do
+    create_in_state(project.id, "completed")
+    create_in_state(project.id, "working")
+    create_in_state(project.id, "backlog")
+
+    Stories.move_working_to_ready(project.id)
+    found = Stories.by_state(project.id)
+
+    assert found["working"] |> Enum.count == 0
+    assert found["ready"] |> Enum.count == 1
+    assert found["backlog"] |> Enum.count == 1
+    assert found["completed"] |> Enum.count == 1
+  end
+
+  test "ensures that there are no position clashes when moving from working to ready", %{project: project} do
+    working = Repo.insert!(%Story{position: 1, state: "working", name: "name", number: 1, project_id: project.id})
+    ready = Repo.insert!(%Story{position: 1, state: "ready", name: "name", number: 1, project_id: project.id})
+
+    Stories.move_working_to_ready(project.id)
+
+    assert Repo.get(Story, working.id).position != Repo.get(Story, ready.id).position
+  end
 end

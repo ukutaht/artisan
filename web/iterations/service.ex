@@ -31,6 +31,7 @@ defmodule Artisan.Iterations do
       |> Repo.update
 
     Artisan.Stories.mark_completed_in(updated)
+    Artisan.Stories.move_working_to_ready(updated.project_id)
 
     {:ok, %{iteration: updated, stories: stories_for(updated)}}
   end

@@ -61,6 +61,17 @@ defmodule Artisan.Stories do
     Repo.update_all(q, set: [completed_in: iteration.id])
   end
 
+  def move_working_to_ready(project_id) do
+    q = from(s in Story,
+      where: s.project_id == ^project_id,
+      where: s.state == "working"
+    )
+
+    max_pos = Repo.aggregate(q, :max, :position)
+    Ordering.vacate_position(project_id, max_pos, "ready")
+    Repo.update_all(q, set: [state: "ready"])
+  end
+
   def completed_in(iteration_id) do
     Repo.all(from s in Story,
       where: s.completed_in == ^iteration_id,
