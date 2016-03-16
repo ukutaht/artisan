@@ -6,7 +6,7 @@ defmodule Artisan.Mixfile do
      version: "0.0.1",
      elixir: "~> 1.0",
      elixirc_paths: elixirc_paths(Mix.env),
-     compilers: [:phoenix, :gettext] ++ Mix.compilers,
+     compilers: [:phoenix] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases,
@@ -15,7 +15,7 @@ defmodule Artisan.Mixfile do
 
   def application do
     [mod: {Artisan, []},
-     applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
+     applications: [:phoenix, :phoenix_html, :cowboy, :logger,
                     :phoenix_ecto, :postgrex]]
   end
 
@@ -29,7 +29,6 @@ defmodule Artisan.Mixfile do
       {:phoenix_ecto, "~> 3.0.0-beta"},
       {:phoenix_html, "~> 2.4"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:gettext, "~> 0.9"},
       {:cowboy, "~> 1.0"}
    ]
   end

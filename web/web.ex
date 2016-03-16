@@ -33,7 +33,6 @@ defmodule Artisan.Web do
       import Ecto.Query, only: [from: 1, from: 2]
 
       import Artisan.Router.Helpers
-      import Artisan.Gettext
     end
   end
 
@@ -48,7 +47,6 @@ defmodule Artisan.Web do
       use Phoenix.HTML
 
       import Artisan.Router.Helpers
-      import Artisan.Gettext
     end
   end
 
@@ -65,7 +63,6 @@ defmodule Artisan.Web do
       alias Artisan.Repo
       import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
-      import Artisan.Gettext
     end
   end
 
