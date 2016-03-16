@@ -5,7 +5,7 @@ config :artisan, Artisan.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin"]]
+  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin", "-j", "4"]]
 
 config :artisan, Artisan.Endpoint,
   live_reload: [

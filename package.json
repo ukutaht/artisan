@@ -5,7 +5,7 @@
     "babel-preset-react": "^6.5.0",
     "bourbon": "^4.2.6",
     "bourbon-neat": "^1.7.2",
-    "brunch": "~2.3.2",
+    "brunch": "~2.5.0",
     "clean-css-brunch": "~2.0.0",
     "css-brunch": "~2.0.0",
     "immutable": "^3.7.6",
@@ -16,7 +16,7 @@
     "react-router": "^2.0.0",
     "sass-brunch": "^2.0.0",
     "sortablejs": "^1.4.2",
-    "superagent": "1.7.2",
+    "superagent": "1.8.1",
     "uglify-js-brunch": "~2.0.0"
   }
 }
