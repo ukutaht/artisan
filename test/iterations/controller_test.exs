@@ -19,6 +19,7 @@ defmodule Artisan.Iterations.ControllerTest do
       |> json_response(200)
 
     assert Map.has_key?(res, "stories")
+    assert Map.has_key?(res, "all_iterations")
     assert res["iteration"]["state"] == "planning"
   end
 

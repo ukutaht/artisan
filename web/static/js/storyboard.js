@@ -180,7 +180,13 @@ class StoryBoard extends React.Component {
             </li>
 
             <li>
-              <span>Iteration 18</span>
+              <select value={this.props.iteration.number} onChange={ (e) => this.props.changeIteration(e.target.value)}>
+                {
+                  this.props.allIterations.map((iteration) => {
+                    return <option key={iteration.number} value={iteration.number}>Iteration {iteration.number}</option>
+                  })
+                }
+              </select>
             </li>
           </ul>
 

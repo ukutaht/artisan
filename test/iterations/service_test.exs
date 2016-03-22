@@ -73,6 +73,31 @@ defmodule Artisan.IterationsTest do
     assert current.id == second.id
   end
 
+  test "current iteration has all iterations", %{project: project} do
+    first = create_iteration(project.id)
+    second = create_iteration(project.id)
+
+    %{all_iterations: all_iterations} = Iterations.current(project.id)
+
+    all_iteration_ids = Enum.map(all_iterations, fn(i) -> i.id end)
+
+    assert Enum.member?(all_iteration_ids, first.id)
+    assert Enum.member?(all_iteration_ids, second.id)
+  end
+
+  test "all iterations do not include iterations for another project", %{project: project} do
+    create_iteration(project.id)
+
+    {:ok, project2} = Artisan.Projects.create(%{name: "project"})
+    another_project_iteration = create_iteration(project2.id)
+
+    %{all_iterations: all_iterations} = Iterations.current(project.id)
+
+    all_iteration_ids = Enum.map(all_iterations, fn(i) -> i.id end)
+
+    refute Enum.member?(all_iteration_ids, another_project_iteration.id)
+  end
+
   test "incomplete iteration includes incomplete stories", %{project: project} do
     create_iteration(project.id)
     Artisan.Stories.create(project.id, %{name: "name", state: "ready"})

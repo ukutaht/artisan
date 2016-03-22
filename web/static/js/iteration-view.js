@@ -14,6 +14,7 @@ class IterationView extends React.Component {
     this.projectId = this.props.routeParams.projectId
     this.state = {
       iteration: null,
+      allIterations: null,
       stories: null
     }
   }
@@ -22,6 +23,7 @@ class IterationView extends React.Component {
     iterations.current(this.projectId, (res) => {
       this.setState({
         iteration: res.get('iteration'),
+        allIterations: res.get('all_iterations'),
         stories: res.get('stories')
       })
     })
@@ -102,6 +104,9 @@ class IterationView extends React.Component {
     })
   }
 
+  changeIteration(number) {
+  }
+
   render() {
     if (!this.state.stories) return null
 
@@ -109,6 +114,8 @@ class IterationView extends React.Component {
       <StoryBoard
         stories={this.state.stories}
         iteration={this.state.iteration}
+        allIterations={this.state.allIterations}
+        changeIteration={this.changeIteration.bind(this)}
         moveStory={this.moveStory.bind(this)}
         updateStory={this.updateStory.bind(this)}
         addStory={this.addStory.bind(this)}

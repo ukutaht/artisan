@@ -16,7 +16,11 @@ defmodule Artisan.Iterations do
       order_by: [desc: i.number]
     )
 
-    %{iteration: iteration, stories: stories_for(iteration)}
+    %{
+      iteration: iteration,
+      stories: stories_for(iteration),
+      all_iterations: all_for(project_id)
+    }
   end
 
   def start(iteration_id) do
@@ -47,5 +51,11 @@ defmodule Artisan.Iterations do
   defp next_number(project_id) do
     q = from(i in Iteration, where: i.project_id == ^project_id)
     Repo.aggregate(q, :count, :id) + 1
+  end
+
+  defp all_for(project_id) do
+    Repo.all(from i in Iteration,
+      where: i.project_id == ^project_id
+    )
   end
 end
