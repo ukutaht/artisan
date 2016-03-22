@@ -124,6 +124,18 @@ defmodule Artisan.StoryControllerTest do
     assert Enum.count(res["working"]) == 1
   end
 
+  test "returns empty arrays for states with 0 stories", %{project: project} do
+    %{"id" => id} = create_story(project)
+
+    res = conn()
+      |> post("/api/stories/#{id}/move", %{state: "working", index: 0})
+      |> json_response(200)
+
+    assert res["backlog"] == []
+    assert res["ready"] == []
+    assert res["completed"] == []
+  end
+
   test "broadcasts a story move to clients", %{project: project} do
     %{"id" => id} = create_story(project)
     topic = "boards:#{project["id"]}"

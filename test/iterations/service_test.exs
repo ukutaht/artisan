@@ -100,6 +100,6 @@ defmodule Artisan.IterationsTest do
     %{stories: stories} = Iterations.current(project.id)
 
     assert Enum.count(stories["completed"]) == 1
-    assert Enum.count(stories["working"]) == 0
+    assert stories["working"] == nil
   end
 end

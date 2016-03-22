@@ -170,7 +170,7 @@ defmodule Artisan.StoriesTest do
     Stories.move_working_to_ready(project.id)
     found = Stories.by_state(project.id)
 
-    assert found["working"] |> Enum.count == 0
+    assert found["working"] == nil
     assert found["ready"] |> Enum.count == 1
     assert found["backlog"] |> Enum.count == 1
     assert found["completed"] |> Enum.count == 1

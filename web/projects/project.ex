@@ -2,8 +2,6 @@ defmodule Artisan.Project do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Poison.Encoder, only: [:id, :name]}
-
   schema "projects" do
     field :name
 

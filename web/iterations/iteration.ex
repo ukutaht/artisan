@@ -2,8 +2,6 @@ defmodule Artisan.Iteration do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Poison.Encoder, only: [:id, :project_id, :number, :state]}
-
   schema "iterations" do
     field :number, :integer
     field :state, :string
