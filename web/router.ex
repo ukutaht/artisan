@@ -20,6 +20,7 @@ defmodule Artisan.Router do
     get "/projects", Projects.Controller, :all
 
     get "/projects/:project_id/iterations/current",  Iterations.Controller, :current
+    get "/projects/:project_id/iterations/:number",  Iterations.Controller, :get
     post "/projects/:project_id/iterations/create",  Iterations.Controller, :create
 
     post "/iterations/:iteration_id/complete", Iterations.Controller, :complete

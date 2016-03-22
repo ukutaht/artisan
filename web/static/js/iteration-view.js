@@ -105,6 +105,13 @@ class IterationView extends React.Component {
   }
 
   changeIteration(number) {
+    iterations.get(this.projectId, number, (res) => {
+      this.setState({
+        iteration: res.get('iteration'),
+        allIterations: res.get('all_iterations'),
+        stories: res.get('stories')
+      })
+    })
   }
 
   render() {

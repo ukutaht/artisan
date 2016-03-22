@@ -23,6 +23,21 @@ defmodule Artisan.Iterations.ControllerTest do
     assert res["iteration"]["state"] == "planning"
   end
 
+  test "gets a specific iteration", %{project: project} do
+    created = conn
+      |> post("/api/projects/#{project["id"]}/iterations/create")
+      |> json_response(200)
+      |> Map.get("iteration")
+
+    res = conn()
+      |> get("/api/projects/#{project["id"]}/iterations/#{created["number"]}")
+      |> json_response(200)
+
+    assert Map.has_key?(res, "stories")
+    assert Map.has_key?(res, "all_iterations")
+    assert res["iteration"]["state"] == "planning"
+  end
+
   test "completes an iteration", %{project: project} do
     %{"iteration" => iteration} = conn
       |> get("/api/projects/#{project["id"]}/iterations/current")

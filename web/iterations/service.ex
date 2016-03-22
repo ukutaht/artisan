@@ -11,15 +11,24 @@ defmodule Artisan.Iterations do
   end
 
   def current(project_id) do
-    iteration = Repo.first(from i in Iteration,
-      where: i.project_id == ^project_id,
-      order_by: [desc: i.number]
-    )
+    iterations = all_for(project_id)
+    current = Enum.max_by(iterations, fn(i) -> i.number end)
 
     %{
-      iteration: iteration,
-      stories: stories_for(iteration),
-      all_iterations: all_for(project_id)
+      iteration: current,
+      stories: stories_for(current),
+      all_iterations: iterations
+    }
+  end
+
+  def get(project_id, number) do
+    iterations = all_for(project_id)
+    current = Enum.find(iterations, fn(i) -> i.number == number end)
+
+    %{
+      iteration: current,
+      stories: stories_for(current),
+      all_iterations: iterations
     }
   end
 

@@ -9,6 +9,12 @@ class IterationService {
     })
   }
 
+  get(projectId, number, callback) {
+    Request.get(`/api/projects/${projectId}/iterations/${number}`).end((err, res) => {
+      callback(parseStories(res.body))
+    })
+  }
+
   create(projectId, callback) {
     Request.post(`/api/projects/${projectId}/iterations/create`).end((err, res) => {
       callback(parseStories(res.body))

@@ -63,6 +63,14 @@ defmodule Artisan.IterationsTest do
     assert updated.state == "working"
   end
 
+  test "gets a specific iteration for project", %{project: project} do
+    iteration = create_iteration(project.id)
+
+    %{iteration: found} = Iterations.get(project.id, iteration.number)
+
+    assert found.id == iteration.id
+  end
+
   test "gets current iteration for project", %{project: project} do
     first = create_iteration(project.id)
     Iterations.complete(first.id)
