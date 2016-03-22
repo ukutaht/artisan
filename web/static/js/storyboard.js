@@ -78,6 +78,50 @@ class StoryBoard extends React.Component {
     return canToggleBacklog.get(this.props.iteration.state)
   }
 
+  render() {
+    return (
+      <div className="board">
+        <nav className="board__nav">
+          <ul className="board__nav__breadcrumb">
+            <li>
+              <span>Faros</span>
+            </li>
+
+            <li>
+              <select value={this.props.iteration.number} onChange={ (e) => this.props.changeIteration(e.target.value)}>
+                {
+                  this.props.allIterations.map((iteration) => {
+                    return <option key={iteration.number} value={iteration.number}>Iteration {iteration.number}</option>
+                  })
+                }
+              </select>
+            </li>
+          </ul>
+
+          <select className="board__nav__dropdown">
+            <option>Go to...</option>
+            <option>Story board</option>
+            <option>Full backlog</option>
+          </select>
+        </nav>
+
+        <div className="board__actions">
+          <div className="board__actions__left">
+            { this.renderBacklogLink() }
+          </div>
+
+          <div className="board__actions__right">
+            { this.renderActions() }
+          </div>
+        </div>
+
+        { this.renderColumns() }
+        { this.renderAddStoryModal() }
+        { this.renderEditStoryModal() }
+      </div>
+    )
+  }
+
   renderBacklogLink() {
     if (!this.canToggleBacklog()) return null
 
@@ -170,49 +214,6 @@ class StoryBoard extends React.Component {
     }
   }
 
-  render() {
-    return (
-      <div className="board">
-        <nav className="board__nav">
-          <ul className="board__nav__breadcrumb">
-            <li>
-              <span>Faros</span>
-            </li>
-
-            <li>
-              <select value={this.props.iteration.number} onChange={ (e) => this.props.changeIteration(e.target.value)}>
-                {
-                  this.props.allIterations.map((iteration) => {
-                    return <option key={iteration.number} value={iteration.number}>Iteration {iteration.number}</option>
-                  })
-                }
-              </select>
-            </li>
-          </ul>
-
-          <select className="board__nav__dropdown">
-            <option>Go to...</option>
-            <option>Story board</option>
-            <option>Full backlog</option>
-          </select>
-        </nav>
-
-        <div className="board__actions">
-          <div className="board__actions__left">
-            { this.renderBacklogLink() }
-          </div>
-
-          <div className="board__actions__right">
-            { this.renderActions() }
-          </div>
-        </div>
-
-        { this.renderColumns() }
-        { this.renderAddStoryModal() }
-        { this.renderEditStoryModal() }
-      </div>
-    )
-  }
 }
 
 export default StoryBoard
