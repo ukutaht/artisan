@@ -9,11 +9,13 @@ import Layout from "./layout"
 import Dashboard from "./dashboard"
 import NewProject from "./new-project"
 import IterationView from "./iteration-view"
+import Signup from './users/signup'
 
 let mountNode = document.getElementById('mount')
 
 render((
   <Router history={browserHistory}>
+    <Route path="/signup" component={Signup} />
     <Route path="/" component={Layout}>
       <IndexRoute component={Dashboard} />
       <Route path="projects/new" component={NewProject} />

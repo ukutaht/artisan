@@ -16,7 +16,7 @@ defmodule Artisan.Mixfile do
   def application do
     [mod: {Artisan, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex]]
+                    :phoenix_ecto, :postgrex, :comeonin]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -29,7 +29,8 @@ defmodule Artisan.Mixfile do
       {:phoenix_ecto, "~> 3.0.0-beta"},
       {:phoenix_html, "~> 2.4"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:cowboy, "~> 1.0"}
+      {:cowboy, "~> 1.0"},
+      {:comeonin, "~> 2.1"}
    ]
   end
 
