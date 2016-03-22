@@ -25,12 +25,16 @@ defmodule Artisan.Router do
     get "/projects/:project_id/iterations/:number",  Iterations.Controller, :get
     post "/projects/:project_id/iterations/create",  Iterations.Controller, :create
 
-    post "/iterations/:iteration_id/complete", Iterations.Controller, :complete
-    post "/iterations/:iteration_id/start", Iterations.Controller, :start
+    scope "/iterations", Iterations do
+      post "/:iteration_id/complete", Controller, :complete
+      post "/:iteration_id/start", Controller, :start
+    end
 
-    put "/stories/:id",  Stories.Controller, :update
-    post "/stories", Stories.Controller, :create
-    post "/stories/:id/move",  Stories.Controller, :move
+    scope "/stories", Stories do
+      put "/:id", Controller, :update
+      post "/", Controller, :create
+      post "/:id/move", Controller, :move
+    end
   end
 
   scope "/", Artisan do
