@@ -10,12 +10,14 @@ import Dashboard from "./dashboard"
 import NewProject from "./new-project"
 import IterationView from "./iteration-view"
 import Signup from './users/signup'
+import Login from './users/login'
 
 let mountNode = document.getElementById('mount')
 
 render((
   <Router history={browserHistory}>
     <Route path="/signup" component={Signup} />
+    <Route path="/login" component={Login} />
     <Route path="/" component={Layout}>
       <IndexRoute component={Dashboard} />
       <Route path="projects/new" component={NewProject} />

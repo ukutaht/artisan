@@ -18,17 +18,11 @@ defmodule Artisan.User do
     |> validate_required([:name, :email])
   end
 
-  def hash_password(user, password) do
+  def set_password(user, password, hash) do
     user
     |> cast(%{password: password}, [:password])
     |> validate_required(:password)
     |> validate_length(:password, min: 6)
-    |> generate_hash
-  end
-
-  defp generate_hash(user) do
-    hash = Password.hash(user.changes.password)
-    user
     |> cast(%{password_hash: hash}, [:password_hash])
   end
 end

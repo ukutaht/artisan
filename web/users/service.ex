@@ -1,11 +1,26 @@
 defmodule Artisan.Users do
   use Artisan.Web, :model
   alias Artisan.User
+  alias Artisan.Users.Password
 
   def create(%{"password" => password} = user) do
+    hash = Password.hash(password)
+
     %User{}
       |> User.changeset(user)
-      |> User.hash_password(password)
+      |> User.set_password(password, hash)
       |> Repo.insert
+  end
+
+  def login(email, password) do
+    user = Repo.first(from u in User,
+      where: u.email == ^email
+    )
+
+    if user && Password.match?(password, user.password_hash) do
+      {:ok, user}
+    else
+      :error
+    end
   end
 end
