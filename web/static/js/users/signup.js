@@ -43,6 +43,7 @@ class Signup extends React.Component {
 
   onSubmit(e) {
     e.preventDefault()
+
     let errors = this.validate()
     if (Object.keys(errors).length > 0) {
       this.setState({errors: errors})
@@ -65,14 +66,14 @@ class Signup extends React.Component {
         <h2>Sign up for Artisan</h2>
         <form onSubmit={this.onSubmit.bind(this)}>
           <div className="form-group">
-            <span>Name</span>
-            {this.renderError('name')}
-            <input ref="name" type="text" />
-          </div>
-          <div className="form-group">
             <span>Email</span>
             {this.renderError('email')}
             <input ref="email" type="email" />
+          </div>
+          <div className="form-group">
+            <span>Full name</span>
+            {this.renderError('name')}
+            <input ref="name" type="text" />
           </div>
           <div className="form-group">
             <span>Password</span>
