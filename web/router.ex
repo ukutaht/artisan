@@ -13,11 +13,20 @@ defmodule Artisan.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", Artisan do
+  pipeline :authenticated do
+    plug Artisan.Users.AuthenticationPlug
+  end
+
+  scope "api/users", Artisan.Users do
     pipe_through :api
 
-    post "/users/signup", Users.Controller, :signup
-    post "/users/login", Users.Controller, :login
+    post "/signup", Controller, :signup
+    post "/login", Controller, :login
+  end
+
+  scope "/api", Artisan do
+    pipe_through :api
+    pipe_through :authenticated
 
     post "/projects", Projects.Controller, :create
     get "/projects", Projects.Controller, :all

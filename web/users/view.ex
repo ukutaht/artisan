@@ -3,7 +3,10 @@ defmodule Artisan.Users.View do
 
   @fields [:id, :name, :email]
 
-  def render("user.json", %{user: user}) do
-    Map.take(user, @fields)
+  def render("authenticated.json", %{user: user, token: token}) do
+    %{
+      user: Map.take(user, @fields),
+      token: token
+    }
   end
 end

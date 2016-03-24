@@ -12,7 +12,8 @@ defmodule Artisan.Users.ControllerTest do
       |> post("/api/users/signup", %{user: @valid_user})
       |> json_response(200)
 
-    assert res["name"] == "User name"
+    assert res["user"]["name"] == "User name"
+    assert res["token"] != nil
   end
 
   test "logs in an user" do
@@ -24,7 +25,8 @@ defmodule Artisan.Users.ControllerTest do
       |> post("/api/users/login", %{email: @valid_user[:email], password: @valid_user[:password]})
       |> json_response(200)
 
-    assert res["name"] == "User name"
+    assert res["user"]["name"] == "User name"
+    assert res["token"] != nil
   end
 
   test "401s for user that does not exist" do

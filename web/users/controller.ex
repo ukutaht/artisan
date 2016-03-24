@@ -5,7 +5,8 @@ defmodule Artisan.Users.Controller do
   def signup(conn, %{"user" => user}) do
     case Users.create(user) do
       {:ok, created} ->
-        conn |> render("user.json", user: created)
+        token = Phoenix.Token.sign(conn, "user", created.id)
+        conn |> render("authenticated.json", user: created, token: token)
       {:error, changeset} ->
         conn |> invalid(changeset)
     end
@@ -14,7 +15,8 @@ defmodule Artisan.Users.Controller do
   def login(conn, %{"email" => email, "password" => password}) do
     case Users.login(email, password) do
       {:ok, user} ->
-        conn |> render("user.json", user: user)
+        token = Phoenix.Token.sign(conn, "user", user.id)
+        conn |> render("authenticated.json", user: user, token: token)
       :error ->
         conn |> send_resp(401, "")
     end
