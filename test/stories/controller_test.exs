@@ -1,5 +1,6 @@
 defmodule Artisan.StoryControllerTest do
   use Artisan.ConnCase
+  import Artisan.Test.APIHelper
 
   @valid_story_params %{
     name: "name",
@@ -15,30 +16,26 @@ defmodule Artisan.StoryControllerTest do
     name: nil
   }
 
-  def create_story(%{"id" => project_id}) do
+  def create_story(token, %{"id" => project_id}) do
     story = Map.put(@valid_story_params, :project_id, project_id)
 
-    conn()
+    authenticated_conn(token)
       |> post("/api/stories", %{story: story})
       |> json_response(200)
   end
 
-  def create_project do
-    conn()
-      |> post("/api/projects", %{project: %{name: "Project name"}})
-      |> json_response(200)
-  end
-
   setup do
-    project = create_project()
+    user = create_user()
+    project = create_project(user["token"])
 
-    {:ok, project: project}
+    {:ok, project: project, user: user}
   end
 
-  test "creates a story when valid", %{project: project} do
+  test "creates a story when valid", %{project: project, user: user} do
     story = Map.put(@valid_story_params, :project_id, project["id"])
 
-    conn = conn() |> post("/api/stories", %{story: story})
+    conn = authenticated_conn(user["token"])
+      |> post("/api/stories", %{story: story})
 
     res = json_response(conn, 200)
 
@@ -52,12 +49,12 @@ defmodule Artisan.StoryControllerTest do
     assert res["tags"] == ["bug"]
   end
 
-  test "broadcasts story create", %{project: project} do
+  test "broadcasts story create", %{project: project, user: user} do
     topic = "boards:#{project["id"]}"
 
     Artisan.Endpoint.subscribe(self, topic)
 
-    create_story(project)
+    create_story(user["token"], project)
     created = Repo.last(Artisan.Story)
 
     assert_receive %Phoenix.Socket.Broadcast{
@@ -67,33 +64,34 @@ defmodule Artisan.StoryControllerTest do
     }
   end
 
-  test "does not create a story when invalid", %{project: project} do
+  test "does not create a story when invalid", %{project: project, user: user} do
     story = Map.put(@invalid_story_params, :project_id, project["id"])
 
-    conn = conn() |> post("/api/stories", %{story: story})
-
-    res = json_response(conn, 400)
+    res = authenticated_conn(user["token"])
+      |> post("/api/stories", %{story: story})
+      |> json_response(400)
 
     assert res["errors"] == %{"name" => "can't be blank"}
   end
 
-  test "updates story when valid", %{project: project} do
-    %{"id" => id} = create_story(project)
+  test "updates story when valid", %{project: project, user: user} do
+    %{"id" => id} = create_story(user["token"], project)
 
-    conn = conn() |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name"}})
-
-    res = json_response(conn, 200)
+    res = authenticated_conn(user["token"])
+      |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name"}})
+      |> json_response(200)
 
     assert res["name"] == "new name"
   end
 
-  test "broadcasts story update", %{project: project} do
-    %{"id" => id} = create_story(project)
+  test "broadcasts story update", %{project: project, user: user} do
+    %{"id" => id} = create_story(user["token"], project)
     topic = "boards:#{project["id"]}"
 
     Artisan.Endpoint.subscribe(self, topic)
 
-    conn() |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name"}})
+    authenticated_conn(user["token"])
+      |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name"}})
 
     updated = Repo.get(Artisan.Story, id)
 
@@ -104,30 +102,30 @@ defmodule Artisan.StoryControllerTest do
     }
   end
 
-  test "does not update a story when invalid", %{project: project} do
-    %{"id" => id} = create_story(project)
+  test "does not update a story when invalid", %{project: project, user: user} do
+    %{"id" => id} = create_story(user["token"], project)
 
-    conn = conn() |> put("/api/stories/#{id}", %{story: @invalid_story_params})
-
-    res = json_response(conn, 400)
+    res = authenticated_conn(user["token"])
+      |> put("/api/stories/#{id}", %{story: @invalid_story_params})
+      |> json_response(400)
 
     assert res["errors"] == %{"name" => "can't be blank"}
   end
 
-  test "moves a story", %{project: project} do
-    %{"id" => id} = create_story(project)
+  test "moves a story", %{project: project, user: user} do
+    %{"id" => id} = create_story(user["token"], project)
 
-    res = conn()
+    res = authenticated_conn(user["token"])
       |> post("/api/stories/#{id}/move", %{state: "working", index: 0})
       |> json_response(200)
 
     assert Enum.count(res["working"]) == 1
   end
 
-  test "returns empty arrays for states with 0 stories", %{project: project} do
-    %{"id" => id} = create_story(project)
+  test "returns empty arrays for states with 0 stories", %{user: user, project: project} do
+    %{"id" => id} = create_story(user["token"], project)
 
-    res = conn()
+    res = authenticated_conn(user["token"])
       |> post("/api/stories/#{id}/move", %{state: "working", index: 0})
       |> json_response(200)
 
@@ -136,13 +134,14 @@ defmodule Artisan.StoryControllerTest do
     assert res["completed"] == []
   end
 
-  test "broadcasts a story move to clients", %{project: project} do
-    %{"id" => id} = create_story(project)
+  test "broadcasts a story move to clients", %{project: project, user: user} do
+    %{"id" => id} = create_story(user["token"], project)
     topic = "boards:#{project["id"]}"
 
     Artisan.Endpoint.subscribe(self, topic)
 
-    conn() |> post("/api/stories/#{id}/move", %{state: "working", index: 0})
+    authenticated_conn(user["token"])
+      |> post("/api/stories/#{id}/move", %{state: "working", index: 0})
 
     stories = Artisan.Stories.by_state(project["id"])
 
@@ -153,10 +152,10 @@ defmodule Artisan.StoryControllerTest do
     }
   end
 
-  test "gets stories for the current iteration", %{project: project} do
-    created = create_story(project)
+  test "gets stories for the current iteration", %{project: project, user: user} do
+    created = create_story(user["token"], project)
 
-    res = conn()
+    res = authenticated_conn(user["token"])
       |> get("/api/projects/#{project["id"]}/iterations/current")
       |> json_response(200)
 

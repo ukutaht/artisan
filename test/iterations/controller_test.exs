@@ -1,20 +1,16 @@
 defmodule Artisan.Iterations.ControllerTest do
   use Artisan.ConnCase
-
-  def create_project do
-    conn()
-      |> post("/api/projects", %{project: %{name: "Project name"}})
-      |> json_response(200)
-  end
+  import Artisan.Test.APIHelper
 
   setup do
-    project = create_project()
+    user = create_user()
+    project = create_project(user["token"])
 
-    {:ok, project: project}
+    {:ok, project: project, user: user}
   end
 
-  test "gets the current iteration", %{project: project} do
-    res = conn()
+  test "gets the current iteration", %{project: project, user: user} do
+    res = authenticated_conn(user["token"])
       |> get("/api/projects/#{project["id"]}/iterations/current")
       |> json_response(200)
 
@@ -23,13 +19,13 @@ defmodule Artisan.Iterations.ControllerTest do
     assert res["iteration"]["state"] == "planning"
   end
 
-  test "gets a specific iteration", %{project: project} do
-    created = conn
+  test "gets a specific iteration", %{project: project, user: user} do
+    created = authenticated_conn(user["token"])
       |> post("/api/projects/#{project["id"]}/iterations/create")
       |> json_response(200)
       |> Map.get("iteration")
 
-    res = conn()
+    res = authenticated_conn(user["token"])
       |> get("/api/projects/#{project["id"]}/iterations/#{created["number"]}")
       |> json_response(200)
 
@@ -38,32 +34,32 @@ defmodule Artisan.Iterations.ControllerTest do
     assert res["iteration"]["state"] == "planning"
   end
 
-  test "completes an iteration", %{project: project} do
-    %{"iteration" => iteration} = conn
+  test "completes an iteration", %{project: project, user: user} do
+    %{"iteration" => iteration} = authenticated_conn(user["token"])
       |> get("/api/projects/#{project["id"]}/iterations/current")
       |> json_response(200)
 
-    res = conn
+    res = authenticated_conn(user["token"])
       |> post("/api/iterations/#{iteration["id"]}/complete")
       |> json_response(200)
 
     assert res["iteration"]["state"] == "completed"
   end
 
-  test "creates a new iteration", %{project: project} do
-    res = conn
+  test "creates a new iteration", %{project: project, user: user} do
+    res = authenticated_conn(user["token"])
       |> post("/api/projects/#{project["id"]}/iterations/create")
       |> json_response(200)
 
     assert res["iteration"]["state"] == "planning"
   end
 
-  test "starts new iteration", %{project: project} do
-    %{"iteration" => created} = conn
+  test "starts new iteration", %{project: project, user: user} do
+    %{"iteration" => created} = authenticated_conn(user["token"])
       |> post("/api/projects/#{project["id"]}/iterations/create")
       |> json_response(200)
 
-    started = conn
+    started = authenticated_conn(user["token"])
       |> post("/api/iterations/#{created["id"]}/start")
       |> json_response(200)
 
