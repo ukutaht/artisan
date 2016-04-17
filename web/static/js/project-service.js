@@ -27,7 +27,7 @@ class ProjectService {
   all(callback) {
     Request
     .get('/api/projects')
-    .set('Bearer', localStorage.getItem('token'))
+    .set('Authorization', `Bearer ${localStorage.getItem('token')}`)
     .end((err, res) => {
       callback(Immutable.fromJS(res.body, convertProjects))
     })
