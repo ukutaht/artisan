@@ -1,7 +1,7 @@
 import Immutable from 'immutable'
-import Request from 'superagent'
 
 import Project from './project'
+import Api from './api'
 
 function convertProjects(key, val) {
   var isStory = Immutable.Iterable.isKeyed(val) && val.has('id');
@@ -25,9 +25,8 @@ class ProjectService {
   }
 
   all(callback) {
-    Request
+    Api
     .get('/api/projects')
-    .set('Authorization', `Bearer ${localStorage.getItem('token')}`)
     .end((err, res) => {
       callback(Immutable.fromJS(res.body, convertProjects))
     })

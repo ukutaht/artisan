@@ -48,11 +48,12 @@ defmodule Artisan.StoryControllerTest do
 
     create_story(user["token"], project["id"])
     created = Repo.last(Artisan.Story)
+    json = Phoenix.View.render(Artisan.Stories.View, "story.json", story: created)
 
     assert_receive %Phoenix.Socket.Broadcast{
       topic: ^topic,
       event: "add:story",
-      payload: ^created
+      payload: ^json
     }
   end
 
@@ -86,11 +87,12 @@ defmodule Artisan.StoryControllerTest do
       |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name"}})
 
     updated = Repo.get(Artisan.Story, id)
+    json = Phoenix.View.render(Artisan.Stories.View, "story.json", story: updated)
 
     assert_receive %Phoenix.Socket.Broadcast{
       topic: ^topic,
       event: "update:story",
-      payload: ^updated
+      payload: ^json
     }
   end
 
@@ -136,11 +138,12 @@ defmodule Artisan.StoryControllerTest do
       |> post("/api/stories/#{id}/move", %{state: "working", index: 0})
 
     stories = Artisan.Stories.by_state(project["id"])
+    json = Phoenix.View.render(Artisan.Stories.View, "by_state.json", stories: stories)
 
     assert_receive %Phoenix.Socket.Broadcast{
       topic: ^topic,
       event: "move:story",
-      payload: ^stories
+      payload: ^json
     }
   end
 
