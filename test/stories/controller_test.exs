@@ -16,14 +16,6 @@ defmodule Artisan.StoryControllerTest do
     name: nil
   }
 
-  def create_story(token, %{"id" => project_id}) do
-    story = Map.put(@valid_story_params, :project_id, project_id)
-
-    authenticated_conn(token)
-      |> post("/api/stories", %{story: story})
-      |> json_response(200)
-  end
-
   setup do
     user = create_user()
     project = create_project(user["token"])
@@ -54,7 +46,7 @@ defmodule Artisan.StoryControllerTest do
 
     Artisan.Endpoint.subscribe(self, topic)
 
-    create_story(user["token"], project)
+    create_story(user["token"], project["id"])
     created = Repo.last(Artisan.Story)
 
     assert_receive %Phoenix.Socket.Broadcast{
@@ -75,7 +67,7 @@ defmodule Artisan.StoryControllerTest do
   end
 
   test "updates story when valid", %{project: project, user: user} do
-    %{"id" => id} = create_story(user["token"], project)
+    %{"id" => id} = create_story(user["token"], project["id"])
 
     res = authenticated_conn(user["token"])
       |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name"}})
@@ -85,7 +77,7 @@ defmodule Artisan.StoryControllerTest do
   end
 
   test "broadcasts story update", %{project: project, user: user} do
-    %{"id" => id} = create_story(user["token"], project)
+    %{"id" => id} = create_story(user["token"], project["id"])
     topic = "boards:#{project["id"]}"
 
     Artisan.Endpoint.subscribe(self, topic)
@@ -103,7 +95,7 @@ defmodule Artisan.StoryControllerTest do
   end
 
   test "does not update a story when invalid", %{project: project, user: user} do
-    %{"id" => id} = create_story(user["token"], project)
+    %{"id" => id} = create_story(user["token"], project["id"])
 
     res = authenticated_conn(user["token"])
       |> put("/api/stories/#{id}", %{story: @invalid_story_params})
@@ -113,7 +105,7 @@ defmodule Artisan.StoryControllerTest do
   end
 
   test "moves a story", %{project: project, user: user} do
-    %{"id" => id} = create_story(user["token"], project)
+    %{"id" => id} = create_story(user["token"], project["id"])
 
     res = authenticated_conn(user["token"])
       |> post("/api/stories/#{id}/move", %{state: "working", index: 0})
@@ -123,7 +115,7 @@ defmodule Artisan.StoryControllerTest do
   end
 
   test "returns empty arrays for states with 0 stories", %{user: user, project: project} do
-    %{"id" => id} = create_story(user["token"], project)
+    %{"id" => id} = create_story(user["token"], project["id"])
 
     res = authenticated_conn(user["token"])
       |> post("/api/stories/#{id}/move", %{state: "working", index: 0})
@@ -135,7 +127,7 @@ defmodule Artisan.StoryControllerTest do
   end
 
   test "broadcasts a story move to clients", %{project: project, user: user} do
-    %{"id" => id} = create_story(user["token"], project)
+    %{"id" => id} = create_story(user["token"], project["id"])
     topic = "boards:#{project["id"]}"
 
     Artisan.Endpoint.subscribe(self, topic)
@@ -153,7 +145,7 @@ defmodule Artisan.StoryControllerTest do
   end
 
   test "gets stories for the current iteration", %{project: project, user: user} do
-    created = create_story(user["token"], project)
+    created = create_story(user["token"], project["id"])
 
     res = authenticated_conn(user["token"])
       |> get("/api/projects/#{project["id"]}/iterations/current")
