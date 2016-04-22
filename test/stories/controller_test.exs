@@ -1,5 +1,6 @@
 defmodule Artisan.StoryControllerTest do
   use Artisan.ConnCase
+  use Artisan.ChannelCase
   import Artisan.Test.APIHelper
 
   @valid_story_params %{
@@ -50,11 +51,7 @@ defmodule Artisan.StoryControllerTest do
     created = Repo.last(Artisan.Story)
     json = Phoenix.View.render(Artisan.Stories.View, "story.json", story: created)
 
-    assert_receive %Phoenix.Socket.Broadcast{
-      topic: ^topic,
-      event: "add:story",
-      payload: ^json
-    }
+    assert_broadcast("add:story", ^json)
   end
 
   test "does not create a story when invalid", %{project: project, user: user} do
@@ -89,11 +86,7 @@ defmodule Artisan.StoryControllerTest do
     updated = Repo.get(Artisan.Story, id)
     json = Phoenix.View.render(Artisan.Stories.View, "story.json", story: updated)
 
-    assert_receive %Phoenix.Socket.Broadcast{
-      topic: ^topic,
-      event: "update:story",
-      payload: ^json
-    }
+    assert_broadcast("update:story", ^json)
   end
 
   test "does not update a story when invalid", %{project: project, user: user} do
@@ -140,11 +133,7 @@ defmodule Artisan.StoryControllerTest do
     stories = Artisan.Stories.by_state(project["id"])
     json = Phoenix.View.render(Artisan.Stories.View, "by_state.json", stories: stories)
 
-    assert_receive %Phoenix.Socket.Broadcast{
-      topic: ^topic,
-      event: "move:story",
-      payload: ^json
-    }
+    assert_broadcast("move:story", ^json)
   end
 
   test "gets stories for the current iteration", %{project: project, user: user} do
