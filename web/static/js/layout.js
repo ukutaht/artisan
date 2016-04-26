@@ -7,6 +7,11 @@ const users = new UserService()
 
 class Layout extends React.Component {
 
+  logout() {
+    users.logout()
+    location.href = "/login"
+  }
+
   render() {
     return (
       <div>
@@ -15,7 +20,7 @@ class Layout extends React.Component {
             <Link to="/">
               <img src="/images/artisan-logo.png" />
             </Link>
-            <a className="top-nav__logout" onClick={users.logout}>Logout</a>
+            <a className="top-nav__logout" onClick={this.logout.bind(this)}>Logout</a>
           </div>
         </nav>
 

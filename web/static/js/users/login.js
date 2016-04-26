@@ -23,7 +23,7 @@ class Login extends React.Component {
     e.preventDefault()
 
     users.login(this.getFormData(), (user) => {
-      console.log(user)
+      location.href = "/"
     })
   }
 
@@ -40,7 +40,7 @@ class Login extends React.Component {
         <form onSubmit={this.onSubmit.bind(this)}>
           <div className="form-group">
             <span>Email</span>
-            <input ref="email" type="text" />
+            <input ref="email" type="text" autoFocus/>
           </div>
           <div className="form-group">
             <span>Password</span>
