@@ -17,17 +17,13 @@ function convertProjects(key, val) {
 
 class ProjectService {
   create(data, callback) {
-    Request.post('/api/projects')
-    .send({project: data})
-    .end((err, res) => {
+    Api.post('/api/projects', {project: data}, (err, res) => {
       callback(res.body)
     })
   }
 
   all(callback) {
-    Api
-    .get('/api/projects')
-    .end((err, res) => {
+    Api.get('/api/projects', (err, res) => {
       callback(Immutable.fromJS(res.body, convertProjects))
     })
   }

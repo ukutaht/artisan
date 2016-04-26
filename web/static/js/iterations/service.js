@@ -1,33 +1,33 @@
-import API from '../api'
+import Api from '../api'
 import parseStories from '../stories/parse'
 
 class IterationService {
   current(projectId, callback) {
-    API.get(`/api/projects/${projectId}/iterations/current`).end((err, res) => {
+    Api.get(`/api/projects/${projectId}/iterations/current`, (err, res) => {
       callback(parseStories(res.body))
     })
   }
 
   get(projectId, number, callback) {
-    API.get(`/api/projects/${projectId}/iterations/${number}`).end((err, res) => {
+    Api.get(`/api/projects/${projectId}/iterations/${number}`, (err, res) => {
       callback(parseStories(res.body))
     })
   }
 
   create(projectId, callback) {
-    API.post(`/api/projects/${projectId}/iterations/create`).end((err, res) => {
+    Api.post(`/api/projects/${projectId}/iterations/create`, null, (err, res) => {
       callback(parseStories(res.body))
     })
   }
 
   start(iterationId, callback) {
-    API.post(`/api/iterations/${iterationId}/start`).end((err, res) => {
+    Api.post(`/api/iterations/${iterationId}/start`, null, (err, res) => {
       callback(parseStories(res.body))
     })
   }
 
   complete(iterationId, callback) {
-    API.post(`/api/iterations/${iterationId}/complete`).end((err, res) => {
+    Api.post(`/api/iterations/${iterationId}/complete`, null, (err, res) => {
       callback(parseStories(res.body))
     })
   }
