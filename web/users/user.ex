@@ -1,7 +1,6 @@
 defmodule Artisan.User do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Artisan.Users.Password
 
   schema "users" do
     field :name
