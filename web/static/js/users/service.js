@@ -18,6 +18,10 @@ class UserService {
       }
     })
   }
+
+  logout() {
+    localStorage.setItem('token', null)
+  }
 }
 
 export default UserService

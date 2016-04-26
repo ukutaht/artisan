@@ -12,4 +12,15 @@
       width: 120px;
     }
   }
+
+  &__logout {
+    color: $inverted;
+    float: right;
+    transform: translateY(1em);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }
