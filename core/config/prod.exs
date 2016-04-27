@@ -5,8 +5,7 @@ use Mix.Config
 # to set PORT=80 before running your server.
 config :artisan, Artisan.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [host: "example.com", port: 80],
-  cache_static_manifest: "priv/static/manifest.json"
+  url: [host: "example.com", port: 80]
 
 config :logger, level: :info
 
