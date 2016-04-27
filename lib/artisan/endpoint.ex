@@ -3,10 +3,6 @@ defmodule Artisan.Endpoint do
 
   socket "/socket", Artisan.UserSocket
 
-  plug Plug.Static,
-    at: "/", from: :artisan, gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
-
   if code_reloading? do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
@@ -17,17 +13,13 @@ defmodule Artisan.Endpoint do
   plug Plug.Logger
 
   plug Plug.Parsers,
-    parsers: [:urlencoded, :multipart, :json],
+    parsers: [:json],
     pass: ["*/*"],
     json_decoder: Poison
 
   plug Plug.MethodOverride
   plug Plug.Head
 
-  plug Plug.Session,
-    store: :cookie,
-    key: "_artisan_key",
-    signing_salt: "usX6oF8g"
-
+  plug CORSPlug
   plug Artisan.Router
 end

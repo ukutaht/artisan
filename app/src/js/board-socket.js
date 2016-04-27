@@ -1,6 +1,8 @@
 import {Socket} from "phoenix"
 import parseStories from './stories/parse'
 
+const HOST = "ws://localhost:4000"
+
 function parseThen(f) {
   return (data) => {
     return f(parseStories(data))
@@ -13,7 +15,7 @@ class BoardSocket {
   }
 
   join(callbacks) {
-    let socket = new Socket("/socket", {
+    let socket = new Socket(HOST + "/socket", {
       logger: ((kind, msg, data) => { console.log(`${kind}: ${msg}`, data) })
     })
     socket.connect()

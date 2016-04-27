@@ -9,27 +9,23 @@ exports.config = {
   },
 
   conventions: {
-    assets: /^(web\/static\/assets)/
+    assets: /^(src\/assets)/
   },
 
   paths: {
-    watched: [
-      "web/static",
-      "test/static"
-    ],
-    public: "priv/static"
+    watched: ["src"],
+    public: "public"
   },
 
   plugins: {
     babel: {
-      presets: ["es2015", "react"],
-      ignore: [/web\/static\/vendor/]
+      presets: ["es2015", "react"]
     }
   },
 
   modules: {
     autoRequire: {
-      "js/app.js": ["web/static/js/app"]
+      "js/app.js": ["src/js/app"]
     }
   },
 };

@@ -1,5 +1,6 @@
 import Request from 'superagent'
 
+const HOST = "http://localhost:4000"
 const UNAUTHORIZED = 401
 
 function ensureAuthorized(f) {
@@ -14,20 +15,20 @@ function ensureAuthorized(f) {
 
 class Api {
   static get(endpoint, callback) {
-    return Request.get(endpoint)
+    return Request.get(HOST + endpoint)
     .set('Authorization', `Bearer ${localStorage.getItem('token')}`)
     .end(ensureAuthorized(callback))
   }
 
   static post(endpoint, payload, callback) {
-    return Request.post(endpoint)
+    return Request.post(HOST + endpoint)
     .set('Authorization', `Bearer ${localStorage.getItem('token')}`)
     .send(payload)
     .end(ensureAuthorized(callback))
   }
 
   static put(endpoint, payload, callback) {
-    return Request.put(endpoint)
+    return Request.put(HOST + endpoint)
     .set('Authorization', `Bearer ${localStorage.getItem('token')}`)
     .send(payload)
     .end(ensureAuthorized(callback))
