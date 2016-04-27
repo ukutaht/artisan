@@ -1,4 +1,4 @@
-import {Socket} from "phoenix"
+import {Socket} from "phoenix-js"
 import parseStories from './stories/parse'
 
 const HOST = "ws://localhost:4000"

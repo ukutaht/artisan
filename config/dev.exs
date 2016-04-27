@@ -6,13 +6,6 @@ config :artisan, Artisan.Endpoint,
   code_reloader: true,
   check_origin: false
 
-config :artisan, Artisan.Endpoint,
-  live_reload: [
-    patterns: [
-      ~r{app/public/.*(js|css|png|jpeg|jpg|gif|svg)$},
-    ]
-  ]
-
 config :logger, :console, format: "[$level] $message\n"
 
 config :phoenix, :stacktrace_depth, 20

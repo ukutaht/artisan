@@ -28,7 +28,6 @@ defmodule Artisan.Mixfile do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_ecto, "~> 3.0.0-beta"},
       {:phoenix_html, "~> 2.4"},
-      {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:cowboy, "~> 1.0"},
       {:comeonin, "~> 2.1"},
       {:cors_plug, "~> 1.1"},
