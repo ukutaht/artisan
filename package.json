@@ -1,22 +1,22 @@
 {
   "repository": {},
   "devDependencies": {
-    "babel-brunch": "~6.0.0",
+    "babel-brunch": "^6.0.4",
     "babel-preset-react": "^6.5.0",
-    "bourbon": "^4.2.6",
+    "bourbon": "^4.2.7",
     "bourbon-neat": "^1.7.2",
     "brunch": "~2.7.0",
     "clean-css-brunch": "~2.0.0",
-    "css-brunch": "~2.0.0",
-    "immutable": "^3.7.6",
+    "css-brunch": "~2.6.0",
+    "immutable": "^3.8.1",
     "javascript-brunch": "~2.0.0",
     "phoenix": "file:deps/phoenix",
-    "react": "^0.14.7",
-    "react-dom": "^0.14.7",
-    "react-router": "^2.0.0",
-    "sass-brunch": "^2.0.0",
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0",
+    "react-router": "^2.3.0",
+    "sass-brunch": "^2.6.0",
     "sortablejs": "^1.4.2",
-    "superagent": "1.8.1",
+    "superagent": "^1.8.3",
     "uglify-js-brunch": "~2.0.0"
   }
 }
