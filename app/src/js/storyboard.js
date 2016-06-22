@@ -24,7 +24,7 @@ class StoryBoard extends React.Component {
     super(props)
     this.state = {
       visibleColumns: iterationColumns.get(props.iteration.state),
-      addStoryIsOpen: false,
+      addingStory: false,
       editingStory: null
     }
   }
@@ -50,16 +50,16 @@ class StoryBoard extends React.Component {
   }
 
   openAddStory() {
-    this.setState({addStoryIsOpen: true})
+    this.setState({addingStory: true})
   }
 
   closeAddStory() {
-    this.setState({addStoryIsOpen: false})
+    this.setState({addingStory: false})
   }
 
   addStory(story) {
     this.props.addStory(story)
-    this.setState({addStoryIsOpen: false})
+    this.setState({addingStory: false})
   }
 
   isBacklogVisible() {
@@ -143,7 +143,7 @@ class StoryBoard extends React.Component {
   }
 
   renderAddStoryModal() {
-    if (this.state.addStoryIsOpen) {
+    if (this.state.addingStory) {
       return (
         <StoryModal story={new Story({state: this.state.visibleColumns.first()})}
                     onClose={this.closeAddStory.bind(this)}
