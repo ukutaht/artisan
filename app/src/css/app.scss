@@ -8,6 +8,7 @@
 @import "dashboard";
 @import "board";
 @import "projects";
+@import "modal";
 
 .container {
   @include outer-container(80%);

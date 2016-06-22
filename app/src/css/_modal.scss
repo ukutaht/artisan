@@ -1,0 +1,85 @@
+.modal-container {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.2);
+	z-index: 99999;
+}
+
+.modal {
+  opacity: 1;
+  width: 65%;
+	min-width: 633px;
+	margin: 100px auto;
+	border-radius: 3px;
+  background: white;
+  border: 1px solid $border-grey;
+
+  &__header {
+    border-bottom: 1px solid $border-grey;
+    padding: 10px 15px;
+
+    h3 {
+      margin: 0;
+    }
+  }
+
+  &__close {
+    display: inline-block;
+    float: right;
+    transform: translateY(-22px);
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  &__body {
+    padding: 15px;
+  }
+}
+
+.estimate-form {
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  &__group {
+    margin-top: 10px;
+    @include clearfix;
+  }
+
+  &__total {
+    border-top: 1px solid $border-grey;
+    margin-top: 10px;
+    @include clearfix;
+  }
+
+  &__left {
+    line-height: 2.5;
+    display: inline;
+  }
+
+  &__right {
+    display: inline-block;
+    float: right;
+    width: 40px;
+    line-height: 2.0;
+    overflow: auto;
+  }
+}
+
+.assigned-user {
+  &__select {
+    display: block;
+  }
+}
+
+.story-right {
+  position: relative;
+}
+
+.save-story-button {
+  margin-left: 0px;
+  margin-top: 62px;
+  width: 100%;
+}

@@ -1,7 +1,7 @@
 body {
   font-family: $helvetica;
   font-size: $regular-font;
-  line-height: 21px;
+  line-height: $line-height;
   color: $darkest-grey;
   background-color: #f2f2f2;
 }

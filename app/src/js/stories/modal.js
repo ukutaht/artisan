@@ -103,7 +103,7 @@ class StoryModal extends React.Component {
         <div className="modal-container">
           <div className="modal">
             <header className="modal__header">
-              <h4>{this.props.header}</h4>
+              <h3>{this.props.header}</h3>
               <i className="ion-android-close modal__close" onClick={this.props.onClose}></i>
             </header>
             <div className="modal__body row">

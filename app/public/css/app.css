@@ -797,43 +797,6 @@ input:focus, textarea:focus {
       line-height: 17px; }
 
 /* line 129, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
-.modal-container {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.2);
-  z-index: 99999; }
-
-/* line 139, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
-.modal {
-  opacity: 1;
-  width: 65%;
-  min-width: 633px;
-  margin: 100px auto;
-  border-radius: 3px;
-  background: white;
-  border: 1px solid #cfd4d9; }
-  /* line 148, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
-  .modal__header {
-    border-bottom: 1px solid #cfd4d9;
-    padding: 10px 15px; }
-    /* line 152, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
-    .modal__header h4 {
-      margin: 0; }
-  /* line 157, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
-  .modal__close {
-    display: inline-block;
-    float: right;
-    transform: translateY(-22px);
-    font-size: 24px;
-    cursor: pointer; }
-  /* line 165, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
-  .modal__body {
-    padding: 15px; }
-
-/* line 170, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
 .row {
   display: block; }
   /* line 20, /Users/ukutaht/dev/elixir/artisan/app/node_modules/bourbon/app/assets/stylesheets/addons/_clearfix.scss */
@@ -842,7 +805,7 @@ input:focus, textarea:focus {
     content: "";
     display: table; }
 
-/* line 174, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
+/* line 133, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
 .eight-columns {
   float: left;
   display: block;
@@ -852,7 +815,7 @@ input:focus, textarea:focus {
   .eight-columns:last-child {
     margin-right: 0; }
 
-/* line 178, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
+/* line 137, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
 .four-columns {
   float: left;
   display: block;
@@ -861,57 +824,6 @@ input:focus, textarea:focus {
   /* line 89, /Users/ukutaht/dev/elixir/artisan/app/node_modules/bourbon-neat/app/assets/stylesheets/grid/_span-columns.scss */
   .four-columns:last-child {
     margin-right: 0; }
-
-/* line 182, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
-.form-group {
-  margin-bottom: 15px; }
-
-/* line 186, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
-.estimate-form {
-  margin-top: 20px;
-  margin-bottom: 20px; }
-  /* line 190, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
-  .estimate-form__group {
-    margin-top: 10px; }
-    /* line 20, /Users/ukutaht/dev/elixir/artisan/app/node_modules/bourbon/app/assets/stylesheets/addons/_clearfix.scss */
-    .estimate-form__group::after {
-      clear: both;
-      content: "";
-      display: table; }
-  /* line 195, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
-  .estimate-form__total {
-    border-top: 1px solid #cfd4d9;
-    margin-top: 10px; }
-    /* line 20, /Users/ukutaht/dev/elixir/artisan/app/node_modules/bourbon/app/assets/stylesheets/addons/_clearfix.scss */
-    .estimate-form__total::after {
-      clear: both;
-      content: "";
-      display: table; }
-  /* line 201, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
-  .estimate-form__left {
-    line-height: 2.5;
-    display: inline; }
-  /* line 206, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
-  .estimate-form__right {
-    display: inline-block;
-    float: right;
-    width: 40px;
-    line-height: 2.0;
-    overflow: auto; }
-
-/* line 216, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
-.assigned-user__select {
-  display: block; }
-
-/* line 221, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
-.story-right {
-  position: relative; }
-
-/* line 225, /Users/ukutaht/dev/elixir/artisan/app/src/css/_board.scss */
-.save-story-button {
-  margin-left: 0px;
-  margin-top: 62px;
-  width: 100%; }
 
 /* line 1, /Users/ukutaht/dev/elixir/artisan/app/src/css/_projects.scss */
 .new-project-form {
@@ -926,7 +838,91 @@ input:focus, textarea:focus {
       float: right;
       transform: translateY(35px); }
 
-/* line 12, /Users/ukutaht/dev/elixir/artisan/app/src/css/app.scss */
+/* line 1, /Users/ukutaht/dev/elixir/artisan/app/src/css/_modal.scss */
+.modal-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 99999; }
+
+/* line 11, /Users/ukutaht/dev/elixir/artisan/app/src/css/_modal.scss */
+.modal {
+  opacity: 1;
+  width: 65%;
+  min-width: 633px;
+  margin: 100px auto;
+  border-radius: 3px;
+  background: white;
+  border: 1px solid #cfd4d9; }
+  /* line 20, /Users/ukutaht/dev/elixir/artisan/app/src/css/_modal.scss */
+  .modal__header {
+    border-bottom: 1px solid #cfd4d9;
+    padding: 10px 15px; }
+    /* line 24, /Users/ukutaht/dev/elixir/artisan/app/src/css/_modal.scss */
+    .modal__header h3 {
+      margin: 0; }
+  /* line 29, /Users/ukutaht/dev/elixir/artisan/app/src/css/_modal.scss */
+  .modal__close {
+    display: inline-block;
+    float: right;
+    transform: translateY(-22px);
+    font-size: 24px;
+    cursor: pointer; }
+  /* line 37, /Users/ukutaht/dev/elixir/artisan/app/src/css/_modal.scss */
+  .modal__body {
+    padding: 15px; }
+
+/* line 42, /Users/ukutaht/dev/elixir/artisan/app/src/css/_modal.scss */
+.estimate-form {
+  margin-top: 20px;
+  margin-bottom: 20px; }
+  /* line 46, /Users/ukutaht/dev/elixir/artisan/app/src/css/_modal.scss */
+  .estimate-form__group {
+    margin-top: 10px; }
+    /* line 20, /Users/ukutaht/dev/elixir/artisan/app/node_modules/bourbon/app/assets/stylesheets/addons/_clearfix.scss */
+    .estimate-form__group::after {
+      clear: both;
+      content: "";
+      display: table; }
+  /* line 51, /Users/ukutaht/dev/elixir/artisan/app/src/css/_modal.scss */
+  .estimate-form__total {
+    border-top: 1px solid #cfd4d9;
+    margin-top: 10px; }
+    /* line 20, /Users/ukutaht/dev/elixir/artisan/app/node_modules/bourbon/app/assets/stylesheets/addons/_clearfix.scss */
+    .estimate-form__total::after {
+      clear: both;
+      content: "";
+      display: table; }
+  /* line 57, /Users/ukutaht/dev/elixir/artisan/app/src/css/_modal.scss */
+  .estimate-form__left {
+    line-height: 2.5;
+    display: inline; }
+  /* line 62, /Users/ukutaht/dev/elixir/artisan/app/src/css/_modal.scss */
+  .estimate-form__right {
+    display: inline-block;
+    float: right;
+    width: 40px;
+    line-height: 2.0;
+    overflow: auto; }
+
+/* line 72, /Users/ukutaht/dev/elixir/artisan/app/src/css/_modal.scss */
+.assigned-user__select {
+  display: block; }
+
+/* line 77, /Users/ukutaht/dev/elixir/artisan/app/src/css/_modal.scss */
+.story-right {
+  position: relative; }
+
+/* line 81, /Users/ukutaht/dev/elixir/artisan/app/src/css/_modal.scss */
+.save-story-button {
+  margin-left: 0px;
+  margin-top: 62px;
+  width: 100%; }
+
+/* line 13, /Users/ukutaht/dev/elixir/artisan/app/src/css/app.scss */
 .container {
   max-width: 80%;
   margin-left: auto;
@@ -937,15 +933,15 @@ input:focus, textarea:focus {
     content: "";
     display: table; }
 
-/* line 16, /Users/ukutaht/dev/elixir/artisan/app/src/css/app.scss */
+/* line 17, /Users/ukutaht/dev/elixir/artisan/app/src/css/app.scss */
 .right-padded-icon {
   padding-right: 5px; }
 
-/* line 20, /Users/ukutaht/dev/elixir/artisan/app/src/css/app.scss */
+/* line 21, /Users/ukutaht/dev/elixir/artisan/app/src/css/app.scss */
 .left-padded-icon {
   padding-left: 5px; }
 
-/* line 24, /Users/ukutaht/dev/elixir/artisan/app/src/css/app.scss */
+/* line 25, /Users/ukutaht/dev/elixir/artisan/app/src/css/app.scss */
 .truncated-text {
   display: inline-block;
   max-width: 80%;
@@ -954,7 +950,7 @@ input:focus, textarea:focus {
   white-space: nowrap;
   word-wrap: normal; }
 
-/* line 28, /Users/ukutaht/dev/elixir/artisan/app/src/css/app.scss */
+/* line 29, /Users/ukutaht/dev/elixir/artisan/app/src/css/app.scss */
 .skinny-box {
   max-width: 300px;
   margin: 100px auto; }
