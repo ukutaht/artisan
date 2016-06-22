@@ -36,6 +36,17 @@ defmodule Artisan.Stories.Controller do
     end
   end
 
+  def delete(conn, %{"id" => story_id}) do
+    {numeric_id, _} = Integer.parse(story_id)
+
+    case Stories.delete(numeric_id) do
+      {:ok, _} ->
+        conn |> json(%{})
+      {:error, changeset} ->
+        conn |> invalid(changeset)
+    end
+  end
+
   defp broadcast(project_id, event, payload) do
     Artisan.Endpoint.broadcast!("boards:#{project_id}", event, payload)
   end

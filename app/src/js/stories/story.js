@@ -3,8 +3,8 @@ import Immutable from 'immutable'
 const Story = new Immutable.Record({
     id: null,
     project_id: null,
-    name: null,
-    acceptance_criteria: null,
+    name: "",
+    acceptance_criteria: "",
     number: null,
     estimate: null,
     optimistic: null,

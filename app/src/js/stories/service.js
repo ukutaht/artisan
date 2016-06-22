@@ -20,6 +20,12 @@ class StoryService {
       callback(parseStories(res.body))
     })
   }
+
+  del(storyId, callback) {
+    Api.del(`/api/stories/${storyId}`, (err, res) => {
+      callback(parseStories(res.body))
+    })
+  }
 }
 
 export default StoryService

@@ -30,6 +30,10 @@ defmodule Artisan.Stories do
       |> Repo.update
   end
 
+  def delete(id) do
+    Repo.delete(%Story{id: id})
+  end
+
   def move(id, state, index) do
     case Ordering.move(id, state, index) do
       {:ok, updated} ->
@@ -62,7 +66,7 @@ defmodule Artisan.Stories do
 
   defp next_number(project_id) do
     q = from(s in Story, where: s.project_id == ^project_id)
-    Repo.aggregate(q, :count, :id) + 1
+    (Repo.aggregate(q, :max, :number) || 0) + 1
   end
 
   defp active_stories(project_id, state) do

@@ -78,6 +78,17 @@ class IterationView extends React.Component {
     })
   }
 
+  deleteStory(story) {
+    stories.del(story.id, () => {
+      let updatedStories = this.state.stories.update(story.state, (column) => {
+        let storyIndex = column.findIndex((s) => s.id == story.id)
+        return column.delete(storyIndex)
+      })
+
+      this.setState({stories: updatedStories})
+    })
+  }
+
   newIteration() {
     iterations.create(this.projectId, (res) => {
       this.setState({
@@ -125,6 +136,7 @@ class IterationView extends React.Component {
         changeIteration={this.changeIteration.bind(this)}
         moveStory={this.moveStory.bind(this)}
         updateStory={this.updateStory.bind(this)}
+        deleteStory={this.deleteStory.bind(this)}
         addStory={this.addStory.bind(this)}
         newIteration={this.newIteration.bind(this)}
         startIteration={this.startIteration.bind(this)}

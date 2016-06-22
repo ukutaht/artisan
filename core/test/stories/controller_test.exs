@@ -150,4 +150,18 @@ defmodule Artisan.StoryControllerTest do
 
     assert found == created
   end
+
+  test "deletes a story", %{project: project, user: user} do
+    created = create_story(user["token"], project["id"])
+
+    authenticated_conn(user["token"])
+      |> delete("/api/stories/#{created["id"]}")
+      |> json_response(200)
+
+    res = authenticated_conn(user["token"])
+      |> get("/api/projects/#{project["id"]}/iterations/current")
+      |> json_response(200)
+
+    assert res["stories"]["ready"] == []
+  end
 end

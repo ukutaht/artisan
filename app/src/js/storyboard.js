@@ -49,6 +49,11 @@ class StoryBoard extends React.Component {
     this.closeEditStory()
   }
 
+  deleteStory(storyId) {
+    this.props.deleteStory(storyId)
+    this.closeEditStory()
+  }
+
   openAddStory() {
     this.setState({addingStory: true})
   }
@@ -160,6 +165,7 @@ class StoryBoard extends React.Component {
         <StoryModal story={this.state.editingStory}
                     onClose={this.closeEditStory.bind(this)}
                     onSubmit={this.updateStory.bind(this)}
+                    onDelete={ () => this.deleteStory(this.state.editingStory)}
                     header="Edit story"
                     buttonText="Update" />
       )

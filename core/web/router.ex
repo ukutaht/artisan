@@ -36,6 +36,7 @@ defmodule Artisan.Router do
       put "/:id", Controller, :update
       post "/", Controller, :create
       post "/:id/move", Controller, :move
+      delete "/:id", Controller, :delete
     end
   end
 end

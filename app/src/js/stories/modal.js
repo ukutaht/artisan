@@ -98,6 +98,17 @@ class StoryModal extends React.Component {
     return this.state[estimate] == null ? "" : this.state[estimate].toFixed()
   }
 
+  bottomSection() {
+    if (this.props.story.id) {
+      return (
+        <div>
+          <span>Created by Uku Taht on 2 Jan 2015</span>
+          <a href="javascript://" className="pull-right clickable" onClick={this.props.onDelete}>Delete story</a>
+        </div>
+      )
+    }
+  }
+
   render() {
     return (
         <div className="modal-container">
@@ -116,7 +127,7 @@ class StoryModal extends React.Component {
 
                   <label>Acceptance criteria</label>
                   <textarea rows="15" value={this.state.acceptance_criteria} onChange={this.acceptanceCriteriaChanged.bind(this)}></textarea>
-                  <span>Created by Uku Taht on 2 Jan 2015</span>
+                  { this.bottomSection() }
                 </div>
                 <div className="four-columns story-right">
                   <div className="estimate-form">

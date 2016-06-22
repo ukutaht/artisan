@@ -59,6 +59,18 @@ defmodule Artisan.StoriesTest do
     assert story3.number == 2
   end
 
+  test "ensures that number grows when stories are deleted", %{project: project} do
+    {:ok, story1} = Stories.create(project.id, @valid_story_params)
+    {:ok, story2} = Stories.create(project.id, @valid_story_params)
+
+    {:ok, _} = Stories.delete(story1.id)
+
+    {:ok, story3} = Stories.create(project.id, @valid_story_params)
+
+    assert story2.number == 2
+    assert story3.number == 3
+  end
+
   test "does not create a story with invalid params", %{project: project} do
     {:error, _} = Stories.create(project.id, @invalid_story_params)
 
@@ -178,8 +190,8 @@ defmodule Artisan.StoriesTest do
 
   test "ensures that there are no position clashes when moving from working to ready", %{project: project} do
     working1 = Repo.insert!(%Story{position: 1, state: "working", name: "name", number: 1, project_id: project.id})
-    working2 = Repo.insert!(%Story{position: 100, state: "working", name: "name", number: 1, project_id: project.id})
-    ready = Repo.insert!(%Story{position: 1, state: "ready", name: "name", number: 1, project_id: project.id})
+    working2 = Repo.insert!(%Story{position: 100, state: "working", name: "name", number: 2, project_id: project.id})
+    ready = Repo.insert!(%Story{position: 1, state: "ready", name: "name", number: 3, project_id: project.id})
 
     Stories.move_working_to_ready(project.id)
     %{"ready" => [found1, found2, found3]} = Stories.by_state(project.id)
@@ -187,5 +199,13 @@ defmodule Artisan.StoriesTest do
     assert found1.id == working1.id
     assert found2.id == working2.id
     assert found3.id == ready.id
+  end
+
+  test "deletes a story", %{project: project} do
+    {:ok, story} = Stories.create(project.id, @valid_story_params)
+
+    Stories.delete(story.id)
+
+    assert Repo.aggregate(Story, :count, :id) == 0
   end
 end

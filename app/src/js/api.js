@@ -33,6 +33,12 @@ class Api {
     .send(payload)
     .end(ensureAuthorized(callback))
   }
+
+  static del(endpoint, callback) {
+    return Request.del(HOST + endpoint)
+    .set('Authorization', `Bearer ${localStorage.getItem('token')}`)
+    .end(ensureAuthorized(callback))
+  }
 }
 
 export default Api

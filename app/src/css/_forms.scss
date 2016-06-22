@@ -6,3 +6,26 @@
   margin-left: 1rem;
   color: $error;
 }
+
+input, textarea {
+  width: 100%;
+  padding: 3px 6px;
+  background-color: white;
+  line-height: 1.6;
+  border: 1px solid $border-grey;
+  border-radius: 1px;
+  color: inherit;
+  box-shadow: none;
+  @include transition(border-color ease-in-out .15s);
+  resize: none;
+}
+
+input {
+  height: 30px;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: $light-blue;
+}
+
