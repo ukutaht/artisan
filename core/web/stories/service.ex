@@ -7,7 +7,7 @@ defmodule Artisan.Stories do
     Repo.all(from s in Story,
       where: s.project_id == ^project_id,
       where: is_nil(s.completed_in),
-      order_by: [desc: s.position]
+      order_by: s.position
     )
     |> Enum.group_by(&(&1.state))
   end
