@@ -13,7 +13,7 @@ defmodule Artisan.Users do
   end
 
   def login(email, password) do
-    user = Repo.first(from u in User,
+    user = Repo.one(from u in User,
       where: u.email == ^email
     )
 

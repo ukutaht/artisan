@@ -51,7 +51,7 @@ defmodule Artisan.Stories.Controller do
     Artisan.Endpoint.broadcast!("boards:#{project_id}", event, payload)
   end
 
-  defp invalid(conn, %{errors: errors}) do
-    conn |> put_status(400) |> json(%{errors: Enum.into(errors, %{})})
+  defp invalid(conn, story) do
+    conn |> put_status(400) |> render("invalid.json", changeset: story)
   end
 end

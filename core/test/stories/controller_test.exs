@@ -50,7 +50,7 @@ defmodule Artisan.StoryControllerTest do
     Artisan.Endpoint.subscribe(self, topic)
 
     create_story(user["token"], project["id"])
-    created = Repo.last(Artisan.Story)
+    created = Repo.one(Artisan.Story)
     json = Phoenix.View.render(Artisan.Stories.View, "story.json", story: created)
 
     assert_broadcast("add:story", ^json)
@@ -63,7 +63,7 @@ defmodule Artisan.StoryControllerTest do
       |> post("/api/stories", %{story: story})
       |> json_response(400)
 
-    assert res["errors"] == %{"name" => "can't be blank"}
+    assert res["errors"] == %{"name" => ["can't be blank"]}
   end
 
   test "updates story when valid", %{project: project, user: user} do
@@ -99,7 +99,7 @@ defmodule Artisan.StoryControllerTest do
       |> put("/api/stories/#{id}", %{story: @invalid_story_params})
       |> json_response(400)
 
-    assert res["errors"] == %{"name" => "can't be blank"}
+    assert res["errors"] == %{"name" => ["can't be blank"]}
   end
 
   test "moves a story", %{project: project, user: user} do

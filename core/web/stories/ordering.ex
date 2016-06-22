@@ -32,10 +32,11 @@ defmodule Artisan.Stories.Ordering do
   end
 
   defp position_at(%{project_id: project_id}, state, index) do
-    Repo.first(from s in active_stories(project_id, state),
+    Repo.one(from s in active_stories(project_id, state),
       order_by: s.position,
       offset: ^index,
-      select: s.position
+      select: s.position,
+      limit: 1
     )
   end
 
