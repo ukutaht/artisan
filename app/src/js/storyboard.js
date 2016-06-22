@@ -46,7 +46,7 @@ class StoryBoard extends React.Component {
 
   updateStory(story) {
     this.props.updateStory(story)
-    this.setState({editingStory: null})
+    this.closeEditStory()
   }
 
   openAddStory() {
@@ -59,7 +59,7 @@ class StoryBoard extends React.Component {
 
   addStory(story) {
     this.props.addStory(story)
-    this.setState({addingStory: false})
+    this.closeAddStory()
   }
 
   isBacklogVisible() {
