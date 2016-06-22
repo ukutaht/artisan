@@ -1,5 +1,5 @@
-import Api from './api'
-import parseStories from './stories/parse'
+import Api from '../api'
+import parseStories from './parse'
 
 class StoryService {
   update(story, callback) {

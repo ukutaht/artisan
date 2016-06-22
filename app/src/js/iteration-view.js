@@ -1,6 +1,6 @@
 import React from 'react'
 
-import StoryService from './story-service'
+import StoryService from './stories/service'
 import IterationService from './iterations/service'
 import StoryBoard from './storyboard'
 import BoardSocket from './board-socket'
