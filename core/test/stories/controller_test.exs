@@ -10,7 +10,8 @@ defmodule Artisan.StoryControllerTest do
     optimistic: 1,
     realistic: 1,
     pessimistic: 2,
-    tags: ["bug"]
+    tags: ["bug"],
+    acceptance_criteria: "Acceptance criteria"
   }
 
   @invalid_story_params %{
@@ -40,6 +41,7 @@ defmodule Artisan.StoryControllerTest do
     assert res["realistic"] == 1
     assert res["pessimistic"] == 2
     assert res["tags"] == ["bug"]
+    assert res["acceptance_criteria"] == "Acceptance criteria"
   end
 
   test "broadcasts story create", %{project: project, user: user} do
@@ -68,10 +70,11 @@ defmodule Artisan.StoryControllerTest do
     %{"id" => id} = create_story(user["token"], project["id"])
 
     res = authenticated_conn(user["token"])
-      |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name"}})
+      |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name", acceptance_criteria: "new ac"}})
       |> json_response(200)
 
     assert res["name"] == "new name"
+    assert res["acceptance_criteria"] == "new ac"
   end
 
   test "broadcasts story update", %{project: project, user: user} do

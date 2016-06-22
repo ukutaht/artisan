@@ -1,7 +1,7 @@
 defmodule Artisan.Stories.View do
   use Artisan.Web, :view
 
-  @fields [:id, :project_id, :completed_in, :name, :state, :number, :estimate, :optimistic, :realistic, :pessimistic, :position, :tags]
+  @fields [:id, :acceptance_criteria, :project_id, :completed_in, :name, :state, :number, :estimate, :optimistic, :realistic, :pessimistic, :position, :tags]
 
   @empty_states %{
     "backlog" => [],

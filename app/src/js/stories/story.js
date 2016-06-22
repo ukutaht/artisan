@@ -4,6 +4,7 @@ const Story = new Immutable.Record({
     id: null,
     project_id: null,
     name: null,
+    acceptance_criteria: null,
     number: null,
     estimate: null,
     optimistic: null,

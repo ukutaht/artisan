@@ -10,7 +10,7 @@ defmodule Artisan.StoriesTest do
     optimistic: 1,
     realistic: 1,
     pessimistic: 2,
-    tags: ["bug"]
+    tags: ["bug"],
   }
 
   @invalid_story_params %{

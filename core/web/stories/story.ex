@@ -5,6 +5,7 @@ defmodule Artisan.Story do
   schema "stories" do
     field :name
     field :state
+    field :acceptance_criteria, :string, default: ""
     field :number, :integer
     field :estimate, :float
     field :optimistic, :integer
@@ -20,13 +21,13 @@ defmodule Artisan.Story do
 
   def new(story, attributes) do
     story
-    |> cast(attributes, [:name, :estimate, :optimistic, :realistic, :pessimistic, :tags, :state, :project_id])
+    |> cast(attributes, [:name, :acceptance_criteria, :estimate, :optimistic, :realistic, :pessimistic, :tags, :state, :project_id])
     |> validate_required([:name, :project_id])
   end
 
   def edit(story, attributes) do
     story
-    |> cast(attributes, [:name, :estimate, :optimistic, :realistic, :pessimistic, :tags])
+    |> cast(attributes, [:name, :acceptance_criteria, :estimate, :optimistic, :realistic, :pessimistic, :tags])
     |> validate_required([:name])
   end
 

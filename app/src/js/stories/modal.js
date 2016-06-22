@@ -25,6 +25,7 @@ class StoryModal extends React.Component {
     this.state = {
       name: props.story.name,
       number: props.story.number,
+      acceptance_criteria: props.story.acceptance_criteria,
       estimate: props.story.estimate,
       optimistic: props.story.optimistic,
       realistic: props.story.realistic,
@@ -61,6 +62,10 @@ class StoryModal extends React.Component {
 
   nameChanged(e) {
     this.setState({name: e.target.value})
+  }
+
+  acceptanceCriteriaChanged(e) {
+    this.setState({acceptance_criteria: e.target.value})
   }
 
   tagsChanged(e) {
@@ -110,7 +115,7 @@ class StoryModal extends React.Component {
                   </section>
 
                   <label>Acceptance criteria</label>
-                  <textarea rows="15"></textarea>
+                  <textarea rows="15" value={this.state.acceptance_criteria} onChange={this.acceptanceCriteriaChanged.bind(this)}></textarea>
                   <span>Created by Uku Taht on 2 Jan 2015</span>
                 </div>
                 <div className="four-columns story-right">

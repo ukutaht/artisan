@@ -33855,13 +33855,13 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _storyService = require('./story-service');
-
-var _storyService2 = _interopRequireDefault(_storyService);
-
-var _service = require('./iterations/service');
+var _service = require('./stories/service');
 
 var _service2 = _interopRequireDefault(_service);
+
+var _service3 = require('./iterations/service');
+
+var _service4 = _interopRequireDefault(_service3);
 
 var _storyboard = require('./storyboard');
 
@@ -33879,8 +33879,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var stories = new _storyService2.default();
-var iterations = new _service2.default();
+var stories = new _service2.default();
+var iterations = new _service4.default();
 
 var IterationView = function (_React$Component) {
   _inherits(IterationView, _React$Component);
@@ -34578,6 +34578,7 @@ var StoryModal = function (_React$Component) {
     _this.state = {
       name: props.story.name,
       number: props.story.number,
+      acceptance_criteria: props.story.acceptance_criteria,
       estimate: props.story.estimate,
       optimistic: props.story.optimistic,
       realistic: props.story.realistic,
@@ -34622,6 +34623,11 @@ var StoryModal = function (_React$Component) {
     key: 'nameChanged',
     value: function nameChanged(e) {
       this.setState({ name: e.target.value });
+    }
+  }, {
+    key: 'acceptanceCriteriaChanged',
+    value: function acceptanceCriteriaChanged(e) {
+      this.setState({ acceptance_criteria: e.target.value });
     }
   }, {
     key: 'tagsChanged',
@@ -34699,7 +34705,7 @@ var StoryModal = function (_React$Component) {
                   null,
                   'Acceptance criteria'
                 ),
-                _react2.default.createElement('textarea', { rows: '15' }),
+                _react2.default.createElement('textarea', { rows: '15', value: this.state.acceptance_criteria, onChange: this.acceptanceCriteriaChanged.bind(this) }),
                 _react2.default.createElement(
                   'span',
                   null,
@@ -34886,37 +34892,7 @@ var Pert = {
 exports.default = Pert;
 });
 
-require.register("src/js/stories/story.js", function(exports, require, module) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _immutable = require('immutable');
-
-var _immutable2 = _interopRequireDefault(_immutable);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Story = new _immutable2.default.Record({
-    id: null,
-    project_id: null,
-    name: null,
-    number: null,
-    estimate: null,
-    optimistic: null,
-    realistic: null,
-    pessimistic: null,
-    state: 'backlog',
-    position: 0,
-    tags: []
-});
-
-exports.default = Story;
-});
-
-;require.register("src/js/story-service.js", function(exports, require, module) {
+require.register("src/js/stories/service.js", function(exports, require, module) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34925,11 +34901,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _api = require('./api');
+var _api = require('../api');
 
 var _api2 = _interopRequireDefault(_api);
 
-var _parse = require('./stories/parse');
+var _parse = require('./parse');
 
 var _parse2 = _interopRequireDefault(_parse);
 
@@ -34970,6 +34946,37 @@ var StoryService = function () {
 }();
 
 exports.default = StoryService;
+});
+
+;require.register("src/js/stories/story.js", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _immutable = require('immutable');
+
+var _immutable2 = _interopRequireDefault(_immutable);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Story = new _immutable2.default.Record({
+    id: null,
+    project_id: null,
+    name: null,
+    acceptance_criteria: null,
+    number: null,
+    estimate: null,
+    optimistic: null,
+    realistic: null,
+    pessimistic: null,
+    state: 'backlog',
+    position: 0,
+    tags: []
+});
+
+exports.default = Story;
 });
 
 ;require.register("src/js/storyboard.js", function(exports, require, module) {
@@ -35033,7 +35040,7 @@ var StoryBoard = function (_React$Component) {
 
     _this.state = {
       visibleColumns: iterationColumns.get(props.iteration.state),
-      addStoryIsOpen: false,
+      addingStory: false,
       editingStory: null
     };
     return _this;
@@ -35060,23 +35067,23 @@ var StoryBoard = function (_React$Component) {
     key: 'updateStory',
     value: function updateStory(story) {
       this.props.updateStory(story);
-      this.setState({ editingStory: null });
+      this.closeEditStory();
     }
   }, {
     key: 'openAddStory',
     value: function openAddStory() {
-      this.setState({ addStoryIsOpen: true });
+      this.setState({ addingStory: true });
     }
   }, {
     key: 'closeAddStory',
     value: function closeAddStory() {
-      this.setState({ addStoryIsOpen: false });
+      this.setState({ addingStory: false });
     }
   }, {
     key: 'addStory',
     value: function addStory(story) {
       this.props.addStory(story);
-      this.setState({ addStoryIsOpen: false });
+      this.closeAddStory();
     }
   }, {
     key: 'isBacklogVisible',
@@ -35203,7 +35210,7 @@ var StoryBoard = function (_React$Component) {
   }, {
     key: 'renderAddStoryModal',
     value: function renderAddStoryModal() {
-      if (this.state.addStoryIsOpen) {
+      if (this.state.addingStory) {
         return _react2.default.createElement(_modal2.default, { story: new _story2.default({ state: this.state.visibleColumns.first() }),
           onClose: this.closeAddStory.bind(this),
           onSubmit: this.addStory.bind(this),
