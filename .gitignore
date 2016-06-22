@@ -9,7 +9,7 @@
 
 /app/node_modules
 
-/app/public
+/app/public/
 
 # The config/prod.secret.exs file by default contains sensitive
 # data and you should not commit it into version control.
