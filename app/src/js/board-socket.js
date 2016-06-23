@@ -8,9 +8,7 @@ class BoardSocket {
   }
 
   join(callbacks) {
-    let socket = new Socket(HOST + "/socket", {
-      logger: ((kind, msg, data) => { console.log(`${kind}: ${msg}`, data) })
-    })
+    let socket = new Socket(HOST + "/socket")
     socket.connect()
 
     let channel = socket.channel(`boards:${this.projectId}`, {})
