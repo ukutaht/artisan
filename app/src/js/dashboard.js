@@ -1,4 +1,3 @@
-import Immutable from 'immutable'
 import React from 'react'
 import Link from 'react-router/lib/Link'
 
@@ -9,7 +8,7 @@ const projects = new ProjectService()
 class Dashboard extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {projects: Immutable.List()}
+    this.state = {projects: []}
   }
 
   componentDidMount() {

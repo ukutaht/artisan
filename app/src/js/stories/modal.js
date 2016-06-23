@@ -1,5 +1,5 @@
 import React from 'react'
-import Immutable from 'immutable'
+import update from 'react/lib/update'
 
 import Pert from './pert'
 
@@ -9,12 +9,8 @@ function isDigit(val) {
   return /^[0-9]+$/.test(val)
 }
 
-function joinTags(tags) {
-  return Immutable.List(tags).join(",")
-}
-
 function splitTags(tags) {
-  return Immutable.List(tags.split(","))
+  return tags.split(",")
     .map((tag) => tag.replace(/^\s+|\s+$/g, ''))
     .filter((tag) => tag !== '')
 }
@@ -30,7 +26,7 @@ class StoryModal extends React.Component {
       optimistic: props.story.optimistic,
       realistic: props.story.realistic,
       pessimistic: props.story.pessimistic,
-      tags: joinTags(props.story.tags)
+      tags: props.story.tags.join(",")
     }
   }
 
@@ -57,7 +53,9 @@ class StoryModal extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    this.props.onSubmit(this.props.story.merge(this.state, {tags: splitTags(this.state.tags)}))
+    let formStory = update(this.state, {tags: {$set: splitTags(this.state.tags)}})
+    let story = update(this.props.story, {$merge: formStory})
+    this.props.onSubmit(story)
   }
 
   nameChanged(e) {
@@ -85,11 +83,11 @@ class StoryModal extends React.Component {
   estimateChanged(type) {
     return function(e) {
       let newEstimate = this.extractEstimate(e, type)
-      let estimateData = Immutable.Map(this.state).set(type, newEstimate)
+      let estimateData = update(this.state, {[type]: {$set: newEstimate}})
 
       this.setState({
         [type]: newEstimate,
-        estimate: Pert.estimate(estimateData.toJS())
+        estimate: Pert.estimate(estimateData)
       })
     }.bind(this)
   }

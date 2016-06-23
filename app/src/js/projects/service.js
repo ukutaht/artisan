@@ -1,19 +1,4 @@
-import Immutable from 'immutable'
-
-import Project from './project'
 import Api from '../api'
-
-function convertProjects(key, val) {
-  var isStory = Immutable.Iterable.isKeyed(val) && val.has('id');
-
-  if (Immutable.Iterable.isKeyed(val) && val.has('id')) {
-    return new Project(val);
-  } else if (Immutable.Iterable.isKeyed(val)) {
-    return val.toMap()
-  } else {
-    return val.toList()
-  }
-}
 
 class ProjectService {
   create(data, callback) {
@@ -24,19 +9,19 @@ class ProjectService {
 
   all(callback) {
     Api.get('/api/projects', (err, res) => {
-      callback(Immutable.fromJS(res.body, convertProjects))
+      callback(res.body)
     })
   }
 
   find(id, callback) {
     Api.get(`/api/projects/${id}`, (err, res) => {
-      callback(Immutable.fromJS(res.body, convertProjects))
+      callback(res.body)
     })
   }
 
   update(project, callback) {
     Api.put(`/api/projects/${project.id}`, {project: project}, (err, res) => {
-      callback(Immutable.fromJS(res.body, convertProjects))
+      callback(res.body)
     })
   }
 }

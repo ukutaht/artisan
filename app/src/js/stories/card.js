@@ -27,6 +27,8 @@ class Card extends React.Component {
   }
 
   render() {
+    let tags = this.props.story.tags || []
+
     return (
       <li className="story-card" data-id={this.props.story.id}>
         <div>
@@ -37,7 +39,7 @@ class Card extends React.Component {
         </div>
         <div className="story-card__second-line">
           <ul className="story-card__tags">
-            {this.props.story.tags.map((tag) => {
+            {tags.map((tag) => {
               return <li className="story-card__tags__item" key={tag}>{tag}</li>
             })}
           </ul>

@@ -1,4 +1,5 @@
 import React from 'react'
+import update from 'react/lib/update'
 
 import StoryService from './stories/service'
 import IterationService from './iterations/service'
@@ -22,9 +23,9 @@ class IterationView extends React.Component {
   componentDidMount() {
     iterations.current(this.projectId, (res) => {
       this.setState({
-        iteration: res.get('iteration'),
-        allIterations: res.get('all_iterations'),
-        stories: res.get('stories')
+        iteration: res.iteration,
+        allIterations: res.all_iterations,
+        stories: res.stories
       })
     })
 
@@ -37,19 +38,15 @@ class IterationView extends React.Component {
   }
 
   addStory(story) {
-    let storyWithData = story.merge({
-      project_id: this.projectId
-    })
+    let storyWithData = update(story, {project_id: {$set: this.projectId}})
 
     stories.add(this.projectId, storyWithData, this.doAddStory.bind(this))
   }
 
   doAddStory(story) {
-    let updatedStories = this.state.stories.update(story.state, (column) => {
-      return column.unshift(story)
-    })
-
-    this.setState({stories: updatedStories})
+    this.setState(
+      update(this.state, {stories: {[story.state]: {$unshift: [story]}}})
+    )
   }
 
   updateStory(story) {
@@ -57,12 +54,12 @@ class IterationView extends React.Component {
   }
 
   doUpdateStory(story) {
-    let updatedStories = this.state.stories.update(story.state, (column) => {
-      let index = column.findIndex((existing) => existing.number == story.number)
-      return column.update(index, (existing) => existing.merge(story))
-    })
-
-    this.setState({stories: updatedStories})
+    this.setState(
+      update(this.state, {stories: {[story.state]: {$apply: (column) => {
+        let index = column.findIndex((existing) => existing.number == story.number)
+        return update(column, {[index]: {$set: story}})
+      }}}})
+    )
   }
 
   moveStory(storyId, toColumn, toIndex, done) {
@@ -73,27 +70,26 @@ class IterationView extends React.Component {
   }
 
   doMoveStory(updatedStories) {
-    this.setState({
-      stories: this.state.stories.merge(updatedStories)
-    })
+    this.setState(
+      update(this.state, {stories: {$merge: updatedStories}})
+    )
   }
 
   deleteStory(story) {
     stories.del(story.id, () => {
-      let updatedStories = this.state.stories.update(story.state, (column) => {
-        let storyIndex = column.findIndex((s) => s.id == story.id)
-        return column.delete(storyIndex)
-      })
+      let updated = update(this.state, {stories: {[story.state]: {$apply: (column) => {
+        return column.filter((existing) => existing.id !== story.id);
+      }}}})
 
-      this.setState({stories: updatedStories})
+      this.setState(updated)
     })
   }
 
   newIteration() {
     iterations.create(this.projectId, (res) => {
       this.setState({
-        iteration: res.get('iteration'),
-        stories: res.get('stories')
+        iteration: res.iteration,
+        stories: res.stories
       })
     })
   }
@@ -109,8 +105,8 @@ class IterationView extends React.Component {
   completeIteration() {
     iterations.complete(this.state.iteration.id, (res) => {
       this.setState({
-        iteration: res.get('iteration'),
-        stories: res.get('stories')
+        iteration: res.iteration,
+        stories: res.stories
       })
     })
   }
@@ -118,9 +114,9 @@ class IterationView extends React.Component {
   changeIteration(number) {
     iterations.get(this.projectId, number, (res) => {
       this.setState({
-        iteration: res.get('iteration'),
-        allIterations: res.get('all_iterations'),
-        stories: res.get('stories')
+        iteration: res.iteration,
+        allIterations: res.all_iterations,
+        stories: res.stories
       })
     })
   }

@@ -1,29 +1,42 @@
 import React from 'react'
-import Immutable from 'immutable'
+import update from 'react/lib/update'
 
 import Column from './column'
 import StoryModal from './stories/modal'
-import Story from './stories/story'
 
-const allColumns = Immutable.List(["backlog", "ready", "working", "completed"])
-
-const iterationColumns = Immutable.fromJS({
+const iterationColumns = {
   planning: ["backlog", "ready"],
   working: ["ready", "working", "completed"],
+  workingWithBacklog: ["backlog", "ready", "working", "completed"],
   completed: ["completed"]
-})
+}
 
-const canToggleBacklog = Immutable.fromJS({
+const canToggleBacklog = {
   planning: false,
   working: true,
   completed: false
-})
+}
+
+const newStory = {
+  id: null,
+  project_id: null,
+  name: "",
+  acceptance_criteria: "",
+  number: null,
+  estimate: null,
+  optimistic: null,
+  realistic: null,
+  pessimistic: null,
+  state: 'backlog',
+  position: 0,
+  tags: [],
+}
 
 class StoryBoard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      visibleColumns: iterationColumns.get(props.iteration.state),
+      visibleColumns: iterationColumns[props.iteration.state],
       addingStory: false,
       editingStory: null
     }
@@ -32,7 +45,7 @@ class StoryBoard extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.iteration.state != this.props.iteration.state)
     this.setState({
-      visibleColumns: iterationColumns.get(nextProps.iteration.state)
+      visibleColumns: iterationColumns[nextProps.iteration.state]
     })
   }
 
@@ -68,19 +81,19 @@ class StoryBoard extends React.Component {
   }
 
   isBacklogVisible() {
-    return this.state.visibleColumns.first() === "backlog";
+    return this.state.visibleColumns[0] === "backlog";
   }
 
   showBacklog() {
-    this.setState({visibleColumns: this.state.visibleColumns.unshift("backlog")});
+    this.setState({visibleColumns: iterationColumns.workingWithBacklog});
   }
 
   hideBacklog() {
-    this.setState({visibleColumns: this.state.visibleColumns.shift()});
+    this.setState({visibleColumns: iterationColumns.working});
   }
 
   canToggleBacklog() {
-    return canToggleBacklog.get(this.props.iteration.state)
+    return canToggleBacklog[this.props.iteration.state]
   }
 
   render() {
@@ -148,9 +161,11 @@ class StoryBoard extends React.Component {
   }
 
   renderAddStoryModal() {
+    let story = update(newStory, {state: {$set: this.state.visibleColumns[0]}})
+
     if (this.state.addingStory) {
       return (
-        <StoryModal story={new Story({state: this.state.visibleColumns.first()})}
+        <StoryModal story={story}
                     onClose={this.closeAddStory.bind(this)}
                     onSubmit={this.addStory.bind(this)}
                     header="Add story"
@@ -173,10 +188,10 @@ class StoryBoard extends React.Component {
   }
 
   renderColumns() {
-    let count = this.state.visibleColumns.size
+    let count = this.state.visibleColumns.length
 
     return this.state.visibleColumns.map((column) => {
-      return <Column stories={this.props.stories.get(column)}
+      return <Column stories={this.props.stories[column]}
               key={column}
               count={count}
               name={column}

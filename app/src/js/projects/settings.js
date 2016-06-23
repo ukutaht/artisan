@@ -1,5 +1,6 @@
 import React from "react"
 import browserHistory from 'react-router/lib/browserHistory'
+import update from 'react/lib/update'
 
 import ProjectService from './service'
 
@@ -15,8 +16,7 @@ class ProjectSettings extends React.Component {
   componentDidMount() {
     projects.find(this.projectId, (project) => {
       this.setState({
-        name: project.name,
-        id: project.id,
+        project: project,
         loaded: true,
       })
     })
@@ -24,13 +24,13 @@ class ProjectSettings extends React.Component {
 
   submit(e) {
     e.preventDefault()
-    projects.update(this.state, (project) => {
+    projects.update(this.state.project, (project) => {
       browserHistory.push(`/projects/${project.id}`)
     })
   }
 
   nameChanged(event) {
-    this.setState({name: event.target.value})
+    this.setState(update(this.state, {project: {name: {$set: event.target.value}}}))
   }
 
   render() {
@@ -44,7 +44,7 @@ class ProjectSettings extends React.Component {
               <h2>Project settings</h2>
               <div className="form-group">
                 <label>Name</label>
-                <input type="text" placeholder="Name" value={this.state.name} onChange={this.nameChanged.bind(this)} />
+                <input type="text" placeholder="Name" value={this.state.project.name} onChange={this.nameChanged.bind(this)} />
               </div>
               <button type="submit" className="button primary full-width no-margin">Save</button>
             </div>
