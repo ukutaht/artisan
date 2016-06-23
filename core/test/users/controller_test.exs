@@ -8,7 +8,7 @@ defmodule Artisan.Users.ControllerTest do
   }
 
   test "signs up an user" do
-    res = conn()
+    res = build_conn()
       |> post("/api/users/signup", %{user: @valid_user})
       |> json_response(200)
 
@@ -17,11 +17,11 @@ defmodule Artisan.Users.ControllerTest do
   end
 
   test "logs in an user" do
-    conn()
+    build_conn()
       |> post("/api/users/signup", %{user: @valid_user})
       |> json_response(200)
 
-    res = conn()
+    res = build_conn()
       |> post("/api/users/login", %{email: @valid_user[:email], password: @valid_user[:password]})
       |> json_response(200)
 
@@ -30,18 +30,18 @@ defmodule Artisan.Users.ControllerTest do
   end
 
   test "401s for user that does not exist" do
-    res = conn()
+    res = build_conn()
       |> post("/api/users/login", %{email: "baa", password: @valid_user[:password]})
 
     assert res.status == 401
   end
 
   test "401s for wrong password" do
-    conn()
+    build_conn()
       |> post("/api/users/signup", %{user: @valid_user})
       |> json_response(200)
 
-    res = conn()
+    res = build_conn()
       |> post("/api/users/login", %{email: @valid_user[:email], password: "obviously wrong"})
 
     assert res.status == 401

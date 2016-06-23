@@ -19,12 +19,12 @@ defmodule Artisan.Test.APIHelper do
   }
 
   def authenticated_conn(user_token) do
-    conn()
+    build_conn()
       |> put_req_header("authorization", "Bearer #{user_token}")
   end
 
   def create_user do
-    conn()
+    build_conn()
       |> post("/api/users/signup", %{user: @user})
       |> json_response(200)
   end

@@ -47,7 +47,7 @@ defmodule Artisan.StoryControllerTest do
   test "broadcasts story create", %{project: project, user: user} do
     topic = "boards:#{project["id"]}"
 
-    Artisan.Endpoint.subscribe(self, topic)
+    Artisan.Endpoint.subscribe(topic)
 
     create_story(user["token"], project["id"])
     created = Repo.one(Artisan.Story)
@@ -81,7 +81,7 @@ defmodule Artisan.StoryControllerTest do
     %{"id" => id} = create_story(user["token"], project["id"])
     topic = "boards:#{project["id"]}"
 
-    Artisan.Endpoint.subscribe(self, topic)
+    Artisan.Endpoint.subscribe(topic)
 
     authenticated_conn(user["token"])
       |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name"}})
@@ -128,7 +128,7 @@ defmodule Artisan.StoryControllerTest do
     %{"id" => id} = create_story(user["token"], project["id"])
     topic = "boards:#{project["id"]}"
 
-    Artisan.Endpoint.subscribe(self, topic)
+    Artisan.Endpoint.subscribe(topic)
 
     authenticated_conn(user["token"])
       |> post("/api/stories/#{id}/move", %{state: "working", index: 0})

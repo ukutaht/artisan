@@ -24,7 +24,7 @@ defmodule Artisan.Mixfile do
 
   defp deps do
     [
-      {:phoenix, "~> 1.1.4"},
+      {:phoenix, "~> 1.2"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_ecto, "~> 3.0"},
       {:cowboy, "~> 1.0"},
