@@ -1,5 +1,5 @@
 defmodule Artisan.Router do
-  use Artisan.Web, :router
+  use Phoenix.Router
 
   pipeline :api do
     plug :accepts, ["json"]
@@ -9,7 +9,7 @@ defmodule Artisan.Router do
     plug Artisan.Users.AuthenticationPlug
   end
 
-  scope "api/users", Artisan.Users do
+  scope "/api/users", Artisan.Users do
     pipe_through :api
 
     post "/signup", Controller, :signup
@@ -20,12 +20,18 @@ defmodule Artisan.Router do
     pipe_through :api
     pipe_through :authenticated
 
-    post "/projects", Projects.Controller, :create
-    get "/projects", Projects.Controller, :all
+    scope "/projects", Projects do
+      post "/", Controller, :create
+      get "/", Controller, :all
+      get "/:id", Controller, :find
+      put "/:id", Controller, :update
+    end
 
-    get "/projects/:project_id/iterations/current",  Iterations.Controller, :current
-    get "/projects/:project_id/iterations/:number",  Iterations.Controller, :get
-    post "/projects/:project_id/iterations/create",  Iterations.Controller, :create
+    scope "/projects/:project_id/iterations", Iterations do
+      get "/current",  Controller, :current
+      get "/:number",  Controller, :get
+      post "/create",  Controller, :create
+    end
 
     scope "/iterations", Iterations do
       post "/:iteration_id/complete", Controller, :complete

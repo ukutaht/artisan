@@ -2,7 +2,7 @@ import Immutable from 'immutable'
 import React from 'react'
 import Link from 'react-router/lib/Link'
 
-import ProjectService from './project-service'
+import ProjectService from './projects/service'
 
 const projects = new ProjectService()
 

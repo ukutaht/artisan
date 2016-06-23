@@ -15,7 +15,22 @@ defmodule Artisan.Projects.Controller do
     conn |> render("projects.json", projects: Projects.all)
   end
 
-  defp invalid(conn, %{errors: errors}) do
-    conn |> put_status(400) |> json(%{errors: Enum.into(errors, %{})})
+  def find(conn, %{"id" => id}) do
+    {numeric_id, ""} = Integer.parse(id)
+    conn |> render("project.json", project: Projects.find(numeric_id))
+  end
+
+  def update(conn, %{"id" => id, "project" => project_params}) do
+    {numeric_id, ""} = Integer.parse(id)
+    case Projects.update(numeric_id, project_params) do
+      {:ok, updated} ->
+        conn |> render("project.json", project: updated)
+      {:error, changeset} ->
+        conn |> invalid(changeset)
+    end
+  end
+
+  defp invalid(conn, project) do
+    conn |> put_status(400) |> render("invalid.json", %{project: project})
   end
 end

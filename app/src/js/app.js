@@ -7,7 +7,8 @@ import browserHistory from 'react-router/lib/browserHistory'
 
 import Layout from "./layout"
 import Dashboard from "./dashboard"
-import NewProject from "./new-project"
+import NewProject from "./projects/new"
+import ProjectSettings from "./projects/settings"
 import IterationView from "./iteration-view"
 import Signup from './users/signup'
 import Login from './users/login'
@@ -22,6 +23,7 @@ render((
       <IndexRoute component={Dashboard} />
       <Route path="projects/new" component={NewProject} />
       <Route path="projects/:projectId" component={IterationView} />
+      <Route path="projects/:projectId/settings" component={ProjectSettings} />
     </Route>
   </Router>
 ), mountNode)

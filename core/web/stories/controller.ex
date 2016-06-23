@@ -52,6 +52,6 @@ defmodule Artisan.Stories.Controller do
   end
 
   defp invalid(conn, story) do
-    conn |> put_status(400) |> render("invalid.json", changeset: story)
+    conn |> put_status(400) |> render("invalid.json", story: story)
   end
 end

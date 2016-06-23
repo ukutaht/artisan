@@ -5,13 +5,23 @@ defmodule Artisan.Projects do
 
   def create(params) do
     %Project{}
-      |> Project.changeset(params)
+      |> Project.new(params)
       |> Repo.insert
       |> create_first_iteration
   end
 
   def all do
     Repo.all(Project)
+  end
+
+  def find(id) do
+    Repo.get(Project, id)
+  end
+
+  def update(id, attrs) do
+    Repo.get(Project, id)
+      |> Project.edit(attrs)
+      |> Repo.update
   end
 
   defp create_first_iteration({:ok, project}) do

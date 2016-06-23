@@ -28,5 +28,27 @@ defmodule Artisan.ProjectsTest do
 
     assert Repo.aggregate(Project, :count, :id) == 0
   end
+
+  test "finds a project" do
+    {:ok, project} = Projects.create(@valid_project_params)
+
+    found = Projects.find(project.id)
+
+    assert found.name == project.name
+  end
+
+  test "updates a project" do
+    {:ok, project} = Projects.create(@valid_project_params)
+    {:ok, updated} = Projects.update(project.id, %{name: "New name"})
+
+    assert updated.name == "New name"
+  end
+
+  test "does not allow invalid updates" do
+    {:ok, project} = Projects.create(@valid_project_params)
+    {:error, _} = Projects.update(project.id, %{name: ""})
+
+    assert Repo.get(Project, project.id).name == project.name
+  end
 end
 

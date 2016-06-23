@@ -8,7 +8,13 @@ defmodule Artisan.Project do
     timestamps
   end
 
-  def changeset(project, attributes) do
+  def new(project, attributes) do
+    project
+    |> cast(attributes, [:name])
+    |> validate_required([:name])
+  end
+
+  def edit(project, attributes) do
     project
     |> cast(attributes, [:name])
     |> validate_required([:name])

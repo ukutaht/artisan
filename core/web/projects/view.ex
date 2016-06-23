@@ -12,4 +12,8 @@ defmodule Artisan.Projects.View do
       render("project.json", project: project)
     end)
   end
+
+  def render("invalid.json", %{project: project}) do
+    Artisan.ErrorHelper.serialize_errors(project)
+  end
 end

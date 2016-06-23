@@ -25,12 +25,7 @@ defmodule Artisan.Stories.View do
     Enum.map(stories, fn(story) -> render("story.json", story: story)end)
   end
 
-  def render("invalid.json", %{changeset: changeset}) do
-    errors = Enum.reduce(changeset.errors, %{}, fn({field, {msg, _meta}}, acc) ->
-      errors_on_field = Map.get(acc, field, [])
-      Map.put(acc, field, errors_on_field ++ [msg])
-    end)
-
-  %{errors: errors}
+  def render("invalid.json", %{story: story}) do
+    Artisan.ErrorHelper.serialize_errors(story)
   end
 end
