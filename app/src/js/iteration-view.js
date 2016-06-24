@@ -137,6 +137,7 @@ class IterationView extends React.Component {
         newIteration={this.newIteration.bind(this)}
         startIteration={this.startIteration.bind(this)}
         completeIteration={this.completeIteration.bind(this)}
+        projectId={this.projectId}
       />
     )
   }

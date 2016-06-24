@@ -1,5 +1,6 @@
 import React from 'react'
 import update from 'react/lib/update'
+import browserHistory from 'react-router/lib/browserHistory'
 
 import Column from './column'
 import StoryModal from './stories/modal'
@@ -96,6 +97,10 @@ class StoryBoard extends React.Component {
     return canToggleBacklog[this.props.iteration.state]
   }
 
+  changeView(e) {
+    browserHistory.push(e.target.value)
+  }
+
   render() {
     return (
       <div className="board">
@@ -116,10 +121,10 @@ class StoryBoard extends React.Component {
             </li>
           </ul>
 
-          <select className="board__nav__dropdown">
+          <select className="board__nav__dropdown" onChange={this.changeView.bind(this)}>
             <option>Go to...</option>
-            <option>Story board</option>
-            <option>Full backlog</option>
+            <option value={`/projects/${this.props.projectId}`}>Story board</option>
+            <option value={`/projects/${this.props.projectId}/settings`}>Settings</option>
           </select>
         </nav>
 
