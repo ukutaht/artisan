@@ -49,9 +49,9 @@ class ProjectSettings extends React.Component {
     )
   }
 
-  renderUserManagement() {
+  renderCollaborators() {
     return (
-      <h2>User Management</h2>
+      <h2>Collaborators</h2>
     )
   }
 
@@ -74,8 +74,8 @@ class ProjectSettings extends React.Component {
   renderRightSection() {
     if (this.state.tab === 'settings') {
       return this.renderSettings()
-    } else if (this.state.tab === 'user_management') {
-      return this.renderUserManagement()
+    } else if (this.state.tab === 'collaborators') {
+      return this.renderCollaborators()
     } else if (this.state.tab === 'notifications') {
       return this.renderNotifications()
     }
@@ -96,9 +96,9 @@ class ProjectSettings extends React.Component {
               Settings
             </a>
             <a href="javascript://"
-              className={`side-menu__item ${this.selectedClass('user_management')}`}
-              onClick={ () => this.setTab('user_management') }>
-              User Management
+              className={`side-menu__item ${this.selectedClass('collaborators')}`}
+              onClick={ () => this.setTab('collaborators') }>
+              Collaborators
             </a>
             <a href="javascript://"
               className={`side-menu__item ${this.selectedClass('notifications')}`}
