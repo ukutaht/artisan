@@ -1,0 +1,40 @@
+.side-menu {
+  margin-top: 30px;
+  list-style: none;
+  background-color: white;
+  border: 1px solid $border-grey;
+  border-radius: 3px;
+
+  &__item {
+    position: relative;
+    display: block;
+    padding: 8px 10px;
+    border-bottom: 1px solid $light-grey;
+
+    &:first-child {
+      border-top: 0;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+    }
+
+    &--selected {
+      font-weight: bold;
+      color: #222;
+      cursor: default;
+
+      &:hover {
+        text-decoration: none;
+      }
+
+      &:before {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 2px;
+        content: "";
+        background-color: $light-blue;
+      }
+    }
+  }
+}

@@ -1,12 +1,13 @@
 // colors
-$light-grey: #EEF2F5;
 $grey: #8894A0;
 $border-grey: lighten($grey, 25%);
+$light-grey: lighten($grey, 35%);
 $dark-grey: #626E7A;
 $darkest-grey: #29323C;
 $light-blue: #27A8E0;
 $inverted: white;
 $error: #DB162F;
+$background: #f7f7f7;
 
 $regular-font: 14px;
 $line-height: 21px;

@@ -10,22 +10,25 @@ class ProjectSettings extends React.Component {
   constructor(props) {
     super(props)
     this.projectId = this.props.routeParams.projectId
-    this.state = {loaded: false}
+    this.state = {
+      tab: 'settings'
+    }
   }
 
   componentDidMount() {
     projects.find(this.projectId, (project) => {
       this.setState({
         project: project,
-        loaded: true,
       })
     })
   }
 
   submit(e) {
     e.preventDefault()
-    projects.update(this.state.project, (project) => {
-      browserHistory.push(`/projects/${project.id}`)
+    projects.update(this.state.project, (updated) => {
+      this.setState({
+        project: updated
+      })
     })
   }
 
@@ -33,23 +36,82 @@ class ProjectSettings extends React.Component {
     this.setState(update(this.state, {project: {name: {$set: event.target.value}}}))
   }
 
+  renderSettings() {
+    return (
+      <form onSubmit={this.submit.bind(this)}>
+        <h2>Settings</h2>
+        <div className="form-group">
+          <label>Name</label>
+          <input type="text" placeholder="Name" value={this.state.project.name} onChange={this.nameChanged.bind(this)} />
+        </div>
+        <button type="submit" className="button primary full-width no-margin">Save</button>
+      </form>
+    )
+  }
+
+  renderUserManagement() {
+    return (
+      <h2>User Management</h2>
+    )
+  }
+
+  renderNotifications() {
+    return (
+      <h2>Notifications</h2>
+    )
+  }
+
+  selectedClass(tab) {
+    if (this.state.tab === tab) {
+      return 'side-menu__item--selected'
+    }
+  }
+
+  setTab(newTab) {
+    this.setState({tab: newTab})
+  }
+
+  renderRightSection() {
+    if (this.state.tab === 'settings') {
+      return this.renderSettings()
+    } else if (this.state.tab === 'user_management') {
+      return this.renderUserManagement()
+    } else if (this.state.tab === 'notifications') {
+      return this.renderNotifications()
+    }
+  }
+
   render() {
-    if (!this.state.loaded) return null;
+    if (!this.state.project) return null
+
+    let rightSection = this.renderRightSection();
 
     return (
-      <div>
-        <form onSubmit={this.submit.bind(this)}>
-          <div className="row">
-            <div className="eight-columns">
-              <h2>Project settings</h2>
-              <div className="form-group">
-                <label>Name</label>
-                <input type="text" placeholder="Name" value={this.state.project.name} onChange={this.nameChanged.bind(this)} />
-              </div>
-              <button type="submit" className="button primary full-width no-margin">Save</button>
-            </div>
-          </div>
-        </form>
+      <div className="row">
+        <div className="four-columns">
+          <nav className="side-menu">
+            <a href="javascript://"
+              className={`side-menu__item ${this.selectedClass('settings')}`}
+              onClick={ () => this.setTab('settings') }>
+              Settings
+            </a>
+            <a href="javascript://"
+              className={`side-menu__item ${this.selectedClass('user_management')}`}
+              onClick={ () => this.setTab('user_management') }>
+              User Management
+            </a>
+            <a href="javascript://"
+              className={`side-menu__item ${this.selectedClass('notifications')}`}
+              onClick={ () => this.setTab('notifications') }>
+              Notifications
+            </a>
+          </nav>
+        </div>
+
+        <div className="eight-columns">
+          { rightSection }
+        </div>
+
       </div>
     )
   }
