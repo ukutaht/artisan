@@ -45,9 +45,9 @@ class StoryBoard extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.iteration.state != this.props.iteration.state)
-    this.setState({
-      visibleColumns: iterationColumns[nextProps.iteration.state]
-    })
+      this.setState({
+        visibleColumns: iterationColumns[nextProps.iteration.state]
+      })
   }
 
   openEditStory(story) {
