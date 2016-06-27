@@ -3,7 +3,7 @@ defmodule Artisan.Projects.Controller do
   alias Artisan.Projects
 
   def create(conn, %{"project" => project_params}) do
-    case Projects.create(project_params) do
+    case Projects.create(conn.assigns[:current_user], project_params) do
       {:ok, created} ->
         conn |> render("project.json", project: created)
       {:error, changeset} ->
@@ -12,17 +12,17 @@ defmodule Artisan.Projects.Controller do
   end
 
   def all(conn, _params) do
-    conn |> render("projects.json", projects: Projects.all)
+    conn |> render("projects.json", projects: Projects.all(conn.assigns[:current_user]))
   end
 
   def find(conn, %{"id" => id}) do
     {numeric_id, ""} = Integer.parse(id)
-    conn |> render("project.json", project: Projects.find(numeric_id))
+    conn |> render("project.json", project: Projects.find(conn.assigns[:current_user], numeric_id))
   end
 
   def update(conn, %{"id" => id, "project" => project_params}) do
     {numeric_id, ""} = Integer.parse(id)
-    case Projects.update(numeric_id, project_params) do
+    case Projects.update(conn.assigns[:current_user], numeric_id, project_params) do
       {:ok, updated} ->
         conn |> render("project.json", project: updated)
       {:error, changeset} ->

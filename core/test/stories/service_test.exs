@@ -18,7 +18,7 @@ defmodule Artisan.StoriesTest do
   }
 
   setup do
-    {:ok, project} = Artisan.Projects.create(%{name: "project"})
+    {:ok, project} = Repo.insert(%Artisan.Project{name: "project"})
     {:ok, %{project: project}}
   end
 
@@ -48,7 +48,7 @@ defmodule Artisan.StoriesTest do
   end
 
   test "number is generated per-project", %{project: project} do
-    {:ok, project2} = Artisan.Projects.create(%{name: "name"})
+    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project"})
 
     {:ok, story1} = Stories.create(project.id, @valid_story_params)
     {:ok, story2} = Stories.create(project2.id, @valid_story_params)
@@ -112,7 +112,7 @@ defmodule Artisan.StoriesTest do
 
   test "does not find stories that are not part of the project", %{project: project} do
 
-    {:ok, project2} = Artisan.Projects.create(%{name: "project2"})
+    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project"})
     create_in_state(project2.id, "ready")
 
     found = Stories.by_state(project.id)

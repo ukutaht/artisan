@@ -96,7 +96,8 @@ defmodule Artisan.IterationsTest do
   test "all iterations do not include iterations for another project", %{project: project} do
     create_iteration(project.id)
 
-    {:ok, project2} = Artisan.Projects.create(%{name: "project"})
+    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project"})
+
     another_project_iteration = create_iteration(project2.id)
 
     %{all_iterations: all_iterations} = Iterations.current(project.id)
