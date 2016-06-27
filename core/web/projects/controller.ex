@@ -22,6 +22,13 @@ defmodule Artisan.Projects.Controller do
       render("collaborators.json", users: users)
   end
 
+  def remove_collaborator(conn, %{"id" => id, "user_id" => user_id}) do
+    {id, ""} = Integer.parse(id)
+    {user_id, ""} = Integer.parse(user_id)
+    :ok = Projects.remove_collaborator(id, user_id)
+    conn |> json(%{})
+  end
+
   def find(conn, %{"id" => id}) do
     {numeric_id, ""} = Integer.parse(id)
     project = Projects.find(conn.assigns[:current_user], numeric_id)

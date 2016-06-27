@@ -44,6 +44,22 @@ defmodule Artisan.Projects.ControllerTest do
     assert found["name"] == user["user"]["name"]
   end
 
+  test "removes collaborator from project", %{user: user} do
+    created = authenticated_conn(user["token"])
+      |> post("/api/projects", %{project: @valid_project_params})
+      |> json_response(200)
+
+    authenticated_conn(user["token"])
+      |> delete("/api/projects/#{created["id"]}/collaborators/#{user["user"]["id"]}")
+      |> json_response(200)
+
+    collaborators = authenticated_conn(user["token"])
+      |> get("/api/projects/#{created["id"]}/collaborators")
+      |> json_response(200)
+
+    assert collaborators == []
+  end
+
   test "updates a project", %{user: user} do
     created = authenticated_conn(user["token"])
       |> post("/api/projects", %{project: @valid_project_params})

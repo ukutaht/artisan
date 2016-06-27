@@ -32,6 +32,14 @@ defmodule Artisan.Projects do
     )
   end
 
+  def remove_collaborator(project_id, user_id) do
+    Repo.delete_all(from pu in ProjectUser,
+     where: pu.user_id == ^user_id,
+     where: pu.project_id == ^project_id
+    )
+    :ok
+  end
+
   def update(user_id, project_id, attrs) do
     find(user_id, project_id) |> do_edit(attrs)
   end

@@ -30,6 +30,14 @@ class ProjectService {
       callback(res.body)
     })
   }
+
+  removeCollaborator(projectId, userId, callback) {
+    Api.del(`/api/projects/${projectId}/collaborators/${userId}`, (err, res) => {
+      if (!err) {
+        callback()
+      }
+    })
+  }
 }
 
 export default ProjectService

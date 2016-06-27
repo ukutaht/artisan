@@ -68,6 +68,10 @@ a:hover {
   float: left;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 .row {
   @include row()
 }

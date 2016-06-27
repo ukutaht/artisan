@@ -58,6 +58,13 @@ defmodule Artisan.ProjectsTest do
     assert collaborator_id == current_user.id
   end
 
+  test "removes collaborator for project", %{current_user: current_user} do
+    {:ok, project} = Projects.create(current_user.id, @valid_project_params)
+    :ok = Projects.remove_collaborator(project.id, current_user.id)
+
+    assert Projects.collaborators(project.id) == []
+  end
+
   test "does not find a project if user is not a collaborator", %{current_user: current_user} do
     {:ok, project} = Projects.create(current_user.id, @valid_project_params)
     someone_else = 999
