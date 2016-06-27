@@ -1,12 +1,16 @@
 import Request from 'superagent'
+import browserHistory from 'react-router/lib/browserHistory'
 
 const HOST = "http://localhost:4000"
 const UNAUTHORIZED = 401
+const NOT_FOUND = 404
 
 function ensureAuthorized(f) {
   return (err, res) => {
     if (err && err.status == UNAUTHORIZED) {
-      location.href = "/login"
+      browserHistory.push("/login")
+    } else if (err && err.status == NOT_FOUND) {
+      browserHistory.push("/404")
     } else {
       f(err, res)
     }

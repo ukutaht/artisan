@@ -17,7 +17,12 @@ defmodule Artisan.Projects.Controller do
 
   def find(conn, %{"id" => id}) do
     {numeric_id, ""} = Integer.parse(id)
-    conn |> render("project.json", project: Projects.find(conn.assigns[:current_user], numeric_id))
+    project = Projects.find(conn.assigns[:current_user], numeric_id)
+    if project do
+      conn |> render("project.json", project: project)
+    else
+      not_found(conn)
+    end
   end
 
   def update(conn, %{"id" => id, "project" => project_params}) do
@@ -28,6 +33,10 @@ defmodule Artisan.Projects.Controller do
       {:error, changeset} ->
         conn |> invalid(changeset)
     end
+  end
+
+  defp not_found(conn) do
+    conn |> put_status(404) |> json(%{error: "Not found"})
   end
 
   defp invalid(conn, project) do

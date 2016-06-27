@@ -12,6 +12,7 @@ import ProjectSettings from "./projects/settings"
 import IterationView from "./iteration-view"
 import Signup from './users/signup'
 import Login from './users/login'
+import NotFound from './not_found'
 
 let mountNode = document.getElementById('mount')
 
@@ -19,11 +20,13 @@ render((
   <Router history={browserHistory}>
     <Route path="/signup" component={Signup} />
     <Route path="/login" component={Login} />
+    <Route path="/404" component={NotFound}/>
     <Route path="/" component={Layout}>
       <IndexRoute component={Dashboard} />
       <Route path="projects/new" component={NewProject} />
       <Route path="projects/:projectId" component={IterationView} />
       <Route path="projects/:projectId/settings" component={ProjectSettings} />
     </Route>
+    <Route path="*" component={NotFound}/>
   </Router>
 ), mountNode)
