@@ -36,6 +36,8 @@ class ProjectCollaboratorsTab extends React.Component {
     return (
       <li className="block-list__item collaborator" key={collaborator.id}>
         {collaborator.name}
+        <br />
+        <small>{collaborator.email}</small>
         <i className="ion-close clickable pull-right right-padded-icon"
            onClick={() => this.removeCollaborator(collaborator.id)}></i>
       </li>

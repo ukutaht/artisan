@@ -2,7 +2,7 @@
 $grey: #8894A0;
 $border-grey: lighten($grey, 25%);
 $light-grey: lighten($grey, 35%);
-$dark-grey: #626E7A;
+$dark-grey: darken($grey, 20%);
 $darkest-grey: #29323C;
 $light-blue: #27A8E0;
 $inverted: white;
