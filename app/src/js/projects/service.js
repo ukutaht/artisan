@@ -24,6 +24,12 @@ class ProjectService {
       callback(res.body)
     })
   }
+
+  collaborators(id, callback) {
+    Api.get(`/api/projects/${id}/collaborators`, (err, res) => {
+      callback(res.body)
+    })
+  }
 }
 
 export default ProjectService

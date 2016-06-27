@@ -67,3 +67,27 @@ a:hover {
 .pull-left {
   float: left;
 }
+
+.row {
+  @include row()
+}
+
+.ten-columns {
+  @include span-columns(10);
+}
+
+.eight-columns {
+  @include span-columns(8);
+}
+
+.six-columns {
+  @include span-columns(6);
+}
+
+.four-columns {
+  @include span-columns(4);
+}
+
+.two-columns {
+  @include span-columns(2);
+}

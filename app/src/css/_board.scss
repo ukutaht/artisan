@@ -125,15 +125,3 @@
     }
   }
 }
-
-.row {
-  @include row()
-}
-
-.eight-columns {
-  @include span-columns(8);
-}
-
-.four-columns {
-  @include span-columns(4);
-}

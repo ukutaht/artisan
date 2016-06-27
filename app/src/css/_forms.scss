@@ -21,7 +21,7 @@ input, textarea {
 }
 
 input {
-  height: 30px;
+  height: 32px;
 }
 
 input:focus, textarea:focus {
@@ -29,3 +29,17 @@ input:focus, textarea:focus {
   border-color: $light-blue;
 }
 
+.input-with-button {
+  input {
+    width: 80%;
+  }
+
+  button {
+    width: 20%;
+    margin-left: 0;
+    margin-right: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    transform: translateX(-1px);
+  }
+}

@@ -50,6 +50,14 @@ defmodule Artisan.ProjectsTest do
     assert found.name == project.name
   end
 
+  test "finds collaborators for a project", %{current_user: current_user} do
+    {:ok, project} = Projects.create(current_user.id, @valid_project_params)
+
+    [%{id: collaborator_id}] = Projects.collaborators(project.id)
+
+    assert collaborator_id == current_user.id
+  end
+
   test "does not find a project if user is not a collaborator", %{current_user: current_user} do
     {:ok, project} = Projects.create(current_user.id, @valid_project_params)
     someone_else = 999

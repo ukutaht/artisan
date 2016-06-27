@@ -25,6 +25,7 @@ defmodule Artisan.Router do
       get "/", Controller, :all
       get "/:id", Controller, :find
       put "/:id", Controller, :update
+      get "/:id/collaborators", Controller, :collaborators
     end
 
     scope "/projects/:project_id/iterations", Iterations do
