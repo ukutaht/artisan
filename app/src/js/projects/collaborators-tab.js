@@ -97,8 +97,13 @@ class ProjectCollaboratorsTab extends React.Component {
     })
   }
 
-  clickSelected() {
-    this.refs[this.state.selectedIndex].click()
+  clickResult() {
+    const selectedUser = this.state.searchResults[this.state.selectedIndex]
+    this.setState({
+      query: selectedUser.email
+    })
+
+    this.hideResults()
   }
 
   hideResults() {
@@ -124,8 +129,13 @@ class ProjectCollaboratorsTab extends React.Component {
               let className = index === this.state.selectedIndex ? 'active' : ''
 
               return (
-                <li key={result.id} className={className} onMouseOver={this.hoveringOverResult.bind(this)}>
-                  <a ref={index} data-index={index} href="javascript:void(0)">{result.name} ({result.email})</a>
+                <li
+                  key={result.id}
+                  className={className}
+                  data-index={index}
+                  onMouseOver={this.hoveringOverResult.bind(this)}
+                  onClick={this.clickResult.bind(this)}>
+                  {result.name} ({result.email})
                 </li>
               )
             })

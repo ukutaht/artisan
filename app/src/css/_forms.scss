@@ -65,14 +65,12 @@ input:focus, textarea:focus {
   box-shadow: 0 6px 12px rgba(0,0,0,.175);
   line-height: $line-height * 1.25;
 
-  a {
-    text-decoration: none;
+  li {
+    cursor: pointer;
     padding: 4px 18px;
-  }
 
-  .active {
-    background-color: $light-blue;
-    a {
+    &.active {
+      background-color: $light-blue;
       color: $inverted;
     }
   }
