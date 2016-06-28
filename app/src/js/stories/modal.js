@@ -126,7 +126,7 @@ class StoryModal extends React.Component {
 
                   <label>Acceptance criteria</label>
                   <textarea rows="15" value={this.state.acceptance_criteria} onChange={this.acceptanceCriteriaChanged.bind(this)}></textarea>
-                  { this.bottomSection() }
+                  {this.bottomSection()}
                 </div>
                 <div className="four-columns story-right">
                   <div className="estimate-form">

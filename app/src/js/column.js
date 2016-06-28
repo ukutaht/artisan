@@ -68,7 +68,7 @@ class Column extends React.Component {
     return (
       <div className={`board__column board__column--${this.props.count}`}>
         <div className="board__column__header">
-          <h3>{ columnTitles[this.props.name] }</h3>
+          <h3>{columnTitles[this.props.name]}</h3>
         </div>
         <ul ref="sortable" className="stories-list" data-column={this.props.name}>
           {

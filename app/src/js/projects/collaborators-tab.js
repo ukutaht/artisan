@@ -170,7 +170,7 @@ class ProjectCollaboratorsTab extends React.Component {
           <input type="text" value={this.state.query} onChange={this.queryChanged.bind(this)}/>
           <button disabled={!this.state.selectedUser} className="button primary full-width" onClick={this.addCollaborator.bind(this)}>Add Collaborator</button>
         </div>
-        { this.renderResults() }
+        {this.renderResults()}
         <ul className="block-list">
           {
             this.state.collaborators.map((collaborator) => {

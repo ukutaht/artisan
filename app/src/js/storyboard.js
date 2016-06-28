@@ -112,7 +112,7 @@ class StoryBoard extends React.Component {
             </li>
 
             <li>
-              <select value={this.props.iteration.number} onChange={ (e) => this.props.changeIteration(e.target.value)}>
+              <select value={this.props.iteration.number} onChange={(e) => this.props.changeIteration(e.target.value)}>
                 {
                   this.props.allIterations.map((iteration) => {
                     return <option key={iteration.number} value={iteration.number}>Iteration {iteration.number}</option>
@@ -131,17 +131,17 @@ class StoryBoard extends React.Component {
 
         <div className="board__actions">
           <div className="board__actions__left">
-            { this.renderBacklogLink() }
+            {this.renderBacklogLink()}
           </div>
 
           <div className="board__actions__right">
-            { this.renderActions() }
+            {this.renderActions()}
           </div>
         </div>
 
-        { this.renderColumns() }
-        { this.renderAddStoryModal() }
-        { this.renderEditStoryModal() }
+        {this.renderColumns()}
+        {this.renderAddStoryModal()}
+        {this.renderEditStoryModal()}
       </div>
     )
   }
@@ -186,7 +186,7 @@ class StoryBoard extends React.Component {
         <StoryModal story={this.state.editingStory}
                     onClose={this.closeEditStory.bind(this)}
                     onSubmit={this.updateStory.bind(this)}
-                    onDelete={ () => this.deleteStory(this.state.editingStory)}
+                    onDelete={() => this.deleteStory(this.state.editingStory)}
                     header="Edit story"
                     buttonText="Update" />
       )

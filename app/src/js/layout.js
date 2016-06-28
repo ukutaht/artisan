@@ -25,7 +25,7 @@ class Layout extends React.Component {
         </nav>
 
         <main className="container">
-          { this.props.children }
+          {this.props.children}
         </main>
       </div>
     )

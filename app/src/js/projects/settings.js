@@ -47,24 +47,24 @@ class ProjectSettings extends React.Component {
           <nav className="block-list">
             <a href="javascript://"
               className={`block-list__item ${this.selectedClass('settings')}`}
-              onClick={ () => this.setTab('settings') }>
+              onClick={() => this.setTab('settings')}>
               Settings
             </a>
             <a href="javascript://"
               className={`block-list__item ${this.selectedClass('collaborators')}`}
-              onClick={ () => this.setTab('collaborators') }>
+              onClick={() => this.setTab('collaborators')}>
               Collaborators
             </a>
             <a href="javascript://"
               className={`block-list__item ${this.selectedClass('notifications')}`}
-              onClick={ () => this.setTab('notifications') }>
+              onClick={() => this.setTab('notifications')}>
               Notifications
             </a>
           </nav>
         </div>
 
         <div className="eight-columns">
-          { rightSection }
+          {rightSection}
         </div>
 
       </div>
