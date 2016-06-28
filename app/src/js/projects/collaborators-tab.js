@@ -4,11 +4,20 @@ import update from 'react/lib/update'
 import ProjectService from './service'
 const projects = new ProjectService()
 
+const UP_ARROW = 38
+const DOWN_ARROW = 40
+const ENTER = 13
+const ESCAPE = 27
+
 class ProjectCollaboratorsTab extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      collaborators: null
+      collaborators: null,
+      query: "",
+      searchResults: [],
+      showResults: false,
+      selectedIndex: 0
     }
   }
 
@@ -44,17 +53,101 @@ class ProjectCollaboratorsTab extends React.Component {
     )
   }
 
+  queryChanged(e) {
+    this.setState({
+      query: e.target.value,
+      showResults: true,
+    })
+
+    if (e.target.value.length < 1) {
+      this.hideResults()
+    }
+
+    projects.autocompleteCollaborators(this.props.projectId, e.target.value, (results) => {
+      this.setState({
+        searchResults: results
+      })
+    })
+  }
+
+  onKeyDown(e) {
+    let keys = {
+      [UP_ARROW]: this.moveUp,
+      [DOWN_ARROW]: this.moveDown,
+      [ENTER]: this.clickSelected,
+      [ESCAPE]: this.hideResults
+    }
+
+    if (this.state.showResults && e.keyCode in keys) {
+      keys[e.keyCode].call(this, e)
+    }
+  }
+
+  moveUp(e) {
+    e.preventDefault()
+    this.setState({
+      selectedIndex: Math.max(this.state.selectedIndex - 1, 0)
+    })
+  }
+
+  moveDown(e) {
+    e.preventDefault()
+    this.setState({
+      selectedIndex: Math.min(this.state.selectedIndex + 1, this.state.searchResults.length - 1)
+    })
+  }
+
+  clickSelected() {
+    this.refs[this.state.selectedIndex].click()
+  }
+
+  hideResults() {
+    this.setState({
+      showResults: false,
+      selectedIndex: 0,
+      searchResults: [],
+    });
+  }
+
+  hoveringOverResult(e) {
+    this.setState({selectedIndex: Number(e.target.dataset.index)})
+  }
+
+  renderResults() {
+    if (!this.state.showResults || this.state.searchResults.length == 0) return null
+
+    return (
+      <div className="dropdown">
+        <ul className="dropdown-menu">
+          {
+            this.state.searchResults.map((result, index) => {
+              let className = index === this.state.selectedIndex ? 'active' : ''
+
+              return (
+                <li key={result.id} className={className} onMouseOver={this.hoveringOverResult.bind(this)}>
+                  <a ref={index} data-index={index} href="javascript:void(0)">{result.name} ({result.email})</a>
+                </li>
+              )
+            })
+          }
+        </ul>
+      </div>
+    )
+  }
+
+
   render() {
     if (!this.state.collaborators) return null
 
     return (
-      <div>
+      <div onKeyDown={this.onKeyDown.bind(this)}>
         <h2>Collaborators</h2>
         <label>Search by Full Name or Email</label>
         <div className="input-with-button">
-          <input type="text" />
+          <input type="text" value={this.state.query} onChange={this.queryChanged.bind(this)}/>
           <button className="button primary full-width">Add Collaborator</button>
         </div>
+        { this.renderResults() }
         <ul className="block-list">
           {
             this.state.collaborators.map((collaborator) => {

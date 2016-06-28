@@ -38,6 +38,13 @@ class ProjectService {
       }
     })
   }
+
+  autocompleteCollaborators(projectId, query, callback) {
+    const q = encodeURIComponent(query)
+    Api.get(`/api/projects/${projectId}/collaborators/autocomplete?q=${q}`, (err, res) => {
+      callback(res.body)
+    })
+  }
 }
 
 export default ProjectService

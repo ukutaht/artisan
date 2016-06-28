@@ -20,6 +20,11 @@ input, textarea {
   resize: none;
 }
 
+input, select, textarea {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
 input {
   height: 32px;
 }
@@ -41,5 +46,34 @@ input:focus, textarea:focus {
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
     transform: translateX(-1px);
+  }
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  width: 80%;
+  position: absolute;
+  z-index: 1000;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 0;
+  background-color: #fff;
+  border: 1px solid $border-grey;
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  line-height: $line-height * 1.25;
+
+  a {
+    text-decoration: none;
+    padding: 4px 18px;
+  }
+
+  .active {
+    background-color: $light-blue;
+    a {
+      color: $inverted;
+    }
   }
 }

@@ -44,6 +44,20 @@ defmodule Artisan.Projects.ControllerTest do
     assert found["name"] == user["user"]["name"]
   end
 
+  test "runs autocomplete search for collaborators", %{user: user} do
+    created = authenticated_conn(user["token"])
+      |> post("/api/projects", %{project: @valid_project_params})
+      |> json_response(200)
+
+    create_user(email: "something@email.com")
+
+    [found] = authenticated_conn(user["token"])
+      |> get("/api/projects/#{created["id"]}/collaborators/autocomplete?q=something")
+      |> json_response(200)
+
+    assert found["email"] == "something@email.com"
+  end
+
   test "removes collaborator from project", %{user: user} do
     created = authenticated_conn(user["token"])
       |> post("/api/projects", %{project: @valid_project_params})

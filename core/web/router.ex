@@ -21,12 +21,13 @@ defmodule Artisan.Router do
     pipe_through :authenticated
 
     scope "/projects", Projects do
-      get    "/",                           Controller, :all
-      post   "/",                           Controller, :create
-      get    "/:id",                        Controller, :find
-      put    "/:id",                        Controller, :update
-      get    "/:id/collaborators",          Controller, :collaborators
-      delete "/:id/collaborators/:user_id", Controller, :remove_collaborator
+      get    "/",                               Controller, :all
+      post   "/",                               Controller, :create
+      get    "/:id",                            Controller, :find
+      put    "/:id",                            Controller, :update
+      get    "/:id/collaborators",              Controller, :collaborators
+      delete "/:id/collaborators/:user_id",     Controller, :remove_collaborator
+      get    "/:id/collaborators/autocomplete", Controller, :autocomplete_collaborators
     end
 
     scope "/projects/:project_id/iterations", Iterations do

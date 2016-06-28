@@ -15,6 +15,7 @@ defmodule Artisan.User do
     user
     |> cast(attributes, [:name, :email])
     |> validate_required([:name, :email])
+    |> unique_constraint(:email)
   end
 
   def set_password(user, password, hash) do

@@ -23,9 +23,10 @@ defmodule Artisan.Test.APIHelper do
       |> put_req_header("authorization", "Bearer #{user_token}")
   end
 
-  def create_user do
+  def create_user(extra_params \\ []) do
+    params = Map.merge(@user, Enum.into(extra_params, %{}))
     build_conn()
-      |> post("/api/users/signup", %{user: @user})
+      |> post("/api/users/signup", %{user: params})
       |> json_response(200)
   end
 

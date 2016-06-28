@@ -29,6 +29,13 @@ defmodule Artisan.Projects.Controller do
     conn |> json(%{})
   end
 
+  def autocomplete_collaborators(conn, %{"id" => id}) do
+    {id, ""} = Integer.parse(id)
+    results = Projects.autocomplete_collaborators(id, conn.params["q"])
+    conn
+      |> render("collaborators.json", users: results)
+  end
+
   def find(conn, %{"id" => id}) do
     {numeric_id, ""} = Integer.parse(id)
     project = Projects.find(conn.assigns[:current_user], numeric_id)

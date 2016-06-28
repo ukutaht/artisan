@@ -25,8 +25,7 @@ defmodule Artisan.Projects do
 
   def collaborators(project_id) do
     Repo.all(from pu in ProjectUser,
-     join: u in User,
-     where: pu.user_id == u.id,
+     join: u in User, on: pu.user_id == u.id,
      where: pu.project_id == ^project_id,
      select: u
     )
@@ -38,6 +37,23 @@ defmodule Artisan.Projects do
      where: pu.project_id == ^project_id
     )
     :ok
+  end
+
+  def add_collaborator(project_id, collaborator_id) do
+    {:ok, _} = Repo.insert(%ProjectUser{project_id: project_id, user_id: collaborator_id})
+    :ok
+  end
+
+  def autocomplete_collaborators(project_id, query) do
+    query = "%#{query}%"
+
+    Repo.all(from u in User,
+     left_join: pu in ProjectUser, on: u.id == pu.user_id and pu.project_id == ^project_id,
+     where: is_nil(pu.user_id),
+     where: ilike(u.name, ^query) or ilike(u.email, ^query),
+     limit: 10,
+     select: u
+    )
   end
 
   def update(user_id, project_id, attrs) do
@@ -65,9 +81,8 @@ defmodule Artisan.Projects do
 
   defp projects_for(user_id) do
     from(pu in ProjectUser,
-      join: p in Project,
+      join: p in Project, on: pu.project_id == p.id,
       where: pu.user_id == ^user_id,
-      where: pu.project_id == p.id,
       select: p
     )
   end

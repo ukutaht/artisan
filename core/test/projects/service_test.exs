@@ -65,6 +65,47 @@ defmodule Artisan.ProjectsTest do
     assert Projects.collaborators(project.id) == []
   end
 
+  test "can add a collaborator", %{current_user: current_user} do
+    {:ok, project} = Projects.create(current_user.id, @valid_project_params)
+    {:ok, user2}   = Artisan.Users.create(%{"name" => "User", "email" => "user2@email.com", "password" => "asdasd"})
+    :ok = Projects.add_collaborator(project.id, user2.id)
+
+    assert Enum.count(Projects.collaborators(project.id)) == 2
+  end
+
+  test "can search for potential collaborators by name", %{current_user: current_user} do
+    {:ok, project} = Projects.create(current_user.id, @valid_project_params)
+    {:ok, user2}   = Artisan.Users.create(%{"name" => "Name", "email" => "irrelevant@email.com", "password" => "asdasd"})
+    {:ok, _}   = Artisan.Users.create(%{"name" => "Irrelevant", "email" => "irrelevant2@email.com", "password" => "asdasd"})
+
+    ids = Projects.autocomplete_collaborators(project.id, "name")
+      |> Enum.map(&(&1.id))
+
+    assert ids == [user2.id]
+  end
+
+
+  test "can search for potential collaborators by email", %{current_user: current_user} do
+    {:ok, project} = Projects.create(current_user.id, @valid_project_params)
+    {:ok, user2}   = Artisan.Users.create(%{"name" => "Name", "email" => "account1@email.com", "password" => "asdasd"})
+    {:ok, _}   = Artisan.Users.create(%{"name" => "Name", "email" => "irrelevant@email.com", "password" => "asdasd"})
+
+    ids = Projects.autocomplete_collaborators(project.id, "account")
+      |> Enum.map(&(&1.id))
+
+    assert ids == [user2.id]
+  end
+
+  test "excludes existing collaborators from search", %{current_user: current_user} do
+    {:ok, project} = Projects.create(current_user.id, @valid_project_params)
+    {:ok, user2}   = Artisan.Users.create(%{"name" => "Name", "email" => "account1@email.com", "password" => "asdasd"})
+    :ok = Projects.add_collaborator(project.id, user2.id)
+
+    results = Projects.autocomplete_collaborators(project.id, "account")
+
+    assert results == []
+  end
+
   test "does not find a project if user is not a collaborator", %{current_user: current_user} do
     {:ok, project} = Projects.create(current_user.id, @valid_project_params)
     someone_else = 999
