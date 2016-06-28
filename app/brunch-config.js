@@ -20,6 +20,10 @@ exports.config = {
   plugins: {
     babel: {
       presets: ["es2015", "react"]
+    },
+    eslint: {
+      pattern: /^src\/.*\.js?$/,
+      warnOnly: false
     }
   },
 

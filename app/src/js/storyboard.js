@@ -6,10 +6,10 @@ import Column from './column'
 import StoryModal from './stories/modal'
 
 const iterationColumns = {
-  planning: ["backlog", "ready"],
-  working: ["ready", "working", "completed"],
-  workingWithBacklog: ["backlog", "ready", "working", "completed"],
-  completed: ["completed"]
+  planning: ['backlog', 'ready'],
+  working: ['ready', 'working', 'completed'],
+  workingWithBacklog: ['backlog', 'ready', 'working', 'completed'],
+  completed: ['completed']
 }
 
 const canToggleBacklog = {
@@ -21,8 +21,8 @@ const canToggleBacklog = {
 const newStory = {
   id: null,
   project_id: null,
-  name: "",
-  acceptance_criteria: "",
+  name: '',
+  acceptance_criteria: '',
   number: null,
   estimate: null,
   optimistic: null,
@@ -44,10 +44,11 @@ class StoryBoard extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.iteration.state != this.props.iteration.state)
+    if (nextProps.iteration.state !== this.props.iteration.state) {
       this.setState({
         visibleColumns: iterationColumns[nextProps.iteration.state]
       })
+    }
   }
 
   openEditStory(story) {
@@ -82,7 +83,7 @@ class StoryBoard extends React.Component {
   }
 
   isBacklogVisible() {
-    return this.state.visibleColumns[0] === "backlog";
+    return this.state.visibleColumns[0] === 'backlog';
   }
 
   showBacklog() {
@@ -166,7 +167,7 @@ class StoryBoard extends React.Component {
   }
 
   renderAddStoryModal() {
-    let story = update(newStory, {state: {$set: this.state.visibleColumns[0]}})
+    const story = update(newStory, {state: {$set: this.state.visibleColumns[0]}})
 
     if (this.state.addingStory) {
       return (
@@ -193,7 +194,7 @@ class StoryBoard extends React.Component {
   }
 
   renderColumns() {
-    let count = this.state.visibleColumns.length
+    const count = this.state.visibleColumns.length
 
     return this.state.visibleColumns.map((column) => {
       return <Column stories={this.props.stories[column]}
@@ -207,14 +208,14 @@ class StoryBoard extends React.Component {
   }
 
   renderActions() {
-    if (this.props.iteration.state == "completed") {
+    if (this.props.iteration.state === 'completed') {
       return (
         <button className="button primary"
                 onClick={this.props.newIteration}>
           Start new iteration
         </button>
       )
-    } else if (this.props.iteration.state == "planning") {
+    } else if (this.props.iteration.state === 'planning') {
       return (
         <div>
           <button className="button primary" onClick={this.props.startIteration}>
@@ -225,8 +226,7 @@ class StoryBoard extends React.Component {
           </button>
         </div>
       )
-    }
-    else {
+    } else {
       return (
         <div>
           <button className="button primary" onClick={this.props.completeIteration}>

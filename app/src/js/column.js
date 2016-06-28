@@ -8,10 +8,10 @@ var _ghost;
 var _dragging = false;
 
 const columnTitles = {
-  backlog: "Backlog",
-  ready: "Ready",
-  working: "Working",
-  completed: "Completed"
+  backlog: 'Backlog',
+  ready: 'Ready',
+  working: 'Working',
+  completed: 'Completed'
 }
 
 class Column extends React.Component {
@@ -25,7 +25,7 @@ class Column extends React.Component {
       onStart: this.onStart.bind(this),
       onAdd: this.updatePosition.bind(this),
       onUpdate: this.updatePosition.bind(this),
-      group: "stories",
+      group: 'stories',
       ghostClass: 'story-card--ghost',
     });
   }
@@ -38,8 +38,8 @@ class Column extends React.Component {
 
   updatePosition(evt) {
     evt.to.insertBefore(_ghost, evt.to.children[evt.newIndex]);
-    let react_placeholder = evt.from.insertBefore(evt.item, _nextSibling);
-    react_placeholder.style.display = "none";
+    const react_placeholder = evt.from.insertBefore(evt.item, _nextSibling);
+    react_placeholder.style.display = 'none';
 
     this.sortableInstance.option('disabled', true)
 
@@ -53,7 +53,7 @@ class Column extends React.Component {
     this.sortableInstance.option('disabled', false)
     evt.to.removeChild(_ghost)
     _dragging = false
-    if (evt.from == evt.to) react_placeholder.style.display = "block"
+    if (evt.from === evt.to) react_placeholder.style.display = 'block'
   }
 
   componentWillUnmount() {

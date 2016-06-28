@@ -1,20 +1,20 @@
-import React from "react"
-import { render } from "react-dom"
+import React from 'react'
+import { render } from 'react-dom'
 import IndexRoute from 'react-router/lib/IndexRoute'
 import Router from 'react-router/lib/Router'
 import Route from 'react-router/lib/Route'
 import browserHistory from 'react-router/lib/browserHistory'
 
-import Layout from "./layout"
-import Dashboard from "./dashboard"
-import NewProject from "./projects/new"
-import ProjectSettings from "./projects/settings"
-import IterationView from "./iteration-view"
+import Layout from './layout'
+import Dashboard from './dashboard'
+import NewProject from './projects/new'
+import ProjectSettings from './projects/settings'
+import IterationView from './iteration-view'
 import Signup from './users/signup'
 import Login from './users/login'
 import NotFound from './not_found'
 
-let mountNode = document.getElementById('mount')
+const mountNode = document.getElementById('mount')
 
 render((
   <Router history={browserHistory}>

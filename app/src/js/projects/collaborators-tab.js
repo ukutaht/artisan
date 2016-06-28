@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 import update from 'react/lib/update'
 
 import ProjectService from './service'
@@ -14,7 +14,7 @@ class ProjectCollaboratorsTab extends React.Component {
     super(props)
     this.state = {
       collaborators: null,
-      query: "",
+      query: '',
       searchResults: [],
       showResults: false,
       selectedIndex: 0,
@@ -83,7 +83,7 @@ class ProjectCollaboratorsTab extends React.Component {
   }
 
   onKeyDown(e) {
-    let keys = {
+    const keys = {
       [UP_ARROW]: this.moveUp,
       [DOWN_ARROW]: this.moveDown,
       [ENTER]: this.clickResult,
@@ -132,14 +132,14 @@ class ProjectCollaboratorsTab extends React.Component {
   }
 
   renderResults() {
-    if (!this.state.showResults || this.state.searchResults.length == 0) return null
+    if (!this.state.showResults || this.state.searchResults.length === 0) return null
 
     return (
       <div className="dropdown">
         <ul className="dropdown-menu">
           {
             this.state.searchResults.map((result, index) => {
-              let className = index === this.state.selectedIndex ? 'active' : ''
+              const className = index === this.state.selectedIndex ? 'active' : ''
 
               return (
                 <li

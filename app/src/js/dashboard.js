@@ -33,7 +33,8 @@ class Dashboard extends React.Component {
           </div>
 
           <ul className="projects-list">
-            { this.state.projects.map((project) => {
+            {
+              this.state.projects.map((project) => {
                 return (
                   <li className="projects-list__item" key={project.id}>
                     <Link to={`projects/${project.id}`}>{project.name}</Link>
@@ -41,7 +42,7 @@ class Dashboard extends React.Component {
                       <i className="ion-gear-b right-padded-icon"></i>Settings
                     </Link>
                   </li>
-                )
+                  )
               })
             }
           </ul>

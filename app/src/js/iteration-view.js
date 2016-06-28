@@ -29,7 +29,7 @@ class IterationView extends React.Component {
       })
     })
 
-    let boardSocket = new BoardSocket(this.projectId)
+    const boardSocket = new BoardSocket(this.projectId)
     boardSocket.join({
       onAddStory: this.doAddStory.bind(this),
       onUpdateStory: this.doUpdateStory.bind(this),
@@ -38,7 +38,7 @@ class IterationView extends React.Component {
   }
 
   addStory(story) {
-    let storyWithData = update(story, {project_id: {$set: this.projectId}})
+    const storyWithData = update(story, {project_id: {$set: this.projectId}})
 
     stories.add(this.projectId, storyWithData, this.doAddStory.bind(this))
   }
@@ -56,7 +56,7 @@ class IterationView extends React.Component {
   doUpdateStory(story) {
     this.setState(
       update(this.state, {stories: {[story.state]: {$apply: (column) => {
-        let index = column.findIndex((existing) => existing.number == story.number)
+        const index = column.findIndex((existing) => existing.number === story.number)
         return update(column, {[index]: {$set: story}})
       }}}})
     )
@@ -77,7 +77,7 @@ class IterationView extends React.Component {
 
   deleteStory(story) {
     stories.del(story.id, () => {
-      let updated = update(this.state, {stories: {[story.state]: {$apply: (column) => {
+      const updated = update(this.state, {stories: {[story.state]: {$apply: (column) => {
         return column.filter((existing) => existing.id !== story.id);
       }}}})
 

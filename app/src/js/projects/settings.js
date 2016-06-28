@@ -1,6 +1,4 @@
-import React from "react"
-import browserHistory from 'react-router/lib/browserHistory'
-import update from 'react/lib/update'
+import React from 'react'
 
 import ProjectSettingsTab from './settings-tab'
 import ProjectCollaboratorsTab from './collaborators-tab'
@@ -41,7 +39,7 @@ class ProjectSettings extends React.Component {
   }
 
   render() {
-    let rightSection = this.renderRightSection();
+    const rightSection = this.renderRightSection();
 
     return (
       <div className="row">

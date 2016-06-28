@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 import browserHistory from 'react-router/lib/browserHistory'
 
 import ProjectService from './service'
@@ -8,7 +8,7 @@ const projects = new ProjectService()
 class NewProject extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {name: ""}
+    this.state = {name: ''}
   }
 
   submit(e) {

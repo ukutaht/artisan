@@ -13,20 +13,20 @@ class Signup extends React.Component {
   }
 
   validate() {
-    let errors = {}
-    let formData = this.getFormData()
+    const errors = {}
+    const formData = this.getFormData()
 
-    if (formData.name == "") {
-      errors["name"] = "Cannot be blank"
+    if (formData.name === '') {
+      errors['name'] = 'Cannot be blank'
     }
-    if (formData.email == "") {
-      errors["email"] = "Cannot be blank"
+    if (formData.email === '') {
+      errors['email'] = 'Cannot be blank'
     }
     if (formData.password.length < 6) {
-      errors["password"] = "Must be at least 6 characters long"
+      errors['password'] = 'Must be at least 6 characters long'
     }
-    if (formData.password != formData.passwordConfirmation) {
-      errors["passwordConfirmation"] = "Must match the password"
+    if (formData.password !== formData.passwordConfirmation) {
+      errors['passwordConfirmation'] = 'Must match the password'
     }
 
     return errors
@@ -44,7 +44,7 @@ class Signup extends React.Component {
   onSubmit(e) {
     e.preventDefault()
 
-    let errors = this.validate()
+    const errors = this.validate()
     if (Object.keys(errors).length > 0) {
       this.setState({errors: errors})
     } else {
@@ -56,36 +56,36 @@ class Signup extends React.Component {
 
   renderError(name) {
     if (this.state.errors[name]) {
-      return <span className="input-error">{this.state.errors[name]}</span>
+      return <span className='input-error'>{this.state.errors[name]}</span>
     }
   }
 
   render() {
     return (
-      <div className="skinny-box">
+      <div className='skinny-box'>
         <h2>Sign up for Artisan</h2>
         <form onSubmit={this.onSubmit.bind(this)}>
-          <div className="form-group">
+          <div className='form-group'>
             <span>Email</span>
             {this.renderError('email')}
-            <input ref="email" type="email" />
+            <input ref='email' type='email' />
           </div>
-          <div className="form-group">
+          <div className='form-group'>
             <span>Full name</span>
             {this.renderError('name')}
-            <input ref="name" type="text" />
+            <input ref='name' type='text' />
           </div>
-          <div className="form-group">
+          <div className='form-group'>
             <span>Password</span>
             {this.renderError('password')}
-            <input ref="password" type="password" />
+            <input ref='password' type='password' />
           </div>
-          <div className="form-group">
+          <div className='form-group'>
             <span>Confirm password</span>
             {this.renderError('password-confirmation')}
-            <input ref="passwordConfirmation" type="password" />
+            <input ref='passwordConfirmation' type='password' />
           </div>
-          <button className="button primary no-margin full-width">Sign up</button>
+          <button className='button primary no-margin full-width'>Sign up</button>
         </form>
       </div>
     )

@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 import update from 'react/lib/update'
 
 import ProjectService from './service'

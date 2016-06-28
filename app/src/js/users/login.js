@@ -22,8 +22,8 @@ class Login extends React.Component {
   onSubmit(e) {
     e.preventDefault()
 
-    users.login(this.getFormData(), (user) => {
-      location.href = "/"
+    users.login(this.getFormData(), () => {
+      location.href = '/'
     })
   }
 

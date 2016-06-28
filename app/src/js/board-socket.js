@@ -1,6 +1,6 @@
-import {Socket} from "phoenix-js"
+import {Socket} from 'phoenix-js'
 
-const HOST = "ws://localhost:4000"
+const HOST = 'ws://localhost:4000'
 
 class BoardSocket {
   constructor(projectId) {
@@ -8,15 +8,15 @@ class BoardSocket {
   }
 
   join(callbacks) {
-    let socket = new Socket(HOST + "/socket")
+    const socket = new Socket(HOST + '/socket')
     socket.connect()
 
-    let channel = socket.channel(`boards:${this.projectId}`, {})
+    const channel = socket.channel(`boards:${this.projectId}`, {})
     channel.join()
 
-    channel.on("update:story", callbacks.onUpdateStory)
-    channel.on("add:story",    callbacks.onAddStory)
-    channel.on("move:story",   callbacks.onMoveStory)
+    channel.on('update:story', callbacks.onUpdateStory)
+    channel.on('add:story',    callbacks.onAddStory)
+    channel.on('move:story',   callbacks.onMoveStory)
   }
 }
 

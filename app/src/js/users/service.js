@@ -2,20 +2,16 @@ import Api from '../api'
 
 class UserService {
   signup(user, callback) {
-    Api.post('/api/users/signup').send(user).end((err, res) => {
-      if (!err) {
-        localStorage.setItem('token', res.body.token)
-        callback(res.body)
-      }
+    Api.post('/api/users/signup').send(user).end((res) => {
+      localStorage.setItem('token', res.body.token)
+      callback(res.body)
     })
   }
 
   login(user, callback) {
-    Api.post('/api/users/login').send(user).end((err, res) => {
-      if (!err) {
-        localStorage.setItem('token', res.body.token)
-        callback(res.body)
-      }
+    Api.post('/api/users/login').send(user).end((res) => {
+      localStorage.setItem('token', res.body.token)
+      callback(res.body)
     })
   }
 

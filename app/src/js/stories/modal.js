@@ -4,13 +4,14 @@ import update from 'react/lib/update'
 import Pert from './pert'
 
 const largestAllowedEstimate = 9999999999999999999
+const ESCAPE = 27
 
 function isDigit(val) {
   return /^[0-9]+$/.test(val)
 }
 
 function splitTags(tags) {
-  return tags.split(",")
+  return tags.split(',')
     .map((tag) => tag.replace(/^\s+|\s+$/g, ''))
     .filter((tag) => tag !== '')
 }
@@ -26,7 +27,7 @@ class StoryModal extends React.Component {
       optimistic: props.story.optimistic,
       realistic: props.story.realistic,
       pessimistic: props.story.pessimistic,
-      tags: props.story.tags.join(",")
+      tags: props.story.tags.join(',')
     }
   }
 
@@ -41,8 +42,8 @@ class StoryModal extends React.Component {
   listenForEscape() {
     document.onkeydown = function(evt) {
       evt = evt || window.event;
-      if (evt.keyCode == 27) {
-          this.props.onClose()
+      if (evt.keyCode === ESCAPE) {
+        this.props.onClose()
       }
     }.bind(this)
   }
@@ -53,8 +54,8 @@ class StoryModal extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    let formStory = update(this.state, {tags: {$set: splitTags(this.state.tags)}})
-    let story = update(this.props.story, {$merge: formStory})
+    const formStory = update(this.state, {tags: {$set: splitTags(this.state.tags)}})
+    const story = update(this.props.story, {$merge: formStory})
     this.props.onSubmit(story)
   }
 
@@ -73,7 +74,7 @@ class StoryModal extends React.Component {
   extractEstimate(e, estimate) {
     if (isDigit(e.target.value)) {
       return Math.min(Number(e.target.value), largestAllowedEstimate)
-    } else if (e.target.value === "") {
+    } else if (e.target.value === '') {
       return null
     } else {
       return this.state[estimate]
@@ -82,8 +83,8 @@ class StoryModal extends React.Component {
 
   estimateChanged(type) {
     return function(e) {
-      let newEstimate = this.extractEstimate(e, type)
-      let estimateData = update(this.state, {[type]: {$set: newEstimate}})
+      const newEstimate = this.extractEstimate(e, type)
+      const estimateData = update(this.state, {[type]: {$set: newEstimate}})
 
       this.setState({
         [type]: newEstimate,
@@ -93,7 +94,7 @@ class StoryModal extends React.Component {
   }
 
   displayEstimate(estimate) {
-    return this.state[estimate] == null ? "" : this.state[estimate].toFixed()
+    return this.state[estimate] == null ? '' : this.state[estimate].toFixed()
   }
 
   bottomSection() {

@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 import Link from 'react-router/lib/Link'
 
 import UserService from './users/service'
@@ -9,7 +9,7 @@ class Layout extends React.Component {
 
   logout() {
     users.logout()
-    location.href = "/login"
+    location.href = '/login'
   }
 
   render() {
