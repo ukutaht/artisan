@@ -74,7 +74,7 @@ class ProjectCollaboratorsTab extends React.Component {
     let keys = {
       [UP_ARROW]: this.moveUp,
       [DOWN_ARROW]: this.moveDown,
-      [ENTER]: this.clickSelected,
+      [ENTER]: this.clickResult,
       [ESCAPE]: this.hideResults
     }
 
