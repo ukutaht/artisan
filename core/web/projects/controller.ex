@@ -22,6 +22,12 @@ defmodule Artisan.Projects.Controller do
       render("collaborators.json", users: users)
   end
 
+  def add_collaborator(conn, %{"id" => id, "user_id" => user_id}) do
+    {id, ""} = Integer.parse(id)
+    Projects.add_collaborator(id, user_id)
+    conn |> json(%{})
+  end
+
   def remove_collaborator(conn, %{"id" => id, "user_id" => user_id}) do
     {id, ""} = Integer.parse(id)
     {user_id, ""} = Integer.parse(user_id)

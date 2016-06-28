@@ -23,6 +23,14 @@
       background: darken($light-blue, 5%);
     }
   }
+
+  &:disabled {
+    background: $grey;
+
+    &:hover {
+      background: $grey;
+    }
+  }
 }
 
 .full-width {

@@ -31,6 +31,14 @@ class ProjectService {
     })
   }
 
+  addCollaborator(projectId, userId, callback) {
+    Api.post(`/api/projects/${projectId}/collaborators`, {user_id: userId}, (err, res) => {
+      if (!err) {
+        callback()
+      }
+    })
+  }
+
   removeCollaborator(projectId, userId, callback) {
     Api.del(`/api/projects/${projectId}/collaborators/${userId}`, (err, res) => {
       if (!err) {

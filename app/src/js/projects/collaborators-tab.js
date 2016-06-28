@@ -17,7 +17,8 @@ class ProjectCollaboratorsTab extends React.Component {
       query: "",
       searchResults: [],
       showResults: false,
-      selectedIndex: 0
+      selectedIndex: 0,
+      selectedUser: null,
     }
   }
 
@@ -30,6 +31,16 @@ class ProjectCollaboratorsTab extends React.Component {
   removeCollaborator(userId) {
     projects.removeCollaborator(this.props.projectId, userId, () => {
       this.removeCollaboratorFromState(userId)
+    })
+  }
+
+  addCollaborator() {
+    projects.addCollaborator(this.props.projectId, this.state.selectedUser.id, () => {
+      this.setState(update(this.state, {
+        selectedUser: {$set: null},
+        collaborators: {$push: [this.state.selectedUser]},
+        query: {$set: ''}
+      }))
     })
   }
 
@@ -57,6 +68,7 @@ class ProjectCollaboratorsTab extends React.Component {
     this.setState({
       query: e.target.value,
       showResults: true,
+      selectedUser: null
     })
 
     if (e.target.value.length < 1) {
@@ -100,7 +112,8 @@ class ProjectCollaboratorsTab extends React.Component {
   clickResult() {
     const selectedUser = this.state.searchResults[this.state.selectedIndex]
     this.setState({
-      query: selectedUser.email
+      query: selectedUser.name,
+      selectedUser: selectedUser
     })
 
     this.hideResults()
@@ -155,7 +168,7 @@ class ProjectCollaboratorsTab extends React.Component {
         <label>Search by Full Name or Email</label>
         <div className="input-with-button">
           <input type="text" value={this.state.query} onChange={this.queryChanged.bind(this)}/>
-          <button className="button primary full-width">Add Collaborator</button>
+          <button disabled={!this.state.selectedUser} className="button primary full-width" onClick={this.addCollaborator.bind(this)}>Add Collaborator</button>
         </div>
         { this.renderResults() }
         <ul className="block-list">

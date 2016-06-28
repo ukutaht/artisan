@@ -74,6 +74,24 @@ defmodule Artisan.Projects.ControllerTest do
     assert collaborators == []
   end
 
+  test "adds collaborator to project", %{user: user} do
+    created = authenticated_conn(user["token"])
+      |> post("/api/projects", %{project: @valid_project_params})
+      |> json_response(200)
+
+    user2 = create_user(email: "something@email.com")
+
+    authenticated_conn(user["token"])
+      |> post("/api/projects/#{created["id"]}/collaborators", %{user_id: user2["user"]["id"]})
+      |> json_response(200)
+
+    collaborators = authenticated_conn(user["token"])
+      |> get("/api/projects/#{created["id"]}/collaborators")
+      |> json_response(200)
+
+    assert Enum.count(collaborators) == 2
+  end
+
   test "updates a project", %{user: user} do
     created = authenticated_conn(user["token"])
       |> post("/api/projects", %{project: @valid_project_params})
