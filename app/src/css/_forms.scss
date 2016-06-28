@@ -9,7 +9,7 @@
 
 input, textarea {
   width: 100%;
-  padding: 3px 6px;
+  padding: $spacing-tiny $spacing-small;
   background-color: white;
   line-height: 1.6;
   border: 1px solid $border-grey;
@@ -21,8 +21,8 @@ input, textarea {
 }
 
 input, select, textarea {
-  margin-top: 4px;
-  margin-bottom: 4px;
+  margin-top: $spacing-tiny;
+  margin-bottom: $spacing-tiny;
 }
 
 input {
@@ -58,7 +58,7 @@ input:focus, textarea:focus {
   position: absolute;
   z-index: 1000;
   min-width: 160px;
-  padding: 5px 0;
+  padding: $spacing-tiny 0;
   margin: 0;
   background-color: #fff;
   border: 1px solid $border-grey;
@@ -67,7 +67,7 @@ input:focus, textarea:focus {
 
   li {
     cursor: pointer;
-    padding: 4px 18px;
+    padding: $spacing-tiny $spacing-medium;
 
     &.active {
       background-color: $light-blue;

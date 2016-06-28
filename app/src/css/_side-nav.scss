@@ -8,7 +8,7 @@
   &__item {
     position: relative;
     display: block;
-    padding: 8px 10px;
+    padding: $spacing-small 10px;
     border-bottom: 1px solid $light-grey;
 
     &:first-child {
