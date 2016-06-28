@@ -27,6 +27,7 @@ defmodule Artisan.Projects do
     Repo.all(from pu in ProjectUser,
      join: u in User, on: pu.user_id == u.id,
      where: pu.project_id == ^project_id,
+     order_by: [desc: pu.inserted_at],
      select: u
     )
   end

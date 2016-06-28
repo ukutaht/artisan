@@ -38,7 +38,7 @@ class ProjectCollaboratorsTab extends React.Component {
     projects.addCollaborator(this.props.projectId, this.state.selectedUser.id, () => {
       this.setState(update(this.state, {
         selectedUser: {$set: null},
-        collaborators: {$push: [this.state.selectedUser]},
+        collaborators: {$unshift: [this.state.selectedUser]},
         query: {$set: ''}
       }))
     })
