@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'react-router/lib/Link'
+import browserHistory from 'react-router/lib/browserHistory'
 
 import UserService from './users/service'
 
@@ -9,7 +10,7 @@ class Layout extends React.Component {
 
   logout() {
     users.logout()
-    location.href = '/login'
+    browserHistory.push('/login')
   }
 
   render() {
