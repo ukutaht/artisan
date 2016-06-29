@@ -2,14 +2,14 @@ import Api from '../api'
 
 class UserService {
   signup(user, callback) {
-    Api.post('/api/users/signup').send(user).end((res) => {
+    Api.post('/api/users/signup', {user: user}, (res) => {
       localStorage.setItem('token', res.body.token)
       callback(res.body)
     })
   }
 
   login(user, callback) {
-    Api.post('/api/users/login').send(user).end((res) => {
+    Api.post('/api/users/login', user, (res) => {
       localStorage.setItem('token', res.body.token)
       callback(res.body)
     })

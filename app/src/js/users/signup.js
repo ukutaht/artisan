@@ -48,7 +48,7 @@ class Signup extends React.Component {
     if (Object.keys(errors).length > 0) {
       this.setState({errors: errors})
     } else {
-      users.signup({user: this.getFormData()}, (created) => {
+      users.signup(this.getFormData(), (created) => {
         console.log(created)
       })
     }

@@ -1,4 +1,5 @@
 import React from 'react'
+import browserHistory from 'react-router/lib/browserHistory'
 
 import UserService from './service'
 
@@ -23,7 +24,7 @@ class Login extends React.Component {
     e.preventDefault()
 
     users.login(this.getFormData(), () => {
-      location.href = '/'
+      browserHistory.push('/')
     })
   }
 
