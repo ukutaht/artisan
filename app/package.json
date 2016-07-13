@@ -14,18 +14,18 @@
     "eslint": "^2.13.1",
     "eslint-brunch": "^3.6.0",
     "eslint-plugin-react": "^5.2.2",
+    "hapi": "^13.3.0",
+    "inert": "^4.0.0",
     "javascript-brunch": "~2.0.0",
+    "sass-brunch": "^2.6.0",
+    "uglify-js-brunch": "~2.0.0"
+  },
+  "dependencies": {
     "phoenix-js": "^1.0.3",
     "react": "^15.0.0",
     "react-dom": "^15.0.0",
     "react-router": "^2.3.0",
-    "sass-brunch": "^2.6.0",
     "sortablejs": "^1.4.2",
-    "superagent": "^2.0.0",
-    "uglify-js-brunch": "~2.0.0"
-  },
-  "dependencies": {
-    "hapi": "^13.3.0",
-    "inert": "^4.0.0"
+    "superagent": "^2.0.0"
   }
 }
