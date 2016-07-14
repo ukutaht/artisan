@@ -12,12 +12,6 @@ class ProjectSettings extends React.Component {
     }
   }
 
-  renderNotifications() {
-    return (
-      <h2>Notifications</h2>
-    )
-  }
-
   selectedClass(tab) {
     if (this.state.tab === tab) {
       return 'block-list__item--selected'
@@ -33,8 +27,6 @@ class ProjectSettings extends React.Component {
       return <ProjectSettingsTab projectId={this.projectId} />
     } else if (this.state.tab === 'collaborators') {
       return <ProjectCollaboratorsTab projectId={this.projectId}/>
-    } else if (this.state.tab === 'notifications') {
-      return this.renderNotifications()
     }
   }
 
@@ -54,11 +46,6 @@ class ProjectSettings extends React.Component {
               className={`block-list__item ${this.selectedClass('collaborators')}`}
               onClick={() => this.setTab('collaborators')}>
               Collaborators
-            </a>
-            <a href="javascript://"
-              className={`block-list__item ${this.selectedClass('notifications')}`}
-              onClick={() => this.setTab('notifications')}>
-              Notifications
             </a>
           </nav>
         </div>
