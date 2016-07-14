@@ -99,3 +99,59 @@ small {
 .two-columns {
   @include span-columns(2);
 }
+
+.hide-mobile-and-up {
+  @include media($mobile) {
+    display: none;
+  }
+}
+
+.show-mobile-and-up {
+  display: none;
+
+  @include media($mobile) {
+    display: initial;
+  }
+}
+
+.hide-tablet-and-up {
+  @include media($tablet) {
+    display: none;
+  }
+}
+
+.show-tablet-and-up {
+  display: none;
+
+  @include media($tablet) {
+    display: initial;
+  }
+}
+
+.hide-desk-and-up {
+  @include media($desk) {
+    display: none;
+  }
+}
+
+.show-desk-and-up {
+  display: none;
+
+  @include media($desk) {
+    display: initial;
+  }
+}
+
+.hide-large-desk-and-up {
+  @include media($large-desk) {
+    display: none;
+  }
+}
+
+.show-large-desk-and-up {
+  display: none;
+
+  @include media($large-desk) {
+    display: initial;
+  }
+}

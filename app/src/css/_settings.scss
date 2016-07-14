@@ -16,3 +16,8 @@ $spacing-tiny:   4px;
 $spacing-small:  8px;
 $spacing-medium: 16px;
 $spacing-large:  24px;
+
+$mobile: new-breakpoint(min-width 320px);
+$tablet: new-breakpoint(min-width 720px);
+$desk: new-breakpoint(min-width 1024px);
+$large-desk: new-breakpoint(min-width 1280px);

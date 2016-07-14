@@ -131,7 +131,10 @@ export default class CollaboratorsSearch extends React.Component {
         <label>Search by Full Name or Email</label>
         <div className="input-with-button">
           <input type="text" value={this.state.query} onChange={this.queryChanged.bind(this)}/>
-          <button disabled={!this.state.selectedUser} className="button primary full-width" onClick={this.addCollaborator.bind(this)}>Add Collaborator</button>
+          <button disabled={!this.state.selectedUser} className="button primary" onClick={this.addCollaborator.bind(this)}>
+            <span className="hide-large-desk-and-up">Add</span>
+            <span className="show-large-desk-and-up">Add Collaborator</span>
+          </button>
         </div>
         {this.renderResults()}
       </div>

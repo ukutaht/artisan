@@ -10,12 +10,25 @@
 
 .modal {
   opacity: 1;
-  width: 65%;
 	min-width: 633px;
 	margin: 100px auto;
 	border-radius: 3px;
   background: white;
   border: 1px solid $border-grey;
+
+  width: 90%;
+
+  @include media($tablet) {
+    width: 85%;
+  }
+
+  @include media($desk) {
+    width: 75%;
+  }
+
+  @include media($large-desk) {
+    width: 960px;
+  }
 
   &__header {
     border-bottom: 1px solid $border-grey;
