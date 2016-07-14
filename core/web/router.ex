@@ -20,6 +20,10 @@ defmodule Artisan.Router do
     pipe_through :api
     pipe_through :authenticated
 
+    scope "/users", Users do
+      get "/current", Controller, :current
+    end
+
     scope "/projects", Projects do
       get    "/",                               Controller, :all
       post   "/",                               Controller, :create

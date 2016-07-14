@@ -5,8 +5,12 @@ defmodule Artisan.Users.View do
 
   def render("authenticated.json", %{user: user, token: token}) do
     %{
-      user: Map.take(user, @fields),
+      user: render("user.json", user: user),
       token: token
     }
+  end
+
+  def render("user.json", %{user: user}) do
+    Map.take(user, @fields)
   end
 end

@@ -23,4 +23,8 @@ defmodule Artisan.Users do
       :error
     end
   end
+
+  def find(id) do
+    Repo.one(from u in User, where: u.id == ^id)
+  end
 end

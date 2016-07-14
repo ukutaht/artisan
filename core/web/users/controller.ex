@@ -22,6 +22,13 @@ defmodule Artisan.Users.Controller do
     end
   end
 
+  def current(conn, _params) do
+    case Users.find(conn.assigns[:current_user]) do
+      nil -> conn |> send_resp(404, "")
+      user -> conn |> render("user.json", user: user)
+    end
+  end
+
   defp invalid(conn, %{errors: errors}) do
     conn |> put_status(400) |> json(%{errors: Enum.into(errors, %{})})
   end

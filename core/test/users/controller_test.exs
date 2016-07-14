@@ -1,5 +1,6 @@
 defmodule Artisan.Users.ControllerTest do
   use Artisan.ConnCase
+  import Artisan.Test.APIHelper
 
   @valid_user %{
     name: "User name",
@@ -45,5 +46,21 @@ defmodule Artisan.Users.ControllerTest do
       |> post("/api/users/login", %{email: @valid_user[:email], password: "obviously wrong"})
 
     assert res.status == 401
+  end
+
+  test "finds a user" do
+    build_conn()
+      |> post("/api/users/signup", %{user: @valid_user})
+      |> json_response(200)
+
+    user = build_conn()
+      |> post("/api/users/login", %{email: @valid_user[:email], password: @valid_user[:password]})
+      |> json_response(200)
+
+    found = authenticated_conn(user["token"])
+      |> get("/api/users/current")
+      |> json_response(200)
+
+    assert found["name"] == user["user"]["name"]
   end
 end
