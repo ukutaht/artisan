@@ -5,7 +5,7 @@ import browserHistory from 'react-router/lib/browserHistory'
 import UserService from './users/service'
 const users = new UserService()
 
-class Layout extends React.Component {
+export default class Layout extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -66,5 +66,3 @@ class Layout extends React.Component {
     )
   }
 }
-
-export default Layout
