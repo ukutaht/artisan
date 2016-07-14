@@ -1,5 +1,4 @@
 import React from 'react'
-import update from 'react/lib/update'
 
 import ProjectService from './service'
 const projects = new ProjectService()
@@ -24,10 +23,10 @@ export default class CollaboratorsSearch extends React.Component {
   addCollaborator() {
     this.props.addCollaborator(this.state.selectedUser)
       .then(() => {
-        this.setState(update(this.state, {
-          selectedUser: {$set: null},
-          query: {$set: ''}
-        }))
+        this.setState({
+          selectedUser: null,
+          query: ''
+        })
       })
   }
 
