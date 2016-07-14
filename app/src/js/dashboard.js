@@ -12,7 +12,7 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    projects.all((projects) => {
+    projects.all().then((projects) => {
       this.setState({projects: projects})
     })
   }

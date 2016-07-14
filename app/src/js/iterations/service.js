@@ -1,35 +1,23 @@
 import Api from '../api'
 
-class IterationService {
-  current(projectId, callback) {
-    Api.get(`/api/projects/${projectId}/iterations/current`, (res) => {
-      callback(res.body)
-    })
+export default class IterationService {
+  current(projectId) {
+    return Api.get(`/api/projects/${projectId}/iterations/current`)
   }
 
-  get(projectId, number, callback) {
-    Api.get(`/api/projects/${projectId}/iterations/${number}`, (res) => {
-      callback(res.body)
-    })
+  get(projectId, number) {
+    return Api.get(`/api/projects/${projectId}/iterations/${number}`)
   }
 
-  create(projectId, callback) {
-    Api.post(`/api/projects/${projectId}/iterations/create`, null, (res) => {
-      callback(res.body)
-    })
+  create(projectId) {
+    return Api.post(`/api/projects/${projectId}/iterations/create`)
   }
 
-  start(iterationId, callback) {
-    Api.post(`/api/iterations/${iterationId}/start`, null, (res) => {
-      callback(res.body)
-    })
+  start(iterationId) {
+    return Api.post(`/api/iterations/${iterationId}/start`)
   }
 
-  complete(iterationId, callback) {
-    Api.post(`/api/iterations/${iterationId}/complete`, null, (res) => {
-      callback(res.body)
-    })
+  complete(iterationId) {
+    return Api.post(`/api/iterations/${iterationId}/complete`)
   }
 }
-
-export default IterationService

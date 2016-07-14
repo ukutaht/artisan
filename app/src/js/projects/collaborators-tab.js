@@ -23,25 +23,29 @@ class ProjectCollaboratorsTab extends React.Component {
   }
 
   componentDidMount() {
-    projects.find(this.props.projectId, (project) => {
+    projects.find(this.props.projectId).then((project) => {
       this.setState({collaborators: project.collaborators})
     })
   }
 
   removeCollaborator(userId) {
-    projects.removeCollaborator(this.props.projectId, userId, () => {
-      this.removeCollaboratorFromState(userId)
-    })
+    projects
+      .removeCollaborator(this.props.projectId, userId)
+      .then(() => {
+        this.removeCollaboratorFromState(userId)
+      })
   }
 
   addCollaborator() {
-    projects.addCollaborator(this.props.projectId, this.state.selectedUser.id, () => {
-      this.setState(update(this.state, {
-        selectedUser: {$set: null},
-        collaborators: {$unshift: [this.state.selectedUser]},
-        query: {$set: ''}
-      }))
-    })
+    projects
+      .addCollaborator(this.props.projectId, this.state.selectedUser.id)
+      .then(() => {
+        this.setState(update(this.state, {
+          selectedUser: {$set: null},
+          collaborators: {$unshift: [this.state.selectedUser]},
+          query: {$set: ''}
+        }))
+      })
   }
 
   removeCollaboratorFromState(userId) {
@@ -75,11 +79,12 @@ class ProjectCollaboratorsTab extends React.Component {
       this.hideResults()
     }
 
-    projects.autocompleteCollaborators(this.props.projectId, e.target.value, (results) => {
-      this.setState({
-        searchResults: results
+    projects.autocompleteCollaborators(this.props.projectId, e.target.value)
+      .then((results) => {
+        this.setState({
+          searchResults: results
+        })
       })
-    })
   }
 
   onKeyDown(e) {

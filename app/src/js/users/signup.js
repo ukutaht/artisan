@@ -1,4 +1,5 @@
 import React from 'react'
+import browserHistory from 'react-router/lib/browserHistory'
 
 import UserService from './service'
 
@@ -48,8 +49,8 @@ class Signup extends React.Component {
     if (Object.keys(errors).length > 0) {
       this.setState({errors: errors})
     } else {
-      users.signup(this.getFormData(), (created) => {
-        console.log(created)
+      users.signup(this.getFormData()).then(() => {
+        browserHistory.push('/')
       })
     }
   }

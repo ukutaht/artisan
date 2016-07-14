@@ -21,7 +21,7 @@ class IterationView extends React.Component {
   }
 
   componentDidMount() {
-    iterations.current(this.projectId, (res) => {
+    iterations.current(this.projectId).then((res) => {
       this.setState({
         iteration: res.iteration,
         allIterations: res.all_iterations,
@@ -40,7 +40,7 @@ class IterationView extends React.Component {
   addStory(story) {
     const storyWithData = update(story, {project_id: {$set: this.projectId}})
 
-    stories.add(this.projectId, storyWithData, this.doAddStory.bind(this))
+    stories.add(this.projectId, storyWithData).then(this.doAddStory.bind(this))
   }
 
   doAddStory(story) {
@@ -50,7 +50,7 @@ class IterationView extends React.Component {
   }
 
   updateStory(story) {
-    stories.update(story, this.doUpdateStory.bind(this))
+    stories.update(story).then(this.doUpdateStory.bind(this))
   }
 
   doUpdateStory(story) {
@@ -63,7 +63,7 @@ class IterationView extends React.Component {
   }
 
   moveStory(storyId, toColumn, toIndex, done) {
-    stories.move(storyId, toColumn, toIndex, (updated) => {
+    stories.move(storyId, toColumn, toIndex).then((updated) => {
       done()
       this.doMoveStory(updated)
     })
@@ -76,7 +76,7 @@ class IterationView extends React.Component {
   }
 
   deleteStory(story) {
-    stories.del(story.id, () => {
+    stories.del(story.id).then(() => {
       const updated = update(this.state, {stories: {[story.state]: {$apply: (column) => {
         return column.filter((existing) => existing.id !== story.id);
       }}}})
@@ -86,7 +86,7 @@ class IterationView extends React.Component {
   }
 
   newIteration() {
-    iterations.create(this.projectId, (res) => {
+    iterations.create(this.projectId).then((res) => {
       this.setState({
         iteration: res.iteration,
         stories: res.stories
@@ -95,7 +95,7 @@ class IterationView extends React.Component {
   }
 
   startIteration() {
-    iterations.start(this.state.iteration.id, (updated) => {
+    iterations.start(this.state.iteration.id).then((updated) => {
       this.setState({
         iteration: updated,
       })
@@ -103,7 +103,7 @@ class IterationView extends React.Component {
   }
 
   completeIteration() {
-    iterations.complete(this.state.iteration.id, (res) => {
+    iterations.complete(this.state.iteration.id).then((res) => {
       this.setState({
         iteration: res.iteration,
         stories: res.stories
@@ -112,7 +112,7 @@ class IterationView extends React.Component {
   }
 
   changeIteration(number) {
-    iterations.get(this.projectId, number, (res) => {
+    iterations.get(this.projectId, number).then((res) => {
       this.setState({
         iteration: res.iteration,
         allIterations: res.all_iterations,

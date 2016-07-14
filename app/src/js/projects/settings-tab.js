@@ -12,14 +12,14 @@ class ProjectSettingsTab extends React.Component {
   }
 
   componentDidMount() {
-    projects.find(this.props.projectId, (project) => {
+    projects.find(this.props.projectId).then((project) => {
       this.setState(project)
     })
   }
 
   save(e) {
     e.preventDefault()
-    projects.update(this.state, (updated) => {
+    projects.update(this.state).then((updated) => {
       this.setState(updated)
     })
   }

@@ -1,29 +1,20 @@
 import Api from '../api'
 
 class StoryService {
-  update(story, callback) {
-    Api.put(`/api/stories/${story.id}`, {story: story}, (res) => {
-      callback(res.body)
-    })
+  update(story) {
+    return Api.put(`/api/stories/${story.id}`, {story: story})
   }
 
-  move(storyId, state, index, callback) {
-    const payload = {state: state, index: index}
-    Api.post(`/api/stories/${storyId}/move`, payload, (res) => {
-      callback(res.body)
-    })
+  move(storyId, state, index) {
+    return Api.post(`/api/stories/${storyId}/move`, {state: state, index: index})
   }
 
-  add(projectId, story, callback) {
-    Api.post('/api/stories', {story: story}, (res) => {
-      callback(res.body)
-    })
+  add(projectId, story) {
+    return Api.post('/api/stories', {story: story})
   }
 
-  del(storyId, callback) {
-    Api.del(`/api/stories/${storyId}`, (res) => {
-      callback(res.body)
-    })
+  del(storyId) {
+    return Api.del(`/api/stories/${storyId}`)
   }
 }
 

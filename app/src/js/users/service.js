@@ -1,18 +1,17 @@
 import Api from '../api'
 
+function saveToken(res) {
+  localStorage.setItem('token', res.token)
+  return res
+}
+
 class UserService {
-  signup(user, callback) {
-    Api.post('/api/users/signup', {user: user}, (res) => {
-      localStorage.setItem('token', res.body.token)
-      callback(res.body)
-    })
+  signup(user) {
+    return Api.post('/api/users/signup', {user: user}).then(saveToken)
   }
 
-  login(user, callback) {
-    Api.post('/api/users/login', user, (res) => {
-      localStorage.setItem('token', res.body.token)
-      callback(res.body)
-    })
+  login(user) {
+    return Api.post('/api/users/login', user).then(saveToken)
   }
 
   logout() {

@@ -23,7 +23,7 @@ class Login extends React.Component {
   onSubmit(e) {
     e.preventDefault()
 
-    users.login(this.getFormData(), () => {
+    users.login(this.getFormData()).then(() => {
       browserHistory.push('/')
     })
   }

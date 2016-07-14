@@ -1,47 +1,33 @@
 import Api from '../api'
 
 class ProjectService {
-  create(data, callback) {
-    Api.post('/api/projects', {project: data}, (res) => {
-      callback(res.body)
-    })
+  create(data) {
+    return Api.post('/api/projects', {project: data})
   }
 
-  all(callback) {
-    Api.get('/api/projects', (res) => {
-      callback(res.body)
-    })
+  all() {
+    return Api.get('/api/projects')
   }
 
-  find(id, callback) {
-    Api.get(`/api/projects/${id}`, (res) => {
-      callback(res.body)
-    })
+  find(id) {
+    return Api.get(`/api/projects/${id}`)
   }
 
-  update(project, callback) {
-    Api.put(`/api/projects/${project.id}`, {project: project}, (res) => {
-      callback(res.body)
-    })
+  update(project) {
+    return Api.put(`/api/projects/${project.id}`, {project: project})
   }
 
-  addCollaborator(projectId, userId, callback) {
-    Api.post(`/api/projects/${projectId}/collaborators`, {user_id: userId}, () => {
-      callback()
-    })
+  addCollaborator(projectId, userId) {
+    return Api.post(`/api/projects/${projectId}/collaborators`, {user_id: userId})
   }
 
-  removeCollaborator(projectId, userId, callback) {
-    Api.del(`/api/projects/${projectId}/collaborators/${userId}`, () => {
-      callback()
-    })
+  removeCollaborator(projectId, userId) {
+    return Api.del(`/api/projects/${projectId}/collaborators/${userId}`)
   }
 
-  autocompleteCollaborators(projectId, query, callback) {
+  autocompleteCollaborators(projectId, query) {
     const q = encodeURIComponent(query)
-    Api.get(`/api/projects/${projectId}/collaborators/autocomplete?q=${q}`, (res) => {
-      callback(res.body)
-    })
+    return Api.get(`/api/projects/${projectId}/collaborators/autocomplete?q=${q}`)
   }
 }
 
