@@ -6,6 +6,7 @@ defmodule Artisan.Projects.View do
 
   def render("project.json", %{project: project}) do
     Map.take(project, @fields)
+      |> assoc_collaborators(project)
   end
 
   def render("projects.json", %{projects: projects}) do
@@ -20,5 +21,12 @@ defmodule Artisan.Projects.View do
 
   def render("collaborators.json", %{users: users}) do
     Enum.map(users, fn(user) -> Map.take(user, @user_fields) end)
+  end
+
+  defp assoc_collaborators(map, project) do
+    case project.collaborators do
+      %Ecto.Association.NotLoaded{} -> map
+      users -> Map.put(map, :collaborators, render("collaborators.json", %{users: users}))
+    end
   end
 end

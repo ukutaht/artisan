@@ -15,13 +15,6 @@ defmodule Artisan.Projects.Controller do
     conn |> render("projects.json", projects: Projects.all(conn.assigns[:current_user]))
   end
 
-  def collaborators(conn, %{"id" => id}) do
-    {numeric_id, ""} = Integer.parse(id)
-    users = Projects.collaborators(numeric_id)
-    conn |>
-      render("collaborators.json", users: users)
-  end
-
   def add_collaborator(conn, %{"id" => id, "user_id" => user_id}) do
     {id, ""} = Integer.parse(id)
     Projects.add_collaborator(id, user_id)

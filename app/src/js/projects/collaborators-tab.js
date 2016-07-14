@@ -23,8 +23,8 @@ class ProjectCollaboratorsTab extends React.Component {
   }
 
   componentDidMount() {
-    projects.collaborators(this.props.projectId, (collaborators) => {
-      this.setState({collaborators: collaborators})
+    projects.find(this.props.projectId, (project) => {
+      this.setState({collaborators: project.collaborators})
     })
   }
 

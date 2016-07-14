@@ -4,6 +4,7 @@ defmodule Artisan.Project do
 
   schema "projects" do
     field :name
+    many_to_many :collaborators, Artisan.User, join_through: "project_users"
 
     timestamps
   end

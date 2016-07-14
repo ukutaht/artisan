@@ -25,7 +25,6 @@ defmodule Artisan.Router do
       post   "/",                               Controller, :create
       get    "/:id",                            Controller, :find
       put    "/:id",                            Controller, :update
-      get    "/:id/collaborators",              Controller, :collaborators
       post   "/:id/collaborators",              Controller, :add_collaborator
       delete "/:id/collaborators/:user_id",     Controller, :remove_collaborator
       get    "/:id/collaborators/autocomplete", Controller, :autocomplete_collaborators

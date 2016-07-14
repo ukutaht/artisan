@@ -25,12 +25,6 @@ class ProjectService {
     })
   }
 
-  collaborators(id, callback) {
-    Api.get(`/api/projects/${id}/collaborators`, (res) => {
-      callback(res.body)
-    })
-  }
-
   addCollaborator(projectId, userId, callback) {
     Api.post(`/api/projects/${projectId}/collaborators`, {user_id: userId}, () => {
       callback()

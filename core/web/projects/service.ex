@@ -18,17 +18,15 @@ defmodule Artisan.Projects do
   end
 
   def find(user_id, project_id) do
-    Repo.one(from p in projects_for(user_id),
-     where: p.project_id == ^project_id
+    collaborators = from(u in User,
+      join: pu in ProjectUser, on: u.id == pu.user_id,
+      order_by: pu.inserted_at,
+      select: u
     )
-  end
 
-  def collaborators(project_id) do
-    Repo.all(from pu in ProjectUser,
-     join: u in User, on: pu.user_id == u.id,
-     where: pu.project_id == ^project_id,
-     order_by: [desc: pu.inserted_at],
-     select: u
+    Repo.one(from p in projects_for(user_id),
+     where: p.id == ^project_id,
+     preload: [collaborators: ^collaborators]
     )
   end
 
@@ -81,8 +79,8 @@ defmodule Artisan.Projects do
   end
 
   defp projects_for(user_id) do
-    from(pu in ProjectUser,
-      join: p in Project, on: pu.project_id == p.id,
+    from(p in Project,
+      join: pu in ProjectUser, on: pu.project_id == p.id,
       where: pu.user_id == ^user_id,
       select: p
     )

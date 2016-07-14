@@ -37,8 +37,8 @@ defmodule Artisan.Projects.ControllerTest do
       |> post("/api/projects", %{project: @valid_project_params})
       |> json_response(200)
 
-    [found] = authenticated_conn(user["token"])
-      |> get("/api/projects/#{created["id"]}/collaborators")
+    %{"collaborators" => [found]} = authenticated_conn(user["token"])
+      |> get("/api/projects/#{created["id"]}")
       |> json_response(200)
 
     assert found["name"] == user["user"]["name"]
@@ -63,15 +63,21 @@ defmodule Artisan.Projects.ControllerTest do
       |> post("/api/projects", %{project: @valid_project_params})
       |> json_response(200)
 
+    user2 = create_user(email: "something@email.com")
+
     authenticated_conn(user["token"])
-      |> delete("/api/projects/#{created["id"]}/collaborators/#{user["user"]["id"]}")
+      |> post("/api/projects/#{created["id"]}/collaborators", %{user_id: user2["user"]["id"]})
       |> json_response(200)
 
-    collaborators = authenticated_conn(user["token"])
-      |> get("/api/projects/#{created["id"]}/collaborators")
+    authenticated_conn(user["token"])
+      |> delete("/api/projects/#{created["id"]}/collaborators/#{user2["user"]["id"]}")
       |> json_response(200)
 
-    assert collaborators == []
+    %{"collaborators" => collaborators} = authenticated_conn(user["token"])
+      |> get("/api/projects/#{created["id"]}")
+      |> json_response(200)
+
+    assert Enum.count(collaborators) == 1
   end
 
   test "adds collaborator to project", %{user: user} do
@@ -85,8 +91,8 @@ defmodule Artisan.Projects.ControllerTest do
       |> post("/api/projects/#{created["id"]}/collaborators", %{user_id: user2["user"]["id"]})
       |> json_response(200)
 
-    collaborators = authenticated_conn(user["token"])
-      |> get("/api/projects/#{created["id"]}/collaborators")
+    %{"collaborators" => collaborators} = authenticated_conn(user["token"])
+      |> get("/api/projects/#{created["id"]}")
       |> json_response(200)
 
     assert Enum.count(collaborators) == 2
