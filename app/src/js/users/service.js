@@ -5,7 +5,7 @@ function saveToken(res) {
   return res
 }
 
-class UserService {
+export default class UserService {
   signup(user) {
     return Api.post('/api/users/signup', {user: user}).then(saveToken)
   }
@@ -18,5 +18,3 @@ class UserService {
     localStorage.setItem('token', null)
   }
 }
-
-export default UserService
