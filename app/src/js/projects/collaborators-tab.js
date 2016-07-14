@@ -71,20 +71,20 @@ class ProjectCollaboratorsTab extends React.Component {
   queryChanged(e) {
     this.setState({
       query: e.target.value,
-      showResults: true,
       selectedUser: null
     })
 
     if (e.target.value.length < 1) {
       this.hideResults()
-    }
-
-    projects.autocompleteCollaborators(this.props.projectId, e.target.value)
-      .then((results) => {
-        this.setState({
-          searchResults: results
+    } else {
+      projects.autocompleteCollaborators(this.props.projectId, e.target.value)
+        .then((results) => {
+          this.setState({
+            searchResults: results,
+            showResults: true,
+          })
         })
-      })
+    }
   }
 
   onKeyDown(e) {
