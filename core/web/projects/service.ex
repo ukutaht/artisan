@@ -18,15 +18,9 @@ defmodule Artisan.Projects do
   end
 
   def find(user_id, project_id) do
-    collaborators = from(u in User,
-      join: pu in ProjectUser, on: u.id == pu.user_id,
-      order_by: pu.inserted_at,
-      select: u
-    )
-
     Repo.one(from p in projects_for(user_id),
      where: p.id == ^project_id,
-     preload: [collaborators: ^collaborators]
+     preload: :collaborators
     )
   end
 

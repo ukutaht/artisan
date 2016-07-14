@@ -5,6 +5,10 @@ import CollaboratorsSearch from './collaborators-search'
 import ProjectService from './service'
 const projects = new ProjectService()
 
+function userSort(users) {
+  users.sort((user1, user2) => user1.name > user2.name)
+}
+
 export default class CollaboratorsTab extends React.Component {
   constructor(props) {
     super(props)
@@ -15,6 +19,7 @@ export default class CollaboratorsTab extends React.Component {
 
   componentDidMount() {
     projects.find(this.props.projectId).then((project) => {
+      userSort(project.collaborators)
       this.setState({collaborators: project.collaborators})
     })
   }
@@ -31,9 +36,12 @@ export default class CollaboratorsTab extends React.Component {
     return projects
       .addCollaborator(this.props.projectId, user.id)
       .then(() => {
-        this.setState(update(this.state, {
+        const newState = update(this.state, {
           collaborators: {$unshift: [user]},
-        }))
+        })
+        userSort(newState.collaborators)
+
+        this.setState(newState)
       })
   }
 
