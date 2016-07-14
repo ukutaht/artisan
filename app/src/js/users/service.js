@@ -27,7 +27,7 @@ export default class UserService {
     return Api.post('/api/users/login', user).then(saveAuth)
   }
 
-  getCurrent() {
+  loadCurrent() {
     if (isLoggedIn() && currentUser) {
       return new Promise((resolve) => {
         resolve(currentUser)
@@ -38,6 +38,14 @@ export default class UserService {
       return new Promise((_resolve, reject) => {
         reject('Not logged in!')
       })
+    }
+  }
+
+  get current() {
+    if (isLoggedIn() && currentUser) {
+      return currentUser
+    } else {
+      throw 'User is either not logged in or loaded'
     }
   }
 

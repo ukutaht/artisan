@@ -2,8 +2,12 @@ import React from 'react'
 import update from 'react/lib/update'
 
 import CollaboratorsSearch from './collaborators-search'
+
 import ProjectService from './service'
 const projects = new ProjectService()
+
+import UserService from '../users/service'
+const users = new UserService()
 
 function userSort(users) {
   users.sort((user1, user2) => user1.name > user2.name)
@@ -53,14 +57,22 @@ export default class CollaboratorsTab extends React.Component {
     this.setState(updated)
   }
 
+  removeIcon(collaborator) {
+    if (collaborator.id === users.current.id) {
+      return null
+    } else {
+      return <i className="ion-close clickable pull-right right-padded-icon"
+         onClick={() => this.removeCollaborator(collaborator.id)}></i>
+    }
+  }
+
   collaboratorItem(collaborator) {
     return (
       <li className="block-list__item collaborator" key={collaborator.id}>
         {collaborator.name}
         <br />
         <small>{collaborator.email}</small>
-        <i className="ion-close clickable pull-right right-padded-icon"
-           onClick={() => this.removeCollaborator(collaborator.id)}></i>
+        {this.removeIcon(collaborator)}
       </li>
     )
   }
