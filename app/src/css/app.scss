@@ -10,17 +10,18 @@
 @import "board";
 @import "projects";
 @import "modal";
+@import "dropdown";
 
 .container {
   @include outer-container(80%);
 }
 
 .right-padded-icon {
-  padding-right: 5px;
+  padding-right: 0.5em;
 }
 
 .left-padded-icon {
-  padding-left: 5px;
+  padding-left: 0.5em;
 }
 
 .truncated-text {

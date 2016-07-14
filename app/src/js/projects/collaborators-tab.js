@@ -141,24 +141,24 @@ class ProjectCollaboratorsTab extends React.Component {
 
     return (
       <div className="dropdown">
-        <ul className="dropdown-menu">
+        <div className="dropdown__content collaborator-results">
           {
             this.state.searchResults.map((result, index) => {
-              const className = index === this.state.selectedIndex ? 'active' : ''
+              const active = index === this.state.selectedIndex ? 'active' : ''
 
               return (
-                <li
+                <a
                   key={result.id}
-                  className={className}
+                  className={`result ${active}`}
                   data-index={index}
                   onMouseOver={this.hoveringOverResult.bind(this)}
                   onClick={this.clickResult.bind(this)}>
                   {result.name} ({result.email})
-                </li>
+                </a>
               )
             })
           }
-        </ul>
+        </div>
       </div>
     )
   }

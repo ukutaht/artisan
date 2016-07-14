@@ -48,30 +48,3 @@ input:focus, textarea:focus {
     transform: translateX(-1px);
   }
 }
-
-.dropdown {
-  position: relative;
-}
-
-.dropdown-menu {
-  width: 80%;
-  position: absolute;
-  z-index: 1000;
-  min-width: 160px;
-  padding: $spacing-tiny 0;
-  margin: 0;
-  background-color: #fff;
-  border: 1px solid $border-grey;
-  box-shadow: 0 6px 12px rgba(0,0,0,.175);
-  line-height: $line-height * 1.25;
-
-  li {
-    cursor: pointer;
-    padding: $spacing-tiny $spacing-medium;
-
-    &.active {
-      background-color: $light-blue;
-      color: $inverted;
-    }
-  }
-}

@@ -4,23 +4,32 @@
   height: 60px;
   background: $darkest-grey;
   border-bottom: 1px solid $border-grey;
+  color: $inverted;
 
   &__brand {
-    transform: translateY(1em);
+    height: 100%;
+    float: left;
+    padding-top: 10px;
 
     img {
       width: 120px;
     }
   }
 
-  &__logout {
-    color: $inverted;
+  &__right {
+    height: 100%;
     float: right;
-    transform: translateY(1em);
-    cursor: pointer;
+    padding-top: 22px;
+  }
 
-    &:hover {
-      text-decoration: none;
+  &__username {
+    font-size: 16px;
+    cursor: pointer;
+    padding-bottom: 10px;
+
+    i {
+      position: absolute;
+      top: 1px;
     }
   }
 }

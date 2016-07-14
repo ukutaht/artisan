@@ -1,0 +1,40 @@
+.dropdown {
+  position: relative;
+
+  &__content {
+    background-color: $inverted;
+    border: 1px solid $border-grey;
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    line-height: $line-height * 1.25;
+    min-width: 160px;
+    position: absolute;
+    z-index: 9999;
+
+    a {
+      color: $darkest-grey;
+      text-decoration: none;
+      display: block;
+      cursor: pointer;
+      padding: $spacing-tiny $spacing-medium;
+      border-bottom: 1px solid #ebedef;
+    }
+
+    a:last-child {
+      border-bottom: none;
+    }
+
+    a:hover {
+      background-color: $light-grey;
+    }
+  }
+}
+
+.dropdown.hoverable {
+  .dropdown__content {
+    display: none;
+  }
+
+  &:hover .dropdown__content {
+    display: block;
+  }
+}

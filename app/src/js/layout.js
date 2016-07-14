@@ -21,7 +21,24 @@ class Layout extends React.Component {
             <Link to="/">
               <img src="/assets/images/artisan-logo.png" />
             </Link>
-            <a className="top-nav__logout" onClick={this.logout.bind(this)}>Logout</a>
+          </div>
+          <div className="top-nav__right">
+            <div className="dropdown hoverable">
+              <span className="top-nav__username">
+                Uku Taht
+                <i className="ion-chevron-down left-padded-icon" />
+              </span>
+              <div className="dropdown__content">
+                <a onClick={this.logout.bind(this)}>
+                  <i className="ion-android-exit right-padded-icon" />
+                  Logout
+                </a>
+                <a>
+                  <i className="ion-person right-padded-icon" />
+                  Profile
+                </a>
+              </div>
+            </div>
           </div>
         </nav>
 
