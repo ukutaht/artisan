@@ -1,7 +1,7 @@
 import React from 'react'
 import update from 'react/lib/update'
 
-import Pert from 'stories/pert'
+import pert from 'stories/pert'
 
 const largestAllowedEstimate = 9999999999999999999
 const ESCAPE = 27
@@ -88,7 +88,7 @@ class StoryModal extends React.Component {
 
       this.setState({
         [type]: newEstimate,
-        estimate: Pert.estimate(estimateData)
+        estimate: pert(estimateData)
       })
     }.bind(this)
   }

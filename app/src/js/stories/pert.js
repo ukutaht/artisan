@@ -1,17 +1,21 @@
-const Pert = {
-  weightedMean: function(estimate) {
-    return ((estimate.optimistic + (4 * estimate.realistic) + estimate.pessimistic) / 6);
-  },
-
-  standardDeviation: function(estimate) {
-    return ((estimate.pessimistic - estimate.optimistic) / 6);
-  },
-
-  estimate: function(estimate) {
-    let mean = this.weightedMean(estimate);
-    mean += (this.standardDeviation(estimate) * 2);
-    return (mean*4).toFixed(0)/4.0;
-  }
+function hasEstimate(estimates) {
+  return estimates.optimistic || estimates.realistic || estimates.pessimistic
 }
 
-export default Pert;
+function weightedMean(estimates) {
+  return ((estimates.optimistic + (4 * estimates.realistic) + estimates.pessimistic) / 6);
+}
+
+function standardDeviation(estimates) {
+  return ((estimates.pessimistic - estimates.optimistic) / 6);
+}
+
+export default function estimate(estimates) {
+  if (hasEstimate(estimates)) {
+    let mean = weightedMean(estimates);
+    mean += (standardDeviation(estimates) * 2);
+    return (mean*4).toFixed(0)/4.0;
+  } else {
+    return null;
+  }
+}
