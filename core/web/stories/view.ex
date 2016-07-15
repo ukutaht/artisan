@@ -2,6 +2,7 @@ defmodule Artisan.Stories.View do
   use Artisan.Web, :view
 
   @fields [:id, :acceptance_criteria, :project_id, :completed_in, :name, :state, :number, :estimate, :optimistic, :realistic, :pessimistic, :position, :tags]
+  @creator_fields [:id, :name, :email]
 
   @empty_states %{
     "backlog" => [],
@@ -19,6 +20,7 @@ defmodule Artisan.Stories.View do
 
   def render("story.json", %{story: story}) do
     Map.take(story, @fields)
+      |> associate_creator(story)
   end
 
   def render("stories.json", %{stories: stories}) do
@@ -27,5 +29,10 @@ defmodule Artisan.Stories.View do
 
   def render("invalid.json", %{story: story}) do
     Artisan.ErrorHelper.serialize_errors(story)
+  end
+
+  defp associate_creator(map, %{creator: creator}) do
+    creator = Map.take(creator, @creator_fields)
+    Map.put(map, :creator, creator)
   end
 end

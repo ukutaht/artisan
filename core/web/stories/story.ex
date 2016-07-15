@@ -15,6 +15,7 @@ defmodule Artisan.Story do
     field :tags, {:array, :string}, default: []
     field :project_id, :integer
     field :completed_in, :integer
+    belongs_to :creator, Artisan.User
 
     timestamps
   end
@@ -22,7 +23,7 @@ defmodule Artisan.Story do
   def new(story, attributes) do
     story
     |> cast(attributes, [:name, :acceptance_criteria, :estimate, :optimistic, :realistic, :pessimistic, :tags, :state, :project_id])
-    |> validate_required([:name, :project_id])
+    |> validate_required([:name, :project_id, :creator_id])
   end
 
   def edit(story, attributes) do

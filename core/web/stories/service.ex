@@ -7,18 +7,20 @@ defmodule Artisan.Stories do
     Repo.all(from s in Story,
       where: s.project_id == ^project_id,
       where: is_nil(s.completed_in),
-      order_by: s.position
+      order_by: s.position,
+      preload: :creator
     )
     |> Enum.group_by(&(&1.state))
   end
 
-  def create(project_id, attrs) do
-    changeset = %Story{number: next_number(project_id), position: 0, project_id: project_id}
+  def create(creator_id, project_id, attrs) do
+    changeset = %Story{number: next_number(project_id), position: 0, project_id: project_id, creator_id: creator_id}
       |> Story.new(attrs)
 
     if changeset.valid? do
       Ordering.vacate_position(project_id, 0, changeset.changes.state)
       Repo.insert(changeset)
+        |> preload_creator
     else
       {:error, changeset}
     end
@@ -28,6 +30,7 @@ defmodule Artisan.Stories do
     Repo.get(Story, id)
       |> Story.edit(attrs)
       |> Repo.update
+      |> preload_creator
   end
 
   def delete(id) do
@@ -76,4 +79,7 @@ defmodule Artisan.Stories do
       where: is_nil(s.completed_in)
     )
   end
+
+  defp preload_creator({:ok, story}), do: {:ok, Repo.preload(story, :creator)}
+  defp preload_creator({:error, changeset}), do: {:error, changeset}
 end

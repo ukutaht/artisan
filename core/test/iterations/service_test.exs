@@ -5,7 +5,8 @@ defmodule Artisan.IterationsTest do
 
   setup do
     {:ok, project} = Repo.insert(%Artisan.Project{name: "project"})
-    {:ok, %{project: project}}
+    {:ok, user} = Artisan.Users.create(%{"name" => "User", "email" => "user@email.com", "password" => "asdasd"})
+    {:ok, %{project: project, user: user}}
   end
 
   def create_iteration(project_id) do
@@ -40,17 +41,17 @@ defmodule Artisan.IterationsTest do
     assert updated.state == "completed"
   end
 
-  test "stories are marked when completing iteration", %{project: project} do
+  test "stories are marked when completing iteration", %{user: user, project: project} do
     iteration = create_iteration(project.id)
-    {:ok, completed} = Artisan.Stories.create(project.id, %{name: "name", state: "completed"})
+    {:ok, completed} = Artisan.Stories.create(user.id, project.id, %{name: "name", state: "completed"})
     Iterations.complete(iteration.id)
 
     assert Repo.get(Artisan.Story, completed.id).completed_in == iteration.id
   end
 
-  test "working stories are moved to ready when completing", %{project: project} do
+  test "working stories are moved to ready when completing", %{user: user, project: project} do
     iteration = create_iteration(project.id)
-    {:ok, working} = Artisan.Stories.create(project.id, %{name: "name", state: "working"})
+    {:ok, working} = Artisan.Stories.create(user.id, project.id, %{name: "name", state: "working"})
     Iterations.complete(iteration.id)
 
     assert Repo.get(Artisan.Story, working.id).state == "ready"
@@ -111,28 +112,28 @@ defmodule Artisan.IterationsTest do
     refute Enum.member?(all_iteration_ids, another_project_iteration.id)
   end
 
-  test "incomplete iteration includes incomplete stories", %{project: project} do
+  test "incomplete iteration includes incomplete stories", %{user: user, project: project} do
     create_iteration(project.id)
-    Artisan.Stories.create(project.id, %{name: "name", state: "ready"})
+    Artisan.Stories.create(user.id, project.id, %{name: "name", state: "ready"})
 
     %{stories: %{"ready" => ready}} = Iterations.current(project.id)
 
     assert Enum.count(ready) == 1
   end
 
-  test "incomplete iteration includes completed stories", %{project: project} do
+  test "incomplete iteration includes completed stories", %{user: user, project: project} do
     create_iteration(project.id)
-    Artisan.Stories.create(project.id, %{name: "name", state: "completed"})
+    Artisan.Stories.create(user.id, project.id, %{name: "name", state: "completed"})
 
     %{stories: %{"completed" => completed}} = Iterations.current(project.id)
 
     assert Enum.count(completed) == 1
   end
 
-  test "completed iteration only includes stories completed in that iteration", %{project: project} do
+  test "completed iteration only includes stories completed in that iteration", %{user: user, project: project} do
     iteration = create_iteration(project.id)
-    Artisan.Stories.create(project.id, %{name: "name", state: "completed"})
-    Artisan.Stories.create(project.id, %{name: "name", state: "working"})
+    Artisan.Stories.create(user.id, project.id, %{name: "name", state: "completed"})
+    Artisan.Stories.create(user.id, project.id, %{name: "name", state: "working"})
     Iterations.complete(iteration.id)
 
     %{stories: stories} = Iterations.current(project.id)

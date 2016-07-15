@@ -98,10 +98,12 @@ class StoryModal extends React.Component {
   }
 
   bottomSection() {
-    if (this.props.story.id) {
+    let {story} = this.props;
+
+    if (story.id) {
       return (
         <div>
-          <span>Created by Uku Taht on 2 Jan 2015</span>
+          <span>Created by {story.creator.name} on 2 Jan 2015</span>
           <a href="javascript://" className="pull-right clickable" onClick={this.props.onDelete}>Delete story</a>
         </div>
       )

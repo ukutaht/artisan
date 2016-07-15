@@ -3,7 +3,7 @@ defmodule Artisan.Stories.Controller do
   alias Artisan.Stories
 
   def create(conn, %{"story" => story_params}) do
-    case Stories.create(story_params["project_id"], story_params) do
+    case Stories.create(conn.assigns[:current_user], story_params["project_id"], story_params) do
       {:ok, created} ->
         broadcast(created.project_id, "add:story", Phoenix.View.render(Artisan.Stories.View, "story.json", story: created))
         conn |> render("story.json", story: created)
