@@ -12,13 +12,17 @@ defmodule Artisan.Iterations do
 
   def current(project_id) do
     iterations = all_for(project_id)
-    current = Enum.max_by(iterations, fn(i) -> i.number end)
 
-    %{
-      iteration: current,
-      stories: stories_for(current),
-      all_iterations: iterations
-    }
+    if Enum.empty?(iterations) do
+      nil
+    else
+      current = Enum.max_by(iterations, fn(i) -> i.number end)
+      %{
+        iteration: current,
+        stories: stories_for(current),
+        all_iterations: iterations
+      }
+    end
   end
 
   def get(project_id, number) do

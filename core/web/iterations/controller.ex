@@ -3,7 +3,10 @@ defmodule Artisan.Iterations.Controller do
   alias Artisan.Iterations
 
   def current(conn, %{"project_id" => project_id}) do
-    conn |> render("current.json", Iterations.current(project_id))
+    case Iterations.current(project_id) do
+      nil -> conn |> send_resp(404, "")
+      current -> conn |> render("current.json", current)
+    end
   end
 
   def get(conn, %{"project_id" => project_id, "number" => number}) do

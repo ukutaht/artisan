@@ -19,6 +19,13 @@ defmodule Artisan.Iterations.ControllerTest do
     assert res["iteration"]["state"] == "planning"
   end
 
+  test "404s when trying to get current iteration for nonexistent project", %{user: user} do
+    res = authenticated_conn(user["token"])
+      |> get("/api/projects/9999999/iterations/current")
+
+    assert res.status === 404
+  end
+
   test "gets a specific iteration", %{project: project, user: user} do
     created = authenticated_conn(user["token"])
       |> post("/api/projects/#{project["id"]}/iterations/create")

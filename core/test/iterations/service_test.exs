@@ -81,6 +81,10 @@ defmodule Artisan.IterationsTest do
     assert current.id == second.id
   end
 
+  test "current is nil for a project that does not exist" do
+    assert Iterations.current(-1) == nil
+  end
+
   test "current iteration has all iterations", %{project: project} do
     first = create_iteration(project.id)
     second = create_iteration(project.id)
