@@ -1,7 +1,10 @@
 exports.config = {
   files: {
     javascripts: {
-      joinTo: 'js/app.js'
+      joinTo: {
+        'js/app.js': [/^src\/js/, /^node_modules/],
+        'js/test.js': [/^test/, /^node_modules/],
+      }
     },
     stylesheets: {
       joinTo: 'css/app.css'
@@ -9,11 +12,12 @@ exports.config = {
   },
 
   conventions: {
-    assets: /^(src\/assets)/
+    assets: /^(src\/assets)/,
+    vendor: /^(node_modules|test)/
   },
 
   paths: {
-    watched: ['src'],
+    watched: ['src', 'test'],
     public: 'public'
   },
 
@@ -22,14 +26,13 @@ exports.config = {
       presets: ['es2015', 'react']
     },
     eslint: {
-      pattern: /^src\/.*\.js?$/,
-      warnOnly: false
+      pattern: /^src\/.*\.js?$/
     }
   },
 
   modules: {
     autoRequire: {
-      'js/app.js': ['src/js/app']
+      'js/app.js': ['app']
     },
     nameCleaner: (path) => {
       return path.replace(/^src\/js\//, '');

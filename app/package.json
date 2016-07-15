@@ -1,7 +1,8 @@
 {
   "scripts": {
     "watch": "node_modules/brunch/bin/brunch watch -j",
-    "server": "node server.js"
+    "server": "node server.js",
+    "test": "node_modules/karma/bin/karma start --auto-watch"
   },
   "devDependencies": {
     "babel-brunch": "^6.0.4",
@@ -16,7 +17,14 @@
     "eslint-plugin-react": "^5.2.2",
     "hapi": "^13.3.0",
     "inert": "^4.0.0",
+    "jasmine": "^2.4.1",
     "javascript-brunch": "~2.0.0",
+    "karma": "^1.1.1",
+    "karma-jasmine": "^1.0.2",
+    "karma-mocha-reporter": "^2.0.4",
+    "karma-phantomjs-launcher": "^1.0.1",
+    "karma-sourcemap-loader": "^0.3.7",
+    "react-addons-test-utils": "^15.2.1",
     "sass-brunch": "^2.6.0",
     "uglify-js-brunch": "~2.0.0"
   },

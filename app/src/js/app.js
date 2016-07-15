@@ -14,9 +14,7 @@ import Signup from 'users/signup'
 import Login from 'users/login'
 import NotFound from 'not_found'
 
-const mountNode = document.getElementById('mount')
-
-render((
+const router = (
   <Router history={browserHistory}>
     <Route path="/signup" component={Signup} />
     <Route path="/login" component={Login} />
@@ -29,4 +27,9 @@ render((
     </Route>
     <Route path="*" component={NotFound}/>
   </Router>
-), mountNode)
+)
+
+const mountNode = document.getElementById('mount')
+if (mountNode) {
+  render(router, mountNode)
+}
