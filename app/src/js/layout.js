@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'react-router/lib/Link'
 import browserHistory from 'react-router/lib/browserHistory'
 
-import UserService from './users/service'
+import UserService from 'users/service'
 const users = new UserService()
 
 export default class Layout extends React.Component {

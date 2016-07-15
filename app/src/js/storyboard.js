@@ -2,8 +2,8 @@ import React from 'react'
 import update from 'react/lib/update'
 import browserHistory from 'react-router/lib/browserHistory'
 
-import Column from './column'
-import StoryModal from './stories/modal'
+import Column from 'column'
+import StoryModal from 'stories/modal'
 
 const iterationColumns = {
   planning: ['backlog', 'ready'],

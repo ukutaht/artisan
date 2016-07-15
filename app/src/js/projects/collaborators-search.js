@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ProjectService from './service'
+import ProjectService from 'projects/service'
 const projects = new ProjectService()
 
 const UP_ARROW = 38

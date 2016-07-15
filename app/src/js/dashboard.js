@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'react-router/lib/Link'
 
-import ProjectService from './projects/service'
+import ProjectService from 'projects/service'
 
 const projects = new ProjectService()
 

@@ -1,10 +1,10 @@
 exports.config = {
   files: {
     javascripts: {
-      joinTo: "js/app.js"
+      joinTo: 'js/app.js'
     },
     stylesheets: {
-      joinTo: "css/app.css"
+      joinTo: 'css/app.css'
     }
   },
 
@@ -13,13 +13,13 @@ exports.config = {
   },
 
   paths: {
-    watched: ["src"],
-    public: "public"
+    watched: ['src'],
+    public: 'public'
   },
 
   plugins: {
     babel: {
-      presets: ["es2015", "react"]
+      presets: ['es2015', 'react']
     },
     eslint: {
       pattern: /^src\/.*\.js?$/,
@@ -29,7 +29,10 @@ exports.config = {
 
   modules: {
     autoRequire: {
-      "js/app.js": ["src/js/app"]
+      'js/app.js': ['src/js/app']
+    },
+    nameCleaner: (path) => {
+      return path.replace(/^src\/js\//, '');
     }
   },
 };

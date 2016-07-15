@@ -1,7 +1,7 @@
 import React from 'react'
 import update from 'react/lib/update'
 
-import ProjectService from './service'
+import ProjectService from 'projects/service'
 
 const projects = new ProjectService()
 

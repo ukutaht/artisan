@@ -1,7 +1,7 @@
 import React from 'react'
 import update from 'react/lib/update'
 
-import Pert from './pert'
+import Pert from 'stories/pert'
 
 const largestAllowedEstimate = 9999999999999999999
 const ESCAPE = 27

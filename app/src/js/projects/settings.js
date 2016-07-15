@@ -1,7 +1,7 @@
 import React from 'react'
 
-import ProjectSettingsTab from './settings-tab'
-import ProjectCollaboratorsTab from './collaborators-tab'
+import ProjectSettingsTab from 'projects/settings-tab'
+import ProjectCollaboratorsTab from 'projects/collaborators-tab'
 
 class ProjectSettings extends React.Component {
   constructor(props) {

@@ -1,4 +1,4 @@
-import Api from '../api'
+import Api from 'api'
 
 class ProjectService {
   create(data) {

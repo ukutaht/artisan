@@ -1,12 +1,12 @@
 import React from 'react'
 import update from 'react/lib/update'
 
-import CollaboratorsSearch from './collaborators-search'
+import CollaboratorsSearch from 'projects/collaborators-search'
 
-import ProjectService from './service'
+import ProjectService from 'projects/service'
 const projects = new ProjectService()
 
-import UserService from '../users/service'
+import UserService from 'users/service'
 const users = new UserService()
 
 function userSort(users) {

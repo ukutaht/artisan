@@ -1,7 +1,7 @@
 import React from 'react'
 import browserHistory from 'react-router/lib/browserHistory'
 
-import ProjectService from './service'
+import ProjectService from 'projects/service'
 
 const projects = new ProjectService()
 
