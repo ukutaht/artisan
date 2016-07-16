@@ -8,6 +8,7 @@ import browserHistory from 'react-router/lib/browserHistory'
 import Layout from 'layout'
 import Dashboard from 'dashboard'
 import NewProject from 'projects/new'
+import ProjectContainer from 'projects/container'
 import ProjectSettings from 'projects/settings'
 import ProjectSettingsTab from 'projects/settings-tab'
 import ProjectCollaboratorsTab from 'projects/collaborators-tab'
@@ -24,10 +25,12 @@ const router = (
     <Route path="/" component={Layout}>
       <IndexRoute component={Dashboard} />
       <Route path="projects/new" component={NewProject} />
-      <Route path="projects/:projectId" component={IterationView} />
-      <Route path="projects/:projectId/settings" component={ProjectSettings}>
-        <IndexRoute component={ProjectSettingsTab} />
-        <Route path="collaborators" component={ProjectCollaboratorsTab} />
+      <Route path="projects/:projectId" component={ProjectContainer}>
+        <IndexRoute component={IterationView} />
+        <Route path="settings" component={ProjectSettings}>
+          <IndexRoute component={ProjectSettingsTab} />
+          <Route path="collaborators" component={ProjectCollaboratorsTab} />
+        </Route>
       </Route>
     </Route>
     <Route path="*" component={NotFound}/>

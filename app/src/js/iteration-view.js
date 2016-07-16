@@ -12,7 +12,7 @@ const iterations = new IterationService()
 class IterationView extends React.Component {
   constructor(props) {
     super(props)
-    this.projectId = this.props.routeParams.projectId
+    this.projectId = props.project.id
     this.state = {
       iteration: null,
       allIterations: null,
