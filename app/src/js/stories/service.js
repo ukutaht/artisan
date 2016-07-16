@@ -9,7 +9,7 @@ class StoryService {
     return Api.post(`/api/stories/${storyId}/move`, {state: state, index: index})
   }
 
-  add(projectId, story) {
+  add(story) {
     return Api.post('/api/stories', {story: story})
   }
 

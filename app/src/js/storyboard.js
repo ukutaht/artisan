@@ -108,7 +108,7 @@ class StoryBoard extends React.Component {
         <nav className="board__nav">
           <ul className="board__nav__breadcrumb">
             <li>
-              <span>Faros</span>
+              <span>{this.props.project.name}</span>
             </li>
 
             <li>
@@ -124,8 +124,8 @@ class StoryBoard extends React.Component {
 
           <select className="board__nav__dropdown" onChange={this.changeView.bind(this)}>
             <option>Go to...</option>
-            <option value={`/projects/${this.props.projectId}`}>Story board</option>
-            <option value={`/projects/${this.props.projectId}/settings`}>Settings</option>
+            <option value={`/projects/${this.props.project.id}`}>Story board</option>
+            <option value={`/projects/${this.props.project.id}/settings`}>Settings</option>
           </select>
         </nav>
 
@@ -169,8 +169,7 @@ class StoryBoard extends React.Component {
   renderAddStoryModal() {
     if (this.state.addingStory) {
       const story = Object.assign({}, newStory, {
-        state: this.state.visibleColumns[0],
-        project_id: this.props.projectId,
+        state: this.state.visibleColumns[0]
       })
 
       return (
