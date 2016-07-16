@@ -42,6 +42,7 @@ defmodule Artisan.StoryControllerTest do
     assert res["pessimistic"] == 2
     assert res["tags"] == ["bug"]
     assert res["acceptance_criteria"] == "Acceptance criteria"
+    assert res["created_at"] != nil
     assert res["creator"] == user["user"]
   end
 

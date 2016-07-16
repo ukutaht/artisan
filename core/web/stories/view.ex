@@ -21,6 +21,7 @@ defmodule Artisan.Stories.View do
   def render("story.json", %{story: story}) do
     Map.take(story, @fields)
       |> associate_creator(story)
+      |> format_created_at(story)
   end
 
   def render("stories.json", %{stories: stories}) do
@@ -34,5 +35,9 @@ defmodule Artisan.Stories.View do
   defp associate_creator(map, %{creator: creator}) do
     creator = Map.take(creator, @creator_fields)
     Map.put(map, :creator, creator)
+  end
+
+  defp format_created_at(map, %{inserted_at: timestamp}) do
+    Map.put(map, :created_at, timestamp)
   end
 end

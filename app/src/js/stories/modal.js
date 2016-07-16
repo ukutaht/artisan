@@ -1,5 +1,6 @@
 import React from 'react'
 import update from 'react/lib/update'
+import fecha from 'fecha'
 
 import pert from 'stories/pert'
 
@@ -18,7 +19,7 @@ function splitTags(tags) {
 
 class StoryModal extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       name: props.story.name,
       number: props.story.number,
@@ -94,16 +95,18 @@ class StoryModal extends React.Component {
   }
 
   displayEstimate(estimate) {
-    return this.state[estimate] == null ? '' : this.state[estimate].toFixed()
+    return this.state[estimate] || ''
   }
 
   bottomSection() {
     const {story} = this.props;
 
     if (story.id) {
+      const date = new Date(story.created_at)
+      const formattedDate = fecha.format(date, 'mediumDate')
       return (
         <div>
-          <span>Created by {story.creator.name} on 2 Jan 2015</span>
+          <span>Created by {story.creator.name} on {formattedDate}</span>
           <a href="javascript://" className="pull-right clickable" onClick={this.props.onDelete}>Delete story</a>
         </div>
       )
