@@ -33,7 +33,7 @@ const newStory = {
   tags: [],
 }
 
-class StoryBoard extends React.Component {
+export default class StoryBoard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -243,5 +243,3 @@ class StoryBoard extends React.Component {
   }
 
 }
-
-export default StoryBoard
