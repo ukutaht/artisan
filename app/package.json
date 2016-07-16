@@ -5,6 +5,7 @@
     "lint": "node_modules/eslint/bin/eslint.js src/js"
   },
   "devDependencies": {
+    "auto-reload-brunch": "^2.7.1",
     "babel-brunch": "^6.0.4",
     "babel-preset-react": "^6.5.0",
     "bourbon": "^4.2.7",
