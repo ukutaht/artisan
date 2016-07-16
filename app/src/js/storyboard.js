@@ -167,9 +167,12 @@ class StoryBoard extends React.Component {
   }
 
   renderAddStoryModal() {
-    const story = update(newStory, {state: {$set: this.state.visibleColumns[0]}})
-
     if (this.state.addingStory) {
+      const story = Object.assign({}, newStory, {
+        state: this.state.visibleColumns[0],
+        project_id: this.props.projectId,
+      })
+
       return (
         <StoryModal story={story}
                     onClose={this.closeAddStory.bind(this)}
