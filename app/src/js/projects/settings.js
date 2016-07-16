@@ -2,15 +2,7 @@ import React from 'react'
 import Link from 'react-router/lib/Link'
 import update from 'react/lib/update'
 
-import ProjectService from 'projects/service'
-const projects = new ProjectService()
-
-function nameSort(users) {
-  users.sort((user1, user2) => user1.name > user2.name)
-}
-
-
-class ProjectSettings extends React.Component {
+export default class ProjectSettings extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -49,5 +41,3 @@ class ProjectSettings extends React.Component {
     )
   }
 }
-
-export default ProjectSettings
