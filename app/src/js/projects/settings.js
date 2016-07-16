@@ -2,11 +2,7 @@ import React from 'react'
 import Link from 'react-router/lib/Link'
 import update from 'react/lib/update'
 
-import ProjectSettingsTab from 'projects/settings-tab'
-import ProjectCollaboratorsTab from 'projects/collaborators-tab'
-
 import ProjectService from 'projects/service'
-
 const projects = new ProjectService()
 
 function nameSort(users) {

@@ -98,7 +98,7 @@ class StoryModal extends React.Component {
   }
 
   bottomSection() {
-    let {story} = this.props;
+    const {story} = this.props;
 
     if (story.id) {
       return (
