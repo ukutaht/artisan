@@ -38,4 +38,8 @@ exports.config = {
       return path.replace(/^src\/js\//, '');
     }
   },
+
+  server: {
+    port: 4001,
+  }
 };

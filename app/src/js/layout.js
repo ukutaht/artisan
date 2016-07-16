@@ -36,7 +36,7 @@ export default class Layout extends React.Component {
         <nav className="top-nav">
           <div className="top-nav__brand">
             <Link to="/">
-              <img src="/assets/images/artisan-logo.png" />
+              <img src="/images/artisan-logo.png" />
             </Link>
           </div>
           <div className="top-nav__right">
