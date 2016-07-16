@@ -1,27 +1,19 @@
 import React from 'react'
 import update from 'react/lib/update'
 
-import ProjectService from 'projects/service'
-
-const projects = new ProjectService()
-
-
 class ProjectSettingsTab extends React.Component {
   constructor(props) {
     super(props)
+    this.state = props.project
   }
 
-  componentDidMount() {
-    projects.find(this.props.projectId).then((project) => {
-      this.setState(project)
-    })
+  componentWillReceiveProps(newProps) {
+    this.state = newProps.project
   }
 
   save(e) {
     e.preventDefault()
-    projects.update(this.state).then((updated) => {
-      this.setState(updated)
-    })
+    this.props.updateProject(this.state)
   }
 
   nameChanged(event) {
@@ -29,8 +21,6 @@ class ProjectSettingsTab extends React.Component {
   }
 
   render() {
-    if (!this.state) return null;
-
     return (
       <form onSubmit={this.save.bind(this)}>
         <h2>Settings</h2>

@@ -9,6 +9,8 @@ import Layout from 'layout'
 import Dashboard from 'dashboard'
 import NewProject from 'projects/new'
 import ProjectSettings from 'projects/settings'
+import ProjectSettingsTab from 'projects/settings-tab'
+import ProjectCollaboratorsTab from 'projects/collaborators-tab'
 import IterationView from 'iteration-view'
 import Signup from 'users/signup'
 import Login from 'users/login'
@@ -23,7 +25,10 @@ const router = (
       <IndexRoute component={Dashboard} />
       <Route path="projects/new" component={NewProject} />
       <Route path="projects/:projectId" component={IterationView} />
-      <Route path="projects/:projectId/settings" component={ProjectSettings} />
+      <Route path="projects/:projectId/settings" component={ProjectSettings}>
+        <IndexRoute component={ProjectSettingsTab} />
+        <Route path="collaborators" component={ProjectCollaboratorsTab} />
+      </Route>
     </Route>
     <Route path="*" component={NotFound}/>
   </Router>
