@@ -62,6 +62,10 @@ export default class Layout extends React.Component {
         <main className="container">
           {this.props.children}
         </main>
+
+        <footer>
+          Copyright {(new Date()).getFullYear()} © 8th Light, Inc
+        </footer>
       </div>
     )
   }
