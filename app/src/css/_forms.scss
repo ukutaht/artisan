@@ -23,6 +23,7 @@ input, textarea {
 input, select, textarea {
   margin-top: $spacing-tiny;
   margin-bottom: $spacing-tiny;
+  border-radius: 3px;
 }
 
 input {
