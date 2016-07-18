@@ -5,6 +5,7 @@ defmodule Artisan.User do
   schema "users" do
     field :name
     field :email
+    field :avatar
     field :password_hash
     field :password, :string, virtual: true
 
@@ -28,7 +29,7 @@ defmodule Artisan.User do
 
   def edit(user, attributes) do
     user
-    |> cast(attributes, [:name, :email])
+    |> cast(attributes, [:name, :email, :avatar])
     |> validate_required([:name, :email])
     |> unique_constraint(:email)
   end

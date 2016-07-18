@@ -29,7 +29,8 @@ export default class Avatar extends React.Component {
     return this.state.userName !== ''
   }
 
-  change() {
+  change(e) {
+    e.preventDefault()
     const {selectedSocial, userName} = this.state
 
     let url = '';

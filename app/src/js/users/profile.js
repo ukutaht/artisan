@@ -17,8 +17,8 @@ export default class Profile extends React.Component {
   onSubmit(e) {
     e.preventDefault()
     users.updateProfile(this.state.user)
-      .then((res) => {
-        console.log(res)
+      .then(() => {
+        this.setState({user: users.current})
       })
   }
 

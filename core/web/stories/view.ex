@@ -33,7 +33,7 @@ defmodule Artisan.Stories.View do
   end
 
   defp associate_creator(map, %{creator: creator}) do
-    creator = Map.take(creator, @creator_fields)
+    creator = Artisan.Users.View.render("user.json", user: creator)
     Map.put(map, :creator, creator)
   end
 

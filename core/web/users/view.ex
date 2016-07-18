@@ -1,7 +1,7 @@
 defmodule Artisan.Users.View do
   use Artisan.Web, :view
 
-  @fields [:id, :name, :email]
+  @fields [:id, :name, :email, :avatar]
 
   def render("authenticated.json", %{user: user, token: token}) do
     %{

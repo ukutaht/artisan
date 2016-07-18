@@ -30,10 +30,10 @@ defmodule Artisan.Users.ControllerTest do
       |> json_response(200)
 
     updated = authenticated_conn(created["token"])
-      |> put("/api/users/current", %{name: "New Name"})
+      |> put("/api/users/current", %{avatar: "avatar.com"})
       |> json_response(200)
 
-    assert updated["name"] == "New Name"
+    assert updated["avatar"] == "avatar.com"
   end
 
   test "updating with invalid params is a 400 BAD REQUEST" do
