@@ -1,7 +1,7 @@
 import Api from 'api'
 
-
 let currentUser = null
+let subscribers = []
 
 function saveAuth(res) {
   localStorage.setItem('token', res.token)
@@ -27,6 +27,11 @@ export default class UserService {
     return Api.post('/api/users/login', user).then(saveAuth)
   }
 
+  logout() {
+    localStorage.setItem('token', null)
+    currentUser = null;
+  }
+
   loadCurrent() {
     if (isLoggedIn() && currentUser) {
       return new Promise((resolve) => {
@@ -50,11 +55,18 @@ export default class UserService {
   }
 
   updateProfile(attrs) {
-    return Api.put('/api/users/current', attrs).then(saveUser)
+    return Api.put('/api/users/current', attrs)
+      .then(saveUser)
+      .then(this.notifySubscribers.bind(this))
   }
 
-  logout() {
-    localStorage.setItem('token', null)
-    currentUser = null;
+  subscribeToChanges(callback) {
+    subscribers.push(callback)
+  }
+
+  notifySubscribers() {
+    for (let callback of subscribers) {
+      callback(currentUser)
+    }
   }
 }

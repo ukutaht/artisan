@@ -21,6 +21,10 @@ export default class Layout extends React.Component {
       .catch(() => {
         browserHistory.push('/login')
       })
+
+    users.subscribeToChanges((updated) => {
+      this.setState({currentUser: updated})
+    })
   }
 
   logout() {
