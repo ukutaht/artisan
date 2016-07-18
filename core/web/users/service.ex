@@ -12,6 +12,12 @@ defmodule Artisan.Users do
       |> Repo.insert
   end
 
+  def update(id, attrs) do
+    Repo.get(User, id)
+      |> User.edit(attrs)
+      |> Repo.update
+  end
+
   def login(email, password) do
     user = Repo.one(from u in User,
       where: u.email == ^email

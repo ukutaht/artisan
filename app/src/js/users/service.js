@@ -49,6 +49,10 @@ export default class UserService {
     }
   }
 
+  updateProfile(attrs) {
+    return Api.put('/api/users/current', attrs).then(saveUser)
+  }
+
   logout() {
     localStorage.setItem('token', null)
     currentUser = null;

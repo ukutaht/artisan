@@ -25,4 +25,11 @@ defmodule Artisan.User do
     |> validate_length(:password, min: 6)
     |> cast(%{password_hash: hash}, [:password_hash])
   end
+
+  def edit(user, attributes) do
+    user
+    |> cast(attributes, [:name, :email])
+    |> validate_required([:name, :email])
+    |> unique_constraint(:email)
+  end
 end

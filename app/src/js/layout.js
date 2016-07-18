@@ -46,10 +46,10 @@ export default class Layout extends React.Component {
                 <i className="ion-chevron-down left-padded-icon" />
               </span>
               <div className="dropdown__content">
-                <a>
+                <Link to="/profile">
                   <i className="ion-person right-padded-icon" />
                   Profile
-                </a>
+                </Link>
                 <a onClick={this.logout.bind(this)}>
                   <i className="ion-android-exit right-padded-icon" />
                   Logout

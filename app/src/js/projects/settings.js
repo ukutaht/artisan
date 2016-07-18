@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'react-router/lib/Link'
-import update from 'react/lib/update'
 
 export default class ProjectSettings extends React.Component {
   constructor(props) {

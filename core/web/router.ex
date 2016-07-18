@@ -22,6 +22,7 @@ defmodule Artisan.Router do
 
     scope "/users", Users do
       get "/current", Controller, :current
+      put "/current", Controller, :update_profile
     end
 
     scope "/projects", Projects do

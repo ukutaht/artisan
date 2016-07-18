@@ -29,7 +29,16 @@ defmodule Artisan.Users.Controller do
     end
   end
 
-  defp invalid(conn, %{errors: errors}) do
-    conn |> put_status(400) |> json(%{errors: Enum.into(errors, %{})})
+  def update_profile(conn, params) do
+    case Users.update(conn.assigns[:current_user], params) do
+      {:ok, updated} ->
+        conn |> render("user.json", user: updated)
+      {:error, changeset} ->
+        conn |> invalid(changeset)
+    end
+  end
+
+  defp invalid(conn, user) do
+    conn |> put_status(400) |> render("invalid.json", user: user)
   end
 end

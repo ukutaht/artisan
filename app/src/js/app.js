@@ -13,6 +13,7 @@ import ProjectSettings from 'projects/settings'
 import ProjectSettingsTab from 'projects/settings-tab'
 import ProjectCollaboratorsTab from 'projects/collaborators-tab'
 import IterationView from 'iteration-view'
+import Profile from 'users/profile'
 import Signup from 'users/signup'
 import Login from 'users/login'
 import NotFound from 'not_found'
@@ -24,6 +25,7 @@ const router = (
     <Route path="/404" component={NotFound}/>
     <Route path="/" component={Layout}>
       <IndexRoute component={Dashboard} />
+      <Route path="profile" component={Profile} />
       <Route path="projects/new" component={NewProject} />
       <Route path="projects/:projectId" component={ProjectContainer}>
         <IndexRoute component={IterationView} />

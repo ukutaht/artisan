@@ -17,6 +17,36 @@ defmodule Artisan.Users.ControllerTest do
     assert res["token"] != nil
   end
 
+  test "creating with invalid params is a 400 BAD REQUEST" do
+    res = build_conn()
+      |> post("/api/users/signup", %{user: %{name: "", password: "blah"}})
+
+    assert res.status == 400
+  end
+
+  test "allows user to update profile" do
+    created = build_conn()
+      |> post("/api/users/signup", %{user: @valid_user})
+      |> json_response(200)
+
+    updated = authenticated_conn(created["token"])
+      |> put("/api/users/current", %{name: "New Name"})
+      |> json_response(200)
+
+    assert updated["name"] == "New Name"
+  end
+
+  test "updating with invalid params is a 400 BAD REQUEST" do
+    created = build_conn()
+      |> post("/api/users/signup", %{user: @valid_user})
+      |> json_response(200)
+
+    res = authenticated_conn(created["token"])
+      |> put("/api/users/current", %{name: ""})
+
+    assert res.status == 400
+  end
+
   test "logs in an user" do
     build_conn()
       |> post("/api/users/signup", %{user: @valid_user})
