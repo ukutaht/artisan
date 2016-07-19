@@ -1,5 +1,6 @@
 import React from 'react'
 
+import Avatar from 'users/avatar'
 import ProjectService from 'projects/service'
 const projects = new ProjectService()
 
@@ -115,6 +116,7 @@ export default class CollaboratorsSearch extends React.Component {
                   data-index={index}
                   onMouseOver={this.hoveringOverResult.bind(this)}
                   onClick={this.clickResult.bind(this)}>
+                  <Avatar src={result.avatar} size={16} />
                   {result.name} ({result.email})
                 </a>
               )

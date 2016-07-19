@@ -14,15 +14,27 @@
 }
 
 .collaborator {
-  padding-left: 10px;
+  padding-left: $spacing-small;
 
-  i {
+  .avatar {
+    float: left;
+    margin-right: $spacing-small;
+    transform: translateY(3px);
+  }
+
+  .ion-close {
     transform: translateY(-8px);
   }
 }
 
 .collaborator-results {
   width: 78%;
+
+  .result .avatar {
+    float: left;
+    transform: translateY(5px);
+    margin-right: $spacing-tiny;
+  }
 
   .result:hover {
     background-color: unset;

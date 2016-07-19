@@ -2,6 +2,7 @@ import React from 'react'
 
 import CollaboratorsSearch from 'projects/collaborators-search'
 
+import Avatar from 'users/avatar'
 import UserService from 'users/service'
 const users = new UserService()
 
@@ -18,6 +19,7 @@ export default class CollaboratorsTab extends React.Component {
   collaboratorItem(collaborator) {
     return (
       <li className="block-list__item collaborator" key={collaborator.id}>
+        <Avatar src={collaborator.avatar} size={35} />
         {collaborator.name}
         <br />
         <small>{collaborator.email}</small>
