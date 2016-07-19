@@ -1,21 +1,17 @@
 import Api from 'api'
 
-class StoryService {
-  update(story) {
-    return Api.put(`/api/stories/${story.id}`, {story: story})
-  }
-
-  move(storyId, state, index) {
-    return Api.post(`/api/stories/${storyId}/move`, {state: state, index: index})
-  }
-
-  add(story) {
-    return Api.post('/api/stories', {story: story})
-  }
-
-  del(storyId) {
-    return Api.del(`/api/stories/${storyId}`)
-  }
+export function update(story) {
+  return Api.put(`/api/stories/${story.id}`, {story: story})
 }
 
-export default StoryService
+export function move(storyId, state, index) {
+  return Api.post(`/api/stories/${storyId}/move`, {state: state, index: index})
+}
+
+export function add(story) {
+  return Api.post('/api/stories', {story: story})
+}
+
+export function del(storyId) {
+  return Api.del(`/api/stories/${storyId}`)
+}

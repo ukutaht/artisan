@@ -74,7 +74,7 @@ class Column extends React.Component {
           {
             this.props.stories.map((story) => {
               return <StoryCard
-                key={story.number}
+                key={story.id}
                 story={story}
                 onClick={this.props.onStoryClick}
               />

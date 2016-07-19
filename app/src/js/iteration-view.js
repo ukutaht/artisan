@@ -1,13 +1,10 @@
 import React from 'react'
 import update from 'react/lib/update'
 
-import StoryService from 'stories/service'
-import IterationService from 'iterations/service'
 import StoryBoard from 'storyboard'
 import BoardSocket from 'board-socket'
-
-const stories = new StoryService()
-const iterations = new IterationService()
+import * as iterations from 'iterations/service'
+import * as stories from 'stories/service'
 
 class IterationView extends React.Component {
   constructor(props) {
@@ -55,7 +52,7 @@ class IterationView extends React.Component {
   doUpdateStory(story) {
     this.setState(
       update(this.state, {stories: {[story.state]: {$apply: (column) => {
-        const index = column.findIndex((existing) => existing.number === story.number)
+        const index = column.findIndex((existing) => existing.id === story.id)
         return update(column, {[index]: {$set: story}})
       }}}})
     )

@@ -3,7 +3,7 @@ exports.config = {
     javascripts: {
       joinTo: {
         'js/app.js': [/^src\/js/, /^node_modules/],
-        'js/test.js': [/^test/, /^node_modules/],
+        'js/test.js': [/^test/, /^src\/js/, /^node_modules/],
       }
     },
     stylesheets: {
@@ -13,7 +13,7 @@ exports.config = {
 
   conventions: {
     assets: /^(src\/assets)/,
-    vendor: /^(node_modules|test)/
+    vendor: /^(node_modules)/
   },
 
   paths: {
@@ -32,7 +32,8 @@ exports.config = {
 
   modules: {
     autoRequire: {
-      'js/app.js': ['app']
+      'js/app.js': ['app'],
+      'js/test.js': ['test/run-tests']
     },
     nameCleaner: (path) => {
       return path.replace(/^src\/js\//, '');
