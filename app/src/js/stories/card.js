@@ -3,10 +3,6 @@ import React from 'react'
 import Avatar from 'users/avatar'
 
 class Card extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   onClick() {
     this.props.onClick(this.props.story)
   }

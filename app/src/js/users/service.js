@@ -1,7 +1,7 @@
 import Api from 'api'
 
 let currentUser = null
-let subscribers = []
+const subscribers = []
 
 function saveAuth(res) {
   localStorage.setItem('token', res.token)
@@ -65,7 +65,7 @@ export default class UserService {
   }
 
   notifySubscribers() {
-    for (let callback of subscribers) {
+    for (const callback of subscribers) {
       callback(currentUser)
     }
   }
