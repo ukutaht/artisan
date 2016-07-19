@@ -43,7 +43,12 @@
 
   &__body {
     padding: $spacing-medium;
-    padding-bottom: $spacing-small;
+    padding-bottom: 0;
+  }
+
+  &__footer {
+    padding: $spacing-small $spacing-medium;
+    min-height: $line-height + $spacing-medium;
   }
 }
 
@@ -60,6 +65,10 @@
     border-top: 1px solid $border-grey;
     margin-top: $spacing-small;
     @include clearfix;
+
+    .estimate-form__right {
+      transform: translateX($spacing-small);
+    }
   }
 
   &__left {

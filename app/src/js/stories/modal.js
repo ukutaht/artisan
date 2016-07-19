@@ -107,7 +107,7 @@ class StoryModal extends React.Component {
       return (
         <div>
           <span>Created by {story.creator.name} on {formattedDate}</span>
-          <a href="javascript://" className="pull-right clickable" onClick={this.props.onDelete}>Delete story</a>
+          <a href="javascript://" className="pull-right clickable text-red" onClick={this.props.onDelete}>Delete story</a>
         </div>
       )
     }
@@ -131,7 +131,6 @@ class StoryModal extends React.Component {
 
                   <label>Acceptance criteria</label>
                   <textarea rows="15" value={this.state.acceptance_criteria} onChange={this.acceptanceCriteriaChanged.bind(this)}></textarea>
-                  {this.bottomSection()}
                 </div>
                 <div className="four-columns story-right">
                   <div className="estimate-form">
@@ -171,6 +170,11 @@ class StoryModal extends React.Component {
                   <button className="button primary save-story-button">{this.props.buttonText}</button>
                 </div>
               </form>
+            </div>
+            <div className="modal__footer row">
+              <div className="eight-columns">
+                {this.bottomSection()}
+              </div>
             </div>
           </div>
         </div>

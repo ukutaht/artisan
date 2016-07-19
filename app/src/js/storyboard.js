@@ -107,42 +107,44 @@ export default class StoryBoard extends React.Component {
 
   render() {
     return (
-      <div className="board">
-        <nav className="board__nav">
-          <ul className="board__nav__breadcrumb">
-            <li>
-              <span>{this.props.project.name}</span>
-            </li>
+      <div>
+        <div className="board">
+          <nav className="board__nav">
+            <ul className="board__nav__breadcrumb">
+              <li>
+                <span>{this.props.project.name}</span>
+              </li>
 
-            <li>
-              <select value={this.iterationRoute(this.props.iteration.number)} onChange={this.changeView}>
-                {
-                  this.props.allIterations.map((iteration) => {
-                    return <option key={iteration.number} value={this.iterationRoute(iteration.number)}>Iteration {iteration.number}</option>
-                  })
-                }
-              </select>
-            </li>
-          </ul>
+              <li>
+                <select value={this.iterationRoute(this.props.iteration.number)} onChange={this.changeView}>
+                  {
+                    this.props.allIterations.map((iteration) => {
+                      return <option key={iteration.number} value={this.iterationRoute(iteration.number)}>Iteration {iteration.number}</option>
+                    })
+                  }
+                </select>
+              </li>
+            </ul>
 
-          <select className="board__nav__dropdown" onChange={this.changeView}>
-            <option>Go to...</option>
-            <option value={`/projects/${this.props.project.id}`}>Story board</option>
-            <option value={`/projects/${this.props.project.id}/settings`}>Settings</option>
-          </select>
-        </nav>
+            <select className="board__nav__dropdown" onChange={this.changeView}>
+              <option>Go to...</option>
+              <option value={`/projects/${this.props.project.id}`}>Story board</option>
+              <option value={`/projects/${this.props.project.id}/settings`}>Settings</option>
+            </select>
+          </nav>
 
-        <div className="board__actions">
-          <div className="board__actions__left">
-            {this.renderBacklogLink()}
+          <div className="board__actions">
+            <div className="board__actions__left">
+              {this.renderBacklogLink()}
+            </div>
+
+            <div className="board__actions__right">
+              {this.renderActions()}
+            </div>
           </div>
 
-          <div className="board__actions__right">
-            {this.renderActions()}
-          </div>
+          {this.renderColumns()}
         </div>
-
-        {this.renderColumns()}
         {this.renderAddStoryModal()}
         {this.renderEditStoryModal()}
       </div>
