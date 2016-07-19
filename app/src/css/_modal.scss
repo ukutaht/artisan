@@ -1,5 +1,5 @@
 .modal-container {
-	position: fixed;
+	position: absolute;
 	top: 0;
 	right: 0;
 	bottom: 0;
@@ -16,19 +16,13 @@
   background: white;
   border: 1px solid $border-grey;
 
-  width: 90%;
+  width: 100%;
 
   @include media($tablet) {
-    width: 85%;
+    width: 90%;
   }
 
-  @include media($desk) {
-    width: 75%;
-  }
-
-  @include media($large-desk) {
-    width: 960px;
-  }
+  max-width: 850px;
 
   &__header {
     border-bottom: 1px solid $border-grey;
