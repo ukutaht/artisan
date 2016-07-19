@@ -1,9 +1,5 @@
 import Api from 'api'
 
-export function current(projectId) {
-  return Api.get(`/api/projects/${projectId}/iterations/current`)
-}
-
 export function get(projectId, number) {
   return Api.get(`/api/projects/${projectId}/iterations/${number}`)
 }

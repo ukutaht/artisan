@@ -1,7 +1,7 @@
 {
   "scripts": {
     "server": "node_modules/brunch/bin/brunch watch --server -j",
-    "test": "node_modules/karma/bin/karma start --auto-watch",
+    "test": "node_modules/karma/bin/karma start --single-run",
     "lint": "node_modules/eslint/bin/eslint.js src/js"
   },
   "devDependencies": {

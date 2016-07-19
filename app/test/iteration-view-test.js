@@ -34,9 +34,12 @@ describe('IterationView', () => {
   }
 
   beforeEach(() => {
-    spyOn(iterations, 'current').and.callFake(() => fakePromise.resolve(iterationResponse))
+    spyOn(iterations, 'get').and.callFake(() => fakePromise.resolve(iterationResponse))
 
-    view = TestUtils.renderIntoDocument(<IterationView project={project} />);
+    view = TestUtils.renderIntoDocument(<IterationView
+      project={project}
+      routeParams={{iterationNumber: 'current'}}/>
+    );
   })
 
   it('loads current iteration data when mounting', () => {

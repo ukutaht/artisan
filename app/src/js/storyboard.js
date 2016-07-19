@@ -101,6 +101,10 @@ export default class StoryBoard extends React.Component {
     browserHistory.push(e.target.value)
   }
 
+  iterationRoute(iterationNumber) {
+    return `/projects/${this.props.project.id}/iterations/${iterationNumber}`;
+  }
+
   render() {
     return (
       <div className="board">
@@ -111,17 +115,17 @@ export default class StoryBoard extends React.Component {
             </li>
 
             <li>
-              <select value={this.props.iteration.number} onChange={(e) => this.props.changeIteration(e.target.value)}>
+              <select value={this.iterationRoute(this.props.iteration.number)} onChange={this.changeView}>
                 {
                   this.props.allIterations.map((iteration) => {
-                    return <option key={iteration.number} value={iteration.number}>Iteration {iteration.number}</option>
+                    return <option key={iteration.number} value={this.iterationRoute(iteration.number)}>Iteration {iteration.number}</option>
                   })
                 }
               </select>
             </li>
           </ul>
 
-          <select className="board__nav__dropdown" onChange={this.changeView.bind(this)}>
+          <select className="board__nav__dropdown" onChange={this.changeView}>
             <option>Go to...</option>
             <option value={`/projects/${this.props.project.id}`}>Story board</option>
             <option value={`/projects/${this.props.project.id}/settings`}>Settings</option>

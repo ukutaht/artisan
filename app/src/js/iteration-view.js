@@ -18,19 +18,27 @@ class IterationView extends React.Component {
   }
 
   componentDidMount() {
-    iterations.current(this.projectId).then((res) => {
+    this.loadIteration(this.props.project.id, this.props.routeParams.iterationNumber)
+
+    const boardSocket = new BoardSocket(this.props.project.id)
+    boardSocket.join({
+      onAddStory: this.doAddStory.bind(this),
+      onUpdateStory: this.doUpdateStory.bind(this),
+      onMoveStory: this.doMoveStory.bind(this),
+    })
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.loadIteration(newProps.project.id, newProps.routeParams.iterationNumber)
+  }
+
+  loadIteration(projectId, iterationId) {
+    iterations.get(projectId, iterationId).then((res) => {
       this.setState({
         iteration: res.iteration,
         allIterations: res.all_iterations,
         stories: res.stories
       })
-    })
-
-    const boardSocket = new BoardSocket(this.projectId)
-    boardSocket.join({
-      onAddStory: this.doAddStory.bind(this),
-      onUpdateStory: this.doUpdateStory.bind(this),
-      onMoveStory: this.doMoveStory.bind(this),
     })
   }
 
@@ -107,16 +115,6 @@ class IterationView extends React.Component {
     })
   }
 
-  changeIteration(number) {
-    iterations.get(this.projectId, number).then((res) => {
-      this.setState({
-        iteration: res.iteration,
-        allIterations: res.all_iterations,
-        stories: res.stories
-      })
-    })
-  }
-
   render() {
     if (!this.state.stories) return null
 
@@ -125,7 +123,6 @@ class IterationView extends React.Component {
         stories={this.state.stories}
         iteration={this.state.iteration}
         allIterations={this.state.allIterations}
-        changeIteration={this.changeIteration.bind(this)}
         moveStory={this.moveStory.bind(this)}
         updateStory={this.updateStory.bind(this)}
         deleteStory={this.deleteStory.bind(this)}

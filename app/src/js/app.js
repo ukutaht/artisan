@@ -28,7 +28,7 @@ const router = (
       <Route path="profile" component={Profile} />
       <Route path="projects/new" component={NewProject} />
       <Route path="projects/:projectId" component={ProjectContainer}>
-        <IndexRoute component={IterationView} />
+        <Route path="iterations/:iterationNumber" component={IterationView} />
         <Route path="settings" component={ProjectSettings}>
           <IndexRoute component={ProjectSettingsTab} />
           <Route path="collaborators" component={ProjectCollaboratorsTab} />
