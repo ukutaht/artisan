@@ -51,7 +51,10 @@ footer {
 
 .avatar {
   border-radius: 3px;
-  font-size: 84px;
+}
+
+img.avatar {
+ vertical-align: bottom;
 }
 
 .social-links {

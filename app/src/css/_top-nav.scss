@@ -26,5 +26,11 @@
     font-size: 16px;
     cursor: pointer;
     padding-bottom: 10px;
+
+    .avatar {
+      float: left;
+      margin-right: $spacing-medium;
+      transform: translateY(-5px);
+    }
   }
 }

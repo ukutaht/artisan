@@ -1,7 +1,8 @@
 import React from 'react'
 import update from 'react/lib/update'
 
-import AvatarSelect from 'users/avatar'
+import AvatarSelect from 'users/avatar-select'
+import Avatar from 'users/avatar'
 import UserService from 'users/service'
 const users = new UserService()
 
@@ -63,14 +64,6 @@ export default class Profile extends React.Component {
     }
   }
 
-  renderAvatar() {
-    if (this.state.user.avatar) {
-      return <img className="avatar" src={this.state.user.avatar} width="78px" height="78px"/>
-    } else {
-      return <i className="ion-person avatar" />
-    }
-  }
-
   render() {
     return (
       <div className="six-columns">
@@ -79,7 +72,7 @@ export default class Profile extends React.Component {
           <span>Avatar</span>
           <div className="row spaced">
             <div className="four-columns">
-              {this.renderAvatar()}
+              <Avatar src={this.state.user.avatar} size={80} />
             </div>
             <div className="eight-columns">
               {this.avatarSelect()}

@@ -2,6 +2,8 @@ import React from 'react'
 import Link from 'react-router/lib/Link'
 import browserHistory from 'react-router/lib/browserHistory'
 
+import Avatar from 'users/avatar'
+
 import UserService from 'users/service'
 const users = new UserService()
 
@@ -46,6 +48,7 @@ export default class Layout extends React.Component {
           <div className="top-nav__right">
             <div className="dropdown hoverable">
               <span className="top-nav__username">
+                <Avatar src={this.state.currentUser.avatar} size={30} />
                 {this.state.currentUser.name}
                 <i className="ion-chevron-down left-padded-icon" />
               </span>
