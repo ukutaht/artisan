@@ -1,5 +1,7 @@
 import React from 'react'
 
+import Avatar from 'users/avatar'
+
 class Card extends React.Component {
   constructor(props) {
     super(props);
@@ -41,7 +43,7 @@ class Card extends React.Component {
               return <li className="story-card__tags__item" key={tag}>{tag}</li>
             })}
           </ul>
-          <i className="ion-person story-card__second-line__assignee"></i>
+          <Avatar src={this.props.story.creator.avatar} size={20} />
         </div>
       </li>
     )
