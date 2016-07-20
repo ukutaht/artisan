@@ -26,7 +26,10 @@ defmodule Artisan.StoryControllerTest do
   end
 
   test "creates a story when valid", %{project: project, user: user} do
-    story = Map.put(@valid_story_params, :project_id, project["id"])
+    story = Map.merge(@valid_story_params, %{
+      project_id: project["id"],
+      assignee_id: user["user"]["id"]
+    })
 
     conn = authenticated_conn(user["token"])
       |> post("/api/stories", %{story: story})
@@ -44,6 +47,7 @@ defmodule Artisan.StoryControllerTest do
     assert res["acceptance_criteria"] == "Acceptance criteria"
     assert res["created_at"] != nil
     assert res["creator"] == user["user"]
+    assert res["assignee"] == user["user"]
   end
 
   test "broadcasts story create", %{project: project, user: user} do
@@ -52,7 +56,7 @@ defmodule Artisan.StoryControllerTest do
     Artisan.Endpoint.subscribe(topic)
 
     create_story(user["token"], project["id"])
-    created = Repo.one(Artisan.Story) |> Repo.preload(:creator)
+    created = Repo.one(Artisan.Story) |> Repo.preload(:creator) |> Repo.preload(:assignee)
     json = Phoenix.View.render(Artisan.Stories.View, "story.json", story: created)
 
     assert_broadcast("add:story", ^json)
@@ -89,7 +93,7 @@ defmodule Artisan.StoryControllerTest do
     authenticated_conn(user["token"])
       |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name"}})
 
-    updated = Repo.get(Artisan.Story, id) |> Repo.preload(:creator)
+    updated = Repo.get(Artisan.Story, id) |> Repo.preload(:creator) |> Repo.preload(:assignee)
     json = Phoenix.View.render(Artisan.Stories.View, "story.json", story: updated)
 
     assert_broadcast("update:story", ^json)

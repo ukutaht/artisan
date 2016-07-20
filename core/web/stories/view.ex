@@ -2,7 +2,6 @@ defmodule Artisan.Stories.View do
   use Artisan.Web, :view
 
   @fields [:id, :acceptance_criteria, :project_id, :completed_in, :name, :state, :number, :estimate, :optimistic, :realistic, :pessimistic, :position, :tags]
-  @creator_fields [:id, :name, :email]
 
   @empty_states %{
     "backlog" => [],
@@ -21,6 +20,7 @@ defmodule Artisan.Stories.View do
   def render("story.json", %{story: story}) do
     Map.take(story, @fields)
       |> associate_creator(story)
+      |> associate_assignee(story)
       |> format_created_at(story)
   end
 
@@ -35,6 +35,15 @@ defmodule Artisan.Stories.View do
   defp associate_creator(map, %{creator: creator}) do
     creator = Artisan.Users.View.render("user.json", user: creator)
     Map.put(map, :creator, creator)
+  end
+
+  defp associate_assignee(map, %{assignee: nil}) do
+    Map.put(map, :assignee, nil)
+  end
+
+  defp associate_assignee(map, %{assignee: assignee}) do
+    assignee = Artisan.Users.View.render("user.json", user: assignee)
+    Map.put(map, :assignee, assignee)
   end
 
   defp format_created_at(map, %{inserted_at: timestamp}) do

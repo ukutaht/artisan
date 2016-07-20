@@ -8,7 +8,7 @@ defmodule Artisan.Stories do
       where: s.project_id == ^project_id,
       where: is_nil(s.completed_in),
       order_by: s.position,
-      preload: :creator
+      preload: [:creator, :assignee]
     )
     |> Enum.group_by(&(&1.state))
   end
@@ -21,6 +21,7 @@ defmodule Artisan.Stories do
       Ordering.vacate_position(project_id, 0, changeset.changes.state)
       Repo.insert(changeset)
         |> preload_creator
+        |> preload_assignee
     else
       {:error, changeset}
     end
@@ -31,6 +32,7 @@ defmodule Artisan.Stories do
       |> Story.edit(attrs)
       |> Repo.update
       |> preload_creator
+      |> preload_assignee
   end
 
   def delete(id) do
@@ -82,4 +84,7 @@ defmodule Artisan.Stories do
 
   defp preload_creator({:ok, story}), do: {:ok, Repo.preload(story, :creator)}
   defp preload_creator({:error, changeset}), do: {:error, changeset}
+
+  defp preload_assignee({:ok, story}), do: {:ok, Repo.preload(story, :assignee)}
+  defp preload_assignee({:error, changeset}), do: {:error, changeset}
 end

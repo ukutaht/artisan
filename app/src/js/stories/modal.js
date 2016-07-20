@@ -28,7 +28,8 @@ class StoryModal extends React.Component {
       optimistic: props.story.optimistic,
       realistic: props.story.realistic,
       pessimistic: props.story.pessimistic,
-      tags: props.story.tags.join(',')
+      tags: props.story.tags.join(','),
+      assignee_id: props.story.assignee ? props.story.assignee.id : null
     }
   }
 
@@ -55,7 +56,10 @@ class StoryModal extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    const formStory = update(this.state, {tags: {$set: splitTags(this.state.tags)}})
+    const formStory = update(this.state, {
+      tags: {$set: splitTags(this.state.tags)},
+      assignee_id: {$set: Number(this.state.assignee_id) || null},
+    })
     const story = update(this.props.story, {$merge: formStory})
     this.props.onSubmit(story)
   }
@@ -107,10 +111,32 @@ class StoryModal extends React.Component {
       return (
         <div>
           <span>Created by {story.creator.name} on {formattedDate}</span>
-          <a href="javascript://" className="pull-right clickable text-red" onClick={this.props.onDelete}>Delete</a>
+          <a className="pull-right clickable text-red" onClick={this.props.onDelete}>Delete</a>
         </div>
       )
     }
+  }
+
+  assigneeChanged(e) {
+    this.setState({assignee_id: e.target.value})
+  }
+
+  renderAssigneeSelect() {
+    const options = this.props.project.collaborators.map((user) => {
+      return <option key={user.id} value={user.id}>{user.name}</option>
+    })
+    options.unshift(
+      <option key="unassigned">Unassigned</option>
+    )
+
+    return (
+      <section className="form-group">
+        <label>Assigned user</label>
+        <select onChange={this.assigneeChanged.bind(this)} value={this.state.assignee_id} className="assigned-user__select">
+          {options}
+        </select>
+      </section>
+    )
   }
 
   render() {
@@ -152,15 +178,7 @@ class StoryModal extends React.Component {
                     </section>
                   </div>
 
-                  <section className="form-group">
-                    <label>Assigned user</label>
-                    <select className="assigned-user__select">
-                      <option>Uku Taht</option>
-                      <option>Felipe Sere</option>
-                      <option>Makis Otman</option>
-                      <option>Iris Varsi</option>
-                    </select>
-                  </section>
+                  {this.renderAssigneeSelect()}
 
                   <section className="form-group">
                     <label>Tags</label>

@@ -33,15 +33,20 @@ defmodule Artisan.StoriesTest do
   end
 
   test "creates a story with valid params", %{project: project, user: user} do
-    {:ok, _} = Stories.create(user.id, project.id, @valid_story_params)
+    params = Map.put(@valid_story_params, :assignee_id, user.id)
+    {:ok, story} = Stories.create(user.id, project.id, params)
 
     assert Repo.aggregate(Story, :count, :id) == 1
-  end
 
-  test "sets creator of story", %{project: project, user: user} do
-    {:ok, story} = Stories.create(user.id, project.id, @valid_story_params)
-
+    assert story.name == "name"
+    assert story.state == "ready"
+    assert story.estimate == 2.25
+    assert story.optimistic == 1
+    assert story.realistic == 1
+    assert story.pessimistic == 2
+    assert story.tags == ["bug"]
     assert story.creator.id == user.id
+    assert story.assignee.id == user.id
   end
 
   test "story is created in the first position, order maintained", %{project: project, user: user} do

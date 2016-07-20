@@ -171,6 +171,7 @@ export default class StoryBoard extends React.Component {
 
       return (
         <StoryModal story={story}
+                    project={this.props.project}
                     onClose={this.closeAddStory.bind(this)}
                     onSubmit={this.addStory.bind(this)}
                     header="Add"
@@ -183,6 +184,7 @@ export default class StoryBoard extends React.Component {
     if (this.state.editingStory) {
       return (
         <StoryModal story={this.state.editingStory}
+                    project={this.props.project}
                     onClose={this.closeEditStory.bind(this)}
                     onSubmit={this.updateStory.bind(this)}
                     onDelete={() => this.deleteStory(this.state.editingStory)}

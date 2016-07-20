@@ -23,13 +23,15 @@ class Card extends React.Component {
   }
 
   render() {
-    const tags = this.props.story.tags || []
+    const story = this.props.story
+    const tags = story.tags || []
+    const avatar = story.assignee ? story.assignee.avatar : null
 
     return (
       <li className="story-card" data-id={this.props.story.id}>
         <div>
-          <a href="javascript://" title={this.props.story.name} className="truncated-text" onClick={this.onClick.bind(this)}>
-            {this.props.story.number}. {this.props.story.name}
+          <a title={story.name} className="truncated-text clickable" onClick={this.onClick.bind(this)}>
+            {story.number}. {story.name}
           </a>
           {this.displayEstimate()}
         </div>
@@ -39,7 +41,7 @@ class Card extends React.Component {
               return <li className="story-card__tags__item" key={tag}>{tag}</li>
             })}
           </ul>
-          <Avatar src={this.props.story.creator.avatar} size={20} />
+          <Avatar src={avatar} size={20} />
         </div>
       </li>
     )

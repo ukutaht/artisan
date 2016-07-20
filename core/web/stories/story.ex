@@ -16,19 +16,20 @@ defmodule Artisan.Story do
     field :project_id, :integer
     field :completed_in, :integer
     belongs_to :creator, Artisan.User
+    belongs_to :assignee, Artisan.User
 
     timestamps
   end
 
   def new(story, attributes) do
     story
-    |> cast(attributes, [:name, :acceptance_criteria, :estimate, :optimistic, :realistic, :pessimistic, :tags, :state, :project_id])
+    |> cast(attributes, [:name, :acceptance_criteria, :estimate, :optimistic, :realistic, :pessimistic, :tags, :state, :assignee_id])
     |> validate_required([:name, :project_id, :creator_id])
   end
 
   def edit(story, attributes) do
     story
-    |> cast(attributes, [:name, :acceptance_criteria, :estimate, :optimistic, :realistic, :pessimistic, :tags])
+    |> cast(attributes, [:name, :acceptance_criteria, :estimate, :optimistic, :realistic, :pessimistic, :tags, :assignee_id])
     |> validate_required([:name])
   end
 
