@@ -11,6 +11,8 @@ function handleErrors(err) {
   } else if (err.status === NOT_FOUND) {
     browserHistory.push('/404')
   }
+
+  return new Promise((resolve, reject) => reject(err))
 }
 
 function getBody(res) { return res.body }
