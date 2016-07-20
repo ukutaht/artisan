@@ -44,8 +44,7 @@ class IterationView extends React.Component {
   }
 
   addStory(story) {
-    const storyWithData = Object.assign({}, story, {project_id: this.projectId})
-    stories.add(storyWithData).then(this.doAddStory.bind(this))
+    return stories.add(story).then(this.doAddStory.bind(this))
   }
 
   doAddStory(story) {
@@ -55,7 +54,7 @@ class IterationView extends React.Component {
   }
 
   updateStory(story) {
-    stories.update(story).then(this.doUpdateStory.bind(this))
+    return stories.update(story).then(this.doUpdateStory.bind(this))
   }
 
   doUpdateStory(story) {

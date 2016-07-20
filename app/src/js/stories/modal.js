@@ -22,7 +22,7 @@ class StoryModal extends React.Component {
     super(props)
     this.state = {
       name: props.story.name,
-      number: props.story.number,
+      state: props.story.state,
       acceptance_criteria: props.story.acceptance_criteria,
       estimate: props.story.estimate,
       optimistic: props.story.optimistic,
@@ -56,11 +56,13 @@ class StoryModal extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    const formStory = update(this.state, {
-      tags: {$set: splitTags(this.state.tags)},
-      assignee_id: {$set: Number(this.state.assignee_id) || null},
+    const story = update(this.state, {
+      id: {$set: this.props.story.id},
+      project_id: {$set: this.props.project.id},
+      state: {$set: this.props.story.state},
+      tags: {$set: splitTags(this.state.tags)}
     })
-    const story = update(this.props.story, {$merge: formStory})
+
     this.props.onSubmit(story)
   }
 
@@ -118,7 +120,7 @@ class StoryModal extends React.Component {
   }
 
   assigneeChanged(e) {
-    this.setState({assignee_id: e.target.value})
+    this.setState({assignee_id: Number(e.target.value) || null})
   }
 
   renderAssigneeSelect() {
@@ -129,10 +131,12 @@ class StoryModal extends React.Component {
       <option key="unassigned">Unassigned</option>
     )
 
+    const value = this.state.assignee_id || ''
+
     return (
       <section className="form-group">
         <label>Assigned user</label>
-        <select onChange={this.assigneeChanged.bind(this)} value={this.state.assignee_id} className="assigned-user__select">
+        <select onChange={this.assigneeChanged.bind(this)} value={value} className="assigned-user__select">
           {options}
         </select>
       </section>

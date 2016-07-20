@@ -60,8 +60,7 @@ export default class StoryBoard extends React.Component {
   }
 
   updateStory(story) {
-    this.props.updateStory(story)
-    this.closeEditStory()
+    this.props.updateStory(story).then(this.closeEditStory.bind(this))
   }
 
   deleteStory(storyId) {
@@ -78,8 +77,7 @@ export default class StoryBoard extends React.Component {
   }
 
   addStory(story) {
-    this.props.addStory(story)
-    this.closeAddStory()
+    this.props.addStory(story).then(this.closeAddStory.bind(this))
   }
 
   isBacklogVisible() {
