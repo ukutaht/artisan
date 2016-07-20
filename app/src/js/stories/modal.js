@@ -107,7 +107,7 @@ class StoryModal extends React.Component {
       return (
         <div>
           <span>Created by {story.creator.name} on {formattedDate}</span>
-          <a href="javascript://" className="pull-right clickable text-red" onClick={this.props.onDelete}>Delete story</a>
+          <a href="javascript://" className="pull-right clickable text-red" onClick={this.props.onDelete}>Delete</a>
         </div>
       )
     }

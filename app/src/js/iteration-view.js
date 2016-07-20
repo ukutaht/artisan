@@ -1,5 +1,6 @@
 import React from 'react'
 import update from 'react/lib/update'
+import browserHistory from 'react-router/lib/browserHistory'
 
 import StoryBoard from 'storyboard'
 import BoardSocket from 'board-socket'
@@ -91,10 +92,7 @@ class IterationView extends React.Component {
 
   newIteration() {
     iterations.create(this.projectId).then((res) => {
-      this.setState({
-        iteration: res.iteration,
-        stories: res.stories
-      })
+      browserHistory.push(`/projects/${this.projectId}/iterations/${res.iteration.number}`)
     })
   }
 

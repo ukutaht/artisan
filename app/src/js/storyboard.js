@@ -173,7 +173,7 @@ export default class StoryBoard extends React.Component {
         <StoryModal story={story}
                     onClose={this.closeAddStory.bind(this)}
                     onSubmit={this.addStory.bind(this)}
-                    header="Add story"
+                    header="Add"
                     buttonText="Create" />
       )
     }
@@ -186,7 +186,7 @@ export default class StoryBoard extends React.Component {
                     onClose={this.closeEditStory.bind(this)}
                     onSubmit={this.updateStory.bind(this)}
                     onDelete={() => this.deleteStory(this.state.editingStory)}
-                    header="Edit story"
+                    header="Edit"
                     buttonText="Update" />
       )
     }
