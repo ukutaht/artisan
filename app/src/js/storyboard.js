@@ -1,6 +1,7 @@
 import React from 'react'
 import browserHistory from 'react-router/lib/browserHistory'
 
+import ProjectNav from 'projects/nav'
 import Column from 'column'
 import StoryModal from 'stories/modal'
 
@@ -105,34 +106,25 @@ export default class StoryBoard extends React.Component {
     return `/projects/${this.props.project.id}/iterations/${iterationNumber}`;
   }
 
+  renderProjectNav() {
+    return (
+      <ProjectNav activeTab="storyboard" project={this.props.project}>
+        <select value={this.iterationRoute(this.props.iteration.number)} onChange={this.changeView}>
+          {
+            this.props.allIterations.map((iteration) => {
+              return <option key={iteration.number} value={this.iterationRoute(iteration.number)}>Iteration {iteration.number}</option>
+            })
+          }
+        </select>
+      </ProjectNav>
+    )
+  }
+
   render() {
     return (
       <div>
+        {this.renderProjectNav()}
         <div className="board">
-          <nav className="board__nav">
-            <ul className="board__nav__breadcrumb">
-              <li>
-                <span>{this.props.project.name}</span>
-              </li>
-
-              <li>
-                <select value={this.iterationRoute(this.props.iteration.number)} onChange={this.changeView}>
-                  {
-                    this.props.allIterations.map((iteration) => {
-                      return <option key={iteration.number} value={this.iterationRoute(iteration.number)}>Iteration {iteration.number}</option>
-                    })
-                  }
-                </select>
-              </li>
-            </ul>
-
-            <select className="board__nav__dropdown" onChange={this.changeView}>
-              <option>Go to...</option>
-              <option value={`/projects/${this.props.project.id}`}>Story board</option>
-              <option value={`/projects/${this.props.project.id}/settings`}>Settings</option>
-            </select>
-          </nav>
-
           <div className="board__actions">
             <div className="board__actions__left">
               {this.renderBacklogLink()}

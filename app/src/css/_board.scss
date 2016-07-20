@@ -1,34 +1,4 @@
 .board {
-  &__nav {
-    @include row();
-    margin-top: $spacing-medium;
-    border-bottom: 1px solid $border-grey;
-
-    &__breadcrumb {
-      @include span-columns(10);
-
-      li {
-        display: inline-block;
-
-        &:before {
-          content: ">";
-          margin-right: 0.5em;
-          margin-left: 0.5em;
-        }
-
-        &:first-of-type:before {
-          content: none;
-        }
-      }
-    }
-
-    &__dropdown {
-      @include span-columns(2);
-
-      margin-top: 1em;
-    }
-  }
-
   &__actions {
     @include row();
     margin-top: $spacing-large;

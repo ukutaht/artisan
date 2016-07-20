@@ -44,3 +44,52 @@
     background-color: $light-grey!important;
   }
 }
+
+.project {
+  &__nav {
+    @include row();
+    margin-top: $spacing-large;
+    border-bottom: 1px solid $border-grey;
+    position: relative;
+
+    &__breadcrumb {
+      margin: $spacing-small 0;
+
+      li {
+        display: inline-block;
+
+        &:before {
+          content: ">";
+          margin-right: 0.5em;
+          margin-left: 0.5em;
+        }
+
+        &:first-of-type:before {
+          content: none;
+        }
+      }
+    }
+
+    &__tabs {
+      right: 0px;
+      bottom: -1px;
+      position: absolute;
+
+      a {
+        padding: $spacing-small $spacing-medium;
+        display: inline-block;
+      }
+
+      a:hover {
+        text-decoration: none;
+      }
+
+      a.active {
+        border: 1px solid $border-grey;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        border-bottom: 1px solid $background;
+      }
+    }
+  }
+}
