@@ -41,20 +41,28 @@ footer {
   margin: 100px auto;
 }
 
+.space-top-tiny {
+  margin-top: $spacing-tiny;
+}
+
+.space-bottom-tiny {
+  margin-bottom: $spacing-tiny;
+}
+
+.space-top-small {
+  margin-top: $spacing-tiny;
+}
+
+.space-bottom-small {
+  margin-bottom: $spacing-small;
+}
+
 .space-top {
   margin-top: $spacing-medium;
 }
 
 .space-bottom {
   margin-bottom: $spacing-medium;
-}
-
-.space-top-small {
-  margin-top: $spacing-small;
-}
-
-.space-bottom-small {
-  margin-bottom: $spacing-small;
 }
 
 .avatar {
