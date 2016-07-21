@@ -1,10 +1,11 @@
 import React from 'react'
-import update from 'react/lib/update'
 
 class ProjectSettingsTab extends React.Component {
   constructor(props) {
     super(props)
-    this.state = props.project
+    this.state = {
+      name: props.project.name
+    }
   }
 
   componentWillReceiveProps(newProps) {
@@ -13,11 +14,11 @@ class ProjectSettingsTab extends React.Component {
 
   save(e) {
     e.preventDefault()
-    this.props.updateProject(this.state)
+    this.props.updateProject(this.props.project.id, this.state)
   }
 
   nameChanged(event) {
-    this.setState(update(this.state, {name: {$set: event.target.value}}))
+    this.setState({name: event.target.value})
   }
 
   render() {

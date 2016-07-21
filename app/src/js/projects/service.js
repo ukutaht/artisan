@@ -13,8 +13,8 @@ class ProjectService {
     return Api.get(`/api/projects/${id}`)
   }
 
-  update(project) {
-    return Api.put(`/api/projects/${project.id}`, {project: project})
+  update(id, attrs) {
+    return Api.put(`/api/projects/${id}`, {project: attrs})
   }
 
   addCollaborator(projectId, userId) {

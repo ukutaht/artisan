@@ -22,8 +22,8 @@ export default class ProjectContainer extends React.Component {
     })
   }
 
-  updateProject(attrs) {
-    projects.update(attrs).then((updated) => {
+  updateProject(id, attrs) {
+    projects.update(id, attrs).then((updated) => {
       this.setState({project: updated})
     })
   }
