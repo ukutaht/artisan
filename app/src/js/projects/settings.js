@@ -14,10 +14,6 @@ export default class ProjectSettings extends React.Component {
     }
   }
 
-  rightSection() {
-    return React.cloneElement(this.props.children, this.props);
-  }
-
   render() {
     const projectId = this.props.project.id
 
@@ -40,7 +36,7 @@ export default class ProjectSettings extends React.Component {
           </div>
 
           <div className="eight-columns">
-            {this.rightSection()}
+            {React.cloneElement(this.props.children, this.props)}
           </div>
 
         </div>
