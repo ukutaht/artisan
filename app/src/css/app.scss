@@ -44,9 +44,20 @@ footer {
   margin: 100px auto;
 }
 
-.spaced {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+.space-top {
+  margin-top: $spacing-medium;
+}
+
+.space-bottom {
+  margin-bottom: $spacing-medium;
+}
+
+.space-top-small {
+  margin-top: $spacing-small;
+}
+
+.space-bottom-small {
+  margin-bottom: $spacing-small;
 }
 
 .avatar {

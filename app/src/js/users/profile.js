@@ -70,7 +70,7 @@ export default class Profile extends React.Component {
         <h2>Profile</h2>
         <form onSubmit={this.onSubmit.bind(this)}>
           <span>Avatar</span>
-          <div className="row spaced">
+          <div className="row space-top-small space-bottom">
             <div className="four-columns">
               <Avatar src={this.state.user.avatar} size={80} />
             </div>

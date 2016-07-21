@@ -52,7 +52,7 @@ export default class Layout extends React.Component {
                 {this.state.currentUser.name}
                 <i className="ion-chevron-down left-padded-icon" />
               </span>
-              <div className="dropdown__content">
+              <div className="dropdown__content space-top-small">
                 <Link to="/profile">
                   <i className="ion-person right-padded-icon" />
                   Profile
