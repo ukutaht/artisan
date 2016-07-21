@@ -36,10 +36,6 @@ footer {
   padding-left: 0.5em;
 }
 
-.truncated-text {
-  @include ellipsis(80%);
-}
-
 .skinny-box {
   max-width: 300px;
   margin: 100px auto;

@@ -84,9 +84,20 @@
     }
   }
 
+  .truncated {
+    @include ellipsis(60%);
+
+    @include media($tablet) {
+      @include ellipsis(70%);
+    }
+
+    @include media($large-desk) {
+      @include ellipsis(78%);
+    }
+  }
+
   &__tags {
     display: inline-block;
-    width: 90%;
     overflow: hidden;
     white-space: nowrap;
 
