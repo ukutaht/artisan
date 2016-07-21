@@ -11,10 +11,7 @@ input, textarea {
   width: 100%;
   padding: $spacing-tiny $spacing-small;
   background-color: white;
-  line-height: 1.6;
   border: 1px solid $border-grey;
-  border-radius: 1px;
-  color: inherit;
   box-shadow: none;
   @include transition(border-color ease-in-out .15s);
   resize: none;

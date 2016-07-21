@@ -47,14 +47,18 @@
   }
 
   &__footer {
-    padding: $spacing-small $spacing-medium;
-    min-height: $line-height + $spacing-medium;
+    padding: $spacing-tiny $spacing-medium;
+    min-height: $line-height + $spacing-small;
   }
 }
 
 .estimate-form {
   margin-top: 20px;
   margin-bottom: 20px;
+
+  input {
+    margin: 0;
+  }
 
   &__group {
     margin-top: $spacing-small;
@@ -97,6 +101,6 @@
 
 .save-story-button {
   margin-left: 0px;
-  margin-top: 52px;
+  margin-top: 51px;
   width: 100%;
 }

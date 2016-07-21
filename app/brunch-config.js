@@ -7,7 +7,12 @@ exports.config = {
       }
     },
     stylesheets: {
-      joinTo: 'css/app.css'
+      joinTo: 'css/app.css',
+      order: {
+        before: [
+          'src/vendor/normalize.css'
+        ]
+      }
     }
   },
 
