@@ -4,13 +4,13 @@
     margin-top: $spacing-large;
 
     &__left {
-      @include span-columns(6);
       min-height: 1px;
+      display: inline-block;
     }
 
     &__right {
-      @include span-columns(6);
-      text-align: right;
+      float: right;
+      display: inline-block;
 
       .button:last-of-type {
         margin-right: 0;
