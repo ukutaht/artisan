@@ -29,7 +29,7 @@ class Card extends React.Component {
 
     return (
       <li className="story-card" data-id={this.props.story.id}>
-        <div>
+        <div className="story-card__first-line">
           <a title={story.name} className="truncated-text clickable" onClick={this.onClick.bind(this)}>
             {story.number}. {story.name}
           </a>
