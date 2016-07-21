@@ -4,10 +4,6 @@ import Link from 'react-router/lib/Link'
 import ProjectNav from 'projects/nav'
 
 export default class ProjectSettings extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   selectedClass(tab) {
     if (window.location.href.endsWith(tab)) {
       return 'block-list__item--selected'
