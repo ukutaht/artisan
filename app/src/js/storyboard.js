@@ -217,22 +217,22 @@ export default class StoryBoard extends React.Component {
     } else if (this.props.iteration.state === 'planning') {
       return (
         <div>
-          <button className="button primary" onClick={this.props.startIteration}>
-            Start iteration
-          </button>
           <button className="button primary" onClick={this.openAddStory.bind(this)}>
             <i className="right-padded-icon ion-plus"></i> Add story
+          </button>
+          <button className="button primary" onClick={this.props.startIteration}>
+            Start iteration
           </button>
         </div>
       )
     } else {
       return (
         <div>
-          <button className="button primary" onClick={this.props.completeIteration}>
-            Complete iteration
-          </button>
           <button className="button primary" onClick={this.openAddStory.bind(this)}>
             <i className="right-padded-icon ion-plus"></i> Add story
+          </button>
+          <button className="button primary" onClick={this.props.completeIteration}>
+            Complete iteration
           </button>
         </div>
       )
