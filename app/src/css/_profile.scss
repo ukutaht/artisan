@@ -1,0 +1,19 @@
+.profile {
+  @include span-columns(12);
+  max-width: 550px;
+
+  &__avatar-section {
+    @include row();
+    margin-top: $spacing-small;
+    margin-bottom: $spacing-medium;
+
+    &__image {
+      @include span-columns(2);
+    }
+
+    &__form {
+      @include span-columns(10);
+      padding-left: $spacing-medium;
+    }
+  }
+}

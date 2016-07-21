@@ -66,15 +66,15 @@ export default class Profile extends React.Component {
 
   render() {
     return (
-      <div className="six-columns">
+      <div className="profile">
         <h2>Profile</h2>
         <form onSubmit={this.onSubmit.bind(this)}>
           <span>Avatar</span>
-          <div className="row space-top-small space-bottom">
-            <div className="four-columns">
+          <div className="profile__avatar-section">
+            <div className="profile__avatar-section__image">
               <Avatar src={this.state.user.avatar} size={80} />
             </div>
-            <div className="eight-columns">
+            <div className="profile__avatar-section__form">
               {this.avatarSelect()}
             </div>
           </div>
