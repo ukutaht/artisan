@@ -75,12 +75,10 @@
   &__second-line {
     margin-top: $spacing-small;
     min-height: 34px;
-    position: relative;
 
     .avatar {
-      position: absolute;
-      right: 0;
-      top: 8px;
+      float: right;
+      transform: translateY(8px);
     }
   }
 
