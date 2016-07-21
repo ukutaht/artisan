@@ -26,8 +26,9 @@ defmodule Artisan.Stories.Controller do
 
   def move(conn, %{"state" => state, "index" => index, "id" => id}) do
     {numeric_id, _} = Integer.parse(id)
+    user_id = conn.assigns[:current_user]
 
-    case Stories.move(numeric_id, state, index) do
+    case Stories.move(numeric_id, user_id, state, index) do
       {:ok, project_id, updated} ->
         broadcast(project_id, "move:story", Phoenix.View.render(Artisan.Stories.View, "by_state.json", stories: updated))
         conn |> render("by_state.json", stories: updated)

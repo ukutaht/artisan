@@ -39,8 +39,8 @@ defmodule Artisan.Stories do
     Repo.delete(%Story{id: id})
   end
 
-  def move(id, state, index) do
-    case Ordering.move(id, state, index) do
+  def move(id, user_id, state, index) do
+    case Ordering.move(id, user_id, state, index) do
       {:ok, updated} ->
         {:ok, updated.project_id, by_state(updated.project_id)}
       {:error, error} ->

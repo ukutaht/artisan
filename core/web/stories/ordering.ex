@@ -2,7 +2,7 @@ defmodule Artisan.Stories.Ordering do
   use Artisan.Web, :model
   alias Artisan.Story
 
-  def move(id, state, index) do
+  def move(id, user_id, state, index) do
     story = Repo.get(Story, id)
 
     new_position = calculate_pivot(story, state, index)
@@ -10,6 +10,7 @@ defmodule Artisan.Stories.Ordering do
 
     story
       |> Story.change_position(state, new_position)
+      |> autoassign(user_id)
       |> Repo.update
   end
 
@@ -63,5 +64,18 @@ defmodule Artisan.Stories.Ordering do
       where: s.state == ^state,
       where: is_nil(s.completed_in)
     )
+  end
+
+  defp autoassign(changeset, user_id) do
+    if should_autoassign(changeset) do
+      Story.assign(changeset, user_id)
+    else
+      changeset
+    end
+  end
+
+  defp should_autoassign(changeset) do
+    is_nil(changeset.data.assignee_id) &&
+      changeset.changes[:state] in ["working", "complete"]
   end
 end

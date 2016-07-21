@@ -37,4 +37,9 @@ defmodule Artisan.Story do
     story
     |> cast(%{position: position, state: state}, [:position, :state])
   end
+
+  def assign(story, assignee_id) do
+    story
+    |> cast(%{assignee_id: assignee_id}, [:assignee_id])
+  end
 end
