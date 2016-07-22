@@ -1,9 +1,8 @@
 defmodule Artisan.Users.SocketTest do
   use Artisan.ChannelCase
-  alias Artisan.Users
   alias Artisan.Users.Socket
 
-  @valid_token Users.Token.sign(1)
+  @valid_token Artisan.Users.Token.sign(1)
   @invalid_token "obviously wrong"
 
   setup do
@@ -11,7 +10,7 @@ defmodule Artisan.Users.SocketTest do
   end
 
   test "errors when users does not pass a valid token", %{socket: socket} do
-    assert Socket.connect(%{"token" => @invalid_token}, socket) == {:error, %{reason: "Unauthorized"}}
+    assert Socket.connect(%{"token" => @invalid_token}, socket) == :error
   end
 
   test "authenticates with valid token", %{socket: socket} do

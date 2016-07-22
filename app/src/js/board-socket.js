@@ -14,13 +14,17 @@ class BoardSocket {
 
     socket.connect({token: localStorage.getItem('token')})
 
-    const channel = socket.channel(`boards:${this.projectId}`, {})
-    channel.join()
+    this.channel = socket.channel(`boards:${this.projectId}`, {})
+    this.channel.join()
 
-    channel.on('story:update', callbacks.onUpdateStory)
-    channel.on('story:add',    callbacks.onAddStory)
-    channel.on('story:move',   callbacks.onMoveStory)
-    channel.on('story:delete', callbacks.onDeleteStory)
+    this.channel.on('story:update', callbacks.onUpdateStory)
+    this.channel.on('story:add',    callbacks.onAddStory)
+    this.channel.on('story:move',   callbacks.onMoveStory)
+    this.channel.on('story:delete', callbacks.onDeleteStory)
+  }
+
+  leave() {
+    this.channel.leave()
   }
 }
 

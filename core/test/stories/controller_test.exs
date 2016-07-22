@@ -59,7 +59,7 @@ defmodule Artisan.StoryControllerTest do
     created = Repo.one(Artisan.Story) |> Repo.preload(:creator) |> Repo.preload(:assignee)
     json = Phoenix.View.render(Artisan.Stories.View, "story.json", story: created)
 
-    assert_broadcast("add:story", ^json)
+    assert_broadcast("story:add", ^json)
   end
 
   test "does not create a story when invalid", %{project: project, user: user} do
@@ -96,7 +96,7 @@ defmodule Artisan.StoryControllerTest do
     updated = Repo.get(Artisan.Story, id) |> Repo.preload(:creator) |> Repo.preload(:assignee)
     json = Phoenix.View.render(Artisan.Stories.View, "story.json", story: updated)
 
-    assert_broadcast("update:story", ^json)
+    assert_broadcast("story:update", ^json)
   end
 
   test "does not update a story when invalid", %{project: project, user: user} do
@@ -143,7 +143,7 @@ defmodule Artisan.StoryControllerTest do
     stories = Artisan.Stories.by_state(project["id"])
     json = Phoenix.View.render(Artisan.Stories.View, "by_state.json", stories: stories)
 
-    assert_broadcast("move:story", ^json)
+    assert_broadcast("story:move", ^json)
   end
 
   test "gets stories for the current iteration", %{project: project, user: user} do
