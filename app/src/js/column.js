@@ -6,7 +6,8 @@ import StoryCard from 'stories/card'
 let _nextSibling;
 let _ghost;
 let _dragging = false;
-let _sortableInstances = {
+
+const _sortableInstances = {
   backlog: null,
   ready: null,
   working: null,
