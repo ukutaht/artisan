@@ -4,6 +4,7 @@ defmodule Artisan.Project do
 
   schema "projects" do
     field :name
+    field :slug
     many_to_many :collaborators, Artisan.User, join_through: "project_users"
 
     timestamps
@@ -15,9 +16,17 @@ defmodule Artisan.Project do
     |> validate_required([:name])
   end
 
+  def add_slug(project, slug) do
+    project
+    |> cast(%{slug: slug}, [:slug])
+    |> validate_required([:slug])
+    |> unique_constraint(:slug)
+  end
+
   def edit(project, attributes) do
     project
-    |> cast(attributes, [:name])
-    |> validate_required([:name])
+    |> cast(attributes, [:name, :slug])
+    |> validate_required([:name, :slug])
+    |> unique_constraint(:slug)
   end
 end

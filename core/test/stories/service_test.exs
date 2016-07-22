@@ -18,7 +18,7 @@ defmodule Artisan.StoriesTest do
   }
 
   setup do
-    {:ok, project} = Repo.insert(%Artisan.Project{name: "project"})
+    {:ok, project} = Repo.insert(%Artisan.Project{name: "project", slug: "slug"})
     {:ok, user} = Artisan.Users.create(%{"name" => "User", "email" => "user@email.com", "password" => "asdasd"})
     {:ok, %{project: project, user: user}}
   end
@@ -60,7 +60,7 @@ defmodule Artisan.StoriesTest do
   end
 
   test "number is generated per-project", %{project: project, user: user} do
-    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project"})
+    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project", slug: "slug3"})
 
     {:ok, story1} = Stories.create(user.id, project.id, @valid_story_params)
     {:ok, story2} = Stories.create(user.id, project2.id, @valid_story_params)
@@ -124,7 +124,7 @@ defmodule Artisan.StoriesTest do
 
   test "does not find stories that are not part of the project", %{user: user, project: project} do
 
-    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project"})
+    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project", slug: "slug3"})
     create_in_state(user.id, project2.id, "ready")
 
     found = Stories.by_state(project.id)
@@ -166,7 +166,7 @@ defmodule Artisan.StoriesTest do
   end
 
   test "stories are only marked within the project", %{user: user, project: project} do
-    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project"})
+    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project", slug: "slug2"})
     {:ok, %{iteration: iteration}} = Artisan.Iterations.create_for(project.id)
     completed_in_project2 = create_in_state(user.id, project2.id, "completed")
 

@@ -4,10 +4,12 @@ defmodule Artisan.Projects do
   alias Artisan.ProjectUser
   alias Artisan.Iterations
   alias Artisan.User
+  alias Artisan.Projects.Slug
 
   def create(user_id, params) do
     %Project{}
       |> Project.new(params)
+      |> generate_slug
       |> Repo.insert
       |> create_first_iteration
       |> add_as_collaborator(user_id)
@@ -79,5 +81,10 @@ defmodule Artisan.Projects do
       select: p
     )
   end
+
+  defp generate_slug(%{errors: []} = changeset) do
+    Project.add_slug(changeset, Slug.generate(changeset.changes.name))
+  end
+  defp generate_slug(changeset_with_error), do: changeset_with_error
 end
 

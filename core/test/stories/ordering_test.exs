@@ -9,7 +9,7 @@ defmodule Artisan.Stories.OrderingTest do
   }
 
   setup do
-    {:ok, project} = Repo.insert(%Artisan.Project{name: "project"})
+    {:ok, project} = Repo.insert(%Artisan.Project{name: "project", slug: "slug"})
     {:ok, user} = Artisan.Users.create(%{"name" => "User", "email" => "user@email.com", "password" => "asdasd"})
     {:ok, %{user: user, project: project}}
   end
@@ -123,7 +123,7 @@ defmodule Artisan.Stories.OrderingTest do
   end
 
   test "moves a story only within the project", %{user: user, project: project} do
-    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project"})
+    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project", slug: "slug2"})
 
     second = create_in_state(user.id, project.id, "ready")
     first = create_in_state(user.id, project.id, "ready")

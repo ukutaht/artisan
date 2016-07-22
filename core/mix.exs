@@ -30,6 +30,7 @@ defmodule Artisan.Mixfile do
       {:cowboy, "~> 1.0"},
       {:comeonin, "~> 2.1"},
       {:cors_plug, "~> 1.1"},
+      {:slugger, "~> 0.1.0"}
    ]
   end
 

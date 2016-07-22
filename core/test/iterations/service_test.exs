@@ -4,7 +4,7 @@ defmodule Artisan.IterationsTest do
   alias Artisan.Iteration
 
   setup do
-    {:ok, project} = Repo.insert(%Artisan.Project{name: "project"})
+    {:ok, project} = Repo.insert(%Artisan.Project{name: "project", slug: "slug"})
     {:ok, user} = Artisan.Users.create(%{"name" => "User", "email" => "user@email.com", "password" => "asdasd"})
     {:ok, %{project: project, user: user}}
   end
@@ -101,7 +101,7 @@ defmodule Artisan.IterationsTest do
   test "all iterations do not include iterations for another project", %{project: project} do
     create_iteration(project.id)
 
-    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project"})
+    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project", slug: "slug2"})
 
     another_project_iteration = create_iteration(project2.id)
 

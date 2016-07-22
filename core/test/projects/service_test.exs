@@ -4,7 +4,7 @@ defmodule Artisan.ProjectsTest do
   alias Artisan.Project
 
   @valid_project_params %{
-    name: "name",
+    name: "Name",
   }
 
   @invalid_project_params %{
@@ -34,6 +34,22 @@ defmodule Artisan.ProjectsTest do
     [%{id: collaborator_id}] = Projects.find(current_user.id, project.id).collaborators
 
     assert collaborator_id == current_user.id
+  end
+
+  test "automatically generates slug for project", %{current_user: current_user} do
+    {:ok, project} = Projects.create(current_user.id, @valid_project_params)
+
+    assert project.slug == "name"
+  end
+
+  test "appends numbers to ensure slugs are unique", %{current_user: current_user} do
+    {:ok, project1} = Projects.create(current_user.id, @valid_project_params)
+    assert project1.slug == "name"
+    {:ok, project2} = Projects.create(current_user.id, @valid_project_params)
+    assert project2.slug == "name-1"
+    {:ok, project3} = Projects.create(current_user.id, @valid_project_params)
+
+    assert project3.slug == "name-2"
   end
 
   test "does not create a project with invalid params", %{current_user: current_user} do
@@ -145,8 +161,8 @@ defmodule Artisan.ProjectsTest do
     {:ok, user2} = Artisan.Users.create(%{"name" => "User", "email" => "user1@email.com", "password" => "asdasd"})
 
     {:ok, project1} = Projects.create(current_user.id, @valid_project_params)
-    {:ok, project2} = Projects.create(current_user.id, @valid_project_params)
-    {:ok, _not_ours} = Projects.create(user2.id, @valid_project_params)
+    {:ok, project2} = Projects.create(current_user.id, %{@valid_project_params | name: "name2"})
+    {:ok, _not_ours} = Projects.create(user2.id, %{@valid_project_params | name: "name3"})
 
     assert Projects.all(current_user.id) == [project1, project2]
   end
