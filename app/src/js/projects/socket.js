@@ -1,14 +1,12 @@
 import {Socket} from 'phoenix-socket'
 
-const HOST = 'ws://localhost:4000'
-
 export default class ProjectSocket {
   constructor(projectId) {
     this.projectId = projectId
   }
 
   join(callbacks) {
-    const socket = new Socket(HOST + '/socket', {
+    const socket = new Socket('/socket', {
       params: {token: localStorage.getItem('token')},
       //logger: ((kind, msg, data) => { console.log(`${kind}: ${msg}`, data) })
     })

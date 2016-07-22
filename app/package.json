@@ -2,7 +2,7 @@
   "description": "Artisan frontend",
   "license": "MIT",
   "scripts": {
-    "start": "node_modules/brunch/bin/brunch watch --server -j",
+    "start": "node_modules/brunch/bin/brunch watch -j",
     "test": "node_modules/karma/bin/karma start --single-run",
     "lint": "node_modules/eslint/bin/eslint.js src/js"
   },
