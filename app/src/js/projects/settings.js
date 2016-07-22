@@ -1,5 +1,5 @@
 import React from 'react'
-import Link from 'react-router/lib/Link'
+import browserHistory from 'react-router/lib/browserHistory'
 
 import ProjectNav from 'projects/nav'
 
@@ -8,6 +8,15 @@ export default class ProjectSettings extends React.Component {
     if (window.location.href.endsWith(tab)) {
       return 'block-list__item--selected'
     }
+    return '';
+  }
+
+  goToSettings() {
+    browserHistory.replace(`/${this.props.project.slug}/settings`)
+  }
+
+  goToCollaborators() {
+    browserHistory.replace(`/${this.props.project.slug}/settings/collaborators`)
   }
 
   render() {
@@ -22,12 +31,12 @@ export default class ProjectSettings extends React.Component {
         <div className="row">
           <div className="four-columns">
             <nav className="block-list">
-              <Link to={`/${slug}/settings`} className={`block-list__item ${this.selectedClass('settings')}`}>
+              <a onClick={this.goToSettings.bind(this)} className={`block-list__item clickable ${this.selectedClass('settings')}`}>
                 Settings
-              </Link>
-              <Link to={`/${slug}/settings/collaborators`} className={`block-list__item ${this.selectedClass('collaborators')}`}>
+              </a>
+              <a onClick={this.goToCollaborators.bind(this)} className={`block-list__item clickable ${this.selectedClass('collaborators')}`}>
                 Collaborators
-              </Link>
+              </a>
             </nav>
           </div>
 
