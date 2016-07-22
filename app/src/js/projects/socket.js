@@ -2,17 +2,18 @@ import {Socket} from 'phoenix-js'
 
 const HOST = 'ws://localhost:4000'
 
-class BoardSocket {
+export default class ProjectSocket {
   constructor(projectId) {
     this.projectId = projectId
   }
 
   join(callbacks) {
     const socket = new Socket(HOST + '/socket', {
+      params: {token: localStorage.getItem('token')},
       //logger: ((kind, msg, data) => { console.log(`${kind}: ${msg}`, data) })
     })
 
-    socket.connect({token: localStorage.getItem('token')})
+    socket.connect()
 
     this.channel = socket.channel(`projects:${this.projectId}`, {})
     this.channel.join()
@@ -27,5 +28,3 @@ class BoardSocket {
     this.channel.leave()
   }
 }
-
-export default BoardSocket

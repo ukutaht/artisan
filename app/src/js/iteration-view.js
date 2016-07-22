@@ -3,7 +3,7 @@ import update from 'react/lib/update'
 import browserHistory from 'react-router/lib/browserHistory'
 
 import StoryBoard from 'storyboard'
-import BoardSocket from 'board-socket'
+import ProjectSocket from 'projects/socket'
 import * as iterations from 'iterations/service'
 import * as stories from 'stories/service'
 
@@ -22,7 +22,7 @@ class IterationView extends React.Component {
     this.loadIteration(this.props.project.id, this.props.routeParams.iterationNumber || 'current')
     document.title = `${this.props.project.name}`
 
-    this.boardSocket = new BoardSocket(this.props.project.id)
+    this.boardSocket = new ProjectSocket(this.props.project.id)
     this.boardSocket.join({
       onAddStory: this.doAddStory.bind(this),
       onUpdateStory: this.doUpdateStory.bind(this),
