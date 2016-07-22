@@ -3,9 +3,15 @@ import Sortable from 'sortablejs'
 
 import StoryCard from 'stories/card'
 
-var _nextSibling;
-var _ghost;
-var _dragging = false;
+let _nextSibling;
+let _ghost;
+let _dragging = false;
+let _sortableInstances = {
+  backlog: null,
+  ready: null,
+  working: null,
+  completed: null,
+};
 
 const columnTitles = {
   backlog: 'Backlog',
@@ -14,14 +20,25 @@ const columnTitles = {
   completed: 'Completed'
 }
 
-class Column extends React.Component {
-  constructor(props) {
-    super(props)
-    this.dragging = false
+function setSortDisabled(value) {
+  for (const columnName of Object.keys(_sortableInstances)) {
+    if (_sortableInstances[columnName]) {
+      _sortableInstances[columnName].option('disabled', value)
+    }
   }
+}
 
+function enableSortables() {
+  setSortDisabled(false)
+}
+
+function disableSortables() {
+  setSortDisabled(true)
+}
+
+class Column extends React.Component {
   componentDidMount() {
-    this.sortableInstance = Sortable.create(this.refs.sortable, {
+    _sortableInstances[this.props.name] = Sortable.create(this.refs.sortable, {
       onStart: this.onStart.bind(this),
       onAdd: this.updatePosition.bind(this),
       onUpdate: this.updatePosition.bind(this),
@@ -37,11 +54,10 @@ class Column extends React.Component {
   }
 
   updatePosition(evt) {
+    disableSortables()
     evt.to.insertBefore(_ghost, evt.to.children[evt.newIndex]);
     const react_placeholder = evt.from.insertBefore(evt.item, _nextSibling);
     react_placeholder.style.display = 'none';
-
-    this.sortableInstance.option('disabled', true)
 
     this.props.onDrag(Number(evt.item.dataset.id),
                       evt.to.dataset.column,
@@ -50,14 +66,14 @@ class Column extends React.Component {
   }
 
   cleanUpDrag(evt, react_placeholder) {
-    this.sortableInstance.option('disabled', false)
     evt.to.removeChild(_ghost)
+    enableSortables()
     _dragging = false
     if (evt.from === evt.to) react_placeholder.style.display = 'block'
   }
 
   componentWillUnmount() {
-    this.sortableInstance.destroy()
+    _sortableInstances[this.props.name].destroy()
   }
 
   shouldComponentUpdate() {
