@@ -1,7 +1,7 @@
 defmodule Artisan.Endpoint do
   use Phoenix.Endpoint, otp_app: :artisan
 
-  socket "/socket", Artisan.UserSocket
+  socket "/socket", Artisan.Users.Socket
 
   if code_reloading? do
     plug Phoenix.CodeReloader

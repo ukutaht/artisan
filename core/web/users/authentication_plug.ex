@@ -1,6 +1,6 @@
 defmodule Artisan.Users.AuthenticationPlug do
   import Plug.Conn
-  @two_weeks 1209600
+  alias Artisan.Users.Token
 
   def init(default), do: default
 
@@ -13,7 +13,7 @@ defmodule Artisan.Users.AuthenticationPlug do
   end
 
   def authenticate(["Bearer " <> token], conn) do
-    case Phoenix.Token.verify(Artisan.Endpoint, "user", token, max_age: @two_weeks) do
+    case Token.verify(token) do
       {:ok, user_id} ->
         assign(conn, :current_user, user_id)
       {:error, _} ->

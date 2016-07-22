@@ -9,7 +9,8 @@ class BoardSocket {
 
   join(callbacks) {
     const socket = new Socket(HOST + '/socket')
-    socket.connect()
+
+    socket.connect({token: localStorage.getItem('token')})
 
     const channel = socket.channel(`boards:${this.projectId}`, {})
     channel.join()

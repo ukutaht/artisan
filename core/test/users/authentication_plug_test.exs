@@ -2,7 +2,7 @@ defmodule Artisan.Users.AuthenticationPlugTest do
   use ExUnit.Case, async: true
   use Plug.Test
 
-  @valid_token Phoenix.Token.sign(Artisan.Endpoint, "user", 1)
+  @valid_token Artisan.Users.Token.sign(1)
   @invalid_token "obviously wrong"
 
   test "verifies that user has a signed token in bearer header" do
