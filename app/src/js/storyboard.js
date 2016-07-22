@@ -101,7 +101,13 @@ export default class StoryBoard extends React.Component {
   }
 
   iterationRoute(iterationNumber) {
-    return `/projects/${this.props.project.id}/iterations/${iterationNumber}`;
+    const currentIteration = this.props.allIterations[0];
+
+    if (iterationNumber === currentIteration.number) {
+      return `/${this.props.project.slug}`;
+    } else {
+      return `/${this.props.project.slug}/iterations/${iterationNumber}`;
+    }
   }
 
   renderProjectNav() {

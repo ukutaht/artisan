@@ -14,7 +14,7 @@ class NewProject extends React.Component {
   submit(e) {
     e.preventDefault()
     projects.create(this.state).then((project) => {
-      browserHistory.push(`/projects/${project.id}/iterations/current`)
+      browserHistory.push(`/${project.slug}`)
     })
   }
 

@@ -71,6 +71,11 @@
         &:first-of-type:before {
           content: none;
         }
+
+        select {
+          margin-top: 0;
+          margin-bottom: 0;
+        }
       }
     }
 

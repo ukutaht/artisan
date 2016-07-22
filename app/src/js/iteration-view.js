@@ -19,7 +19,7 @@ class IterationView extends React.Component {
   }
 
   componentDidMount() {
-    this.loadIteration(this.props.project.id, this.props.routeParams.iterationNumber)
+    this.loadIteration(this.props.project.id, this.props.routeParams.iterationNumber || "current")
 
     const boardSocket = new BoardSocket(this.props.project.id)
     boardSocket.join({
@@ -30,7 +30,7 @@ class IterationView extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.loadIteration(newProps.project.id, newProps.routeParams.iterationNumber)
+    this.loadIteration(newProps.project.id, newProps.routeParams.iterationNumber || "current")
   }
 
   loadIteration(projectId, iterationId) {
@@ -91,7 +91,7 @@ class IterationView extends React.Component {
 
   newIteration() {
     iterations.create(this.projectId).then((res) => {
-      browserHistory.push(`/projects/${this.projectId}/iterations/${res.iteration.number}`)
+      browserHistory.push(`/${this.props.project.slug}`)
     })
   }
 
