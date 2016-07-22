@@ -37,8 +37,8 @@ class Dashboard extends React.Component {
               this.state.projects.map((project) => {
                 return (
                   <li className="projects-list__item" key={project.id}>
-                    <Link to={`projects/${project.slug}/iterations/current`}>{project.name}</Link>
-                    <Link to={`projects/${project.slug}/settings`} className="projects-list__item__settings">
+                    <Link to={`${project.slug}/iterations/current`}>{project.name}</Link>
+                    <Link to={`${project.slug}/settings`} className="projects-list__item__settings">
                       <i className="ion-gear-b right-padded-icon"></i>Settings
                     </Link>
                   </li>

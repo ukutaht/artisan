@@ -22,10 +22,10 @@ export default class ProjectSettings extends React.Component {
         <div className="row">
           <div className="four-columns">
             <nav className="block-list">
-              <Link to={`/projects/${slug}/settings`} className={`block-list__item ${this.selectedClass('settings')}`}>
+              <Link to={`/${slug}/settings`} className={`block-list__item ${this.selectedClass('settings')}`}>
                 Settings
               </Link>
-              <Link to={`/projects/${slug}/settings/collaborators`} className={`block-list__item ${this.selectedClass('collaborators')}`}>
+              <Link to={`/${slug}/settings/collaborators`} className={`block-list__item ${this.selectedClass('collaborators')}`}>
                 Collaborators
               </Link>
             </nav>

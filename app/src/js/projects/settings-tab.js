@@ -37,7 +37,7 @@ class ProjectSettingsTab extends React.Component {
         <div className="form-group">
           <label>Slug</label>
           <br />
-          <small>Identifier for this project which is used in the URL e.g. <em>https://artisan.com/projects/<strong>{this.state.slug}</strong></em></small>
+          <small>Identifier for this project which is used in the URL i.e. <em>https://artisan.com/projects/<strong>{this.state.slug}</strong></em></small>
           <input type="text" value={this.state.slug || ''} onChange={this.slugChanged.bind(this)} />
         </div>
         <button type="submit" className="button primary full-width no-margin">Save</button>

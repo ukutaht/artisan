@@ -20,13 +20,13 @@ export default class ProjectNav extends React.Component {
         </ul>
 
         <div className="project__nav__tabs">
-          <Link to={`/projects/${this.props.project.slug}/iterations/current`}
+          <Link to={`/${this.props.project.slug}/iterations/current`}
                 className={this.activeClass('storyboard')}>
             <i className="ion-grid right-padded-icon" />
             Story board
           </Link>
 
-          <Link to={`/projects/${this.props.project.slug}/settings`}
+          <Link to={`/${this.props.project.slug}/settings`}
                 className={this.activeClass('settings')}>
             <i className="ion-gear-b right-padded-icon" />
             Settings
