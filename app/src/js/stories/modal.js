@@ -1,5 +1,4 @@
 import React from 'react'
-import update from 'react/lib/update'
 import fecha from 'fecha'
 
 import pert from 'stories/pert'
@@ -56,11 +55,11 @@ class StoryModal extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    const story = update(this.state, {
-      id: {$set: this.props.story.id},
-      project_id: {$set: this.props.project.id},
-      state: {$set: this.props.story.state},
-      tags: {$set: splitTags(this.state.tags)}
+    const story = Object.assign({}, this.state, {
+      id: this.props.story.id,
+      project_id: this.props.project.id,
+      state: this.props.story.state,
+      tags: splitTags(this.state.tags)
     })
 
     this.props.onSubmit(story)
@@ -91,7 +90,7 @@ class StoryModal extends React.Component {
   estimateChanged(type) {
     return function(e) {
       const newEstimate = this.extractEstimate(e, type)
-      const estimateData = update(this.state, {[type]: {$set: newEstimate}})
+      const estimateData = Object.assign({}, this.state, {[type]: newEstimate})
 
       this.setState({
         [type]: newEstimate,
@@ -101,7 +100,8 @@ class StoryModal extends React.Component {
   }
 
   displayEstimate(estimate) {
-    return this.state[estimate] || ''
+    if (this.state[estimate] === null) return ''
+    return this.state[estimate].toString()
   }
 
   bottomSection() {
