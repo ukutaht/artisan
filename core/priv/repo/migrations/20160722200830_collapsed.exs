@@ -29,13 +29,13 @@ defmodule Artisan.Repo.Migrations.Collapsed do
     end
     create unique_index(:users, [:email])
 
-    create table(:project_users) do
+    create table(:collaborators) do
       add :project_id, references(:projects)
       add :user_id, references(:users)
 
       timestamps
     end
-    create unique_index(:project_users, [:project_id, :user_id])
+    create unique_index(:collaborators, [:project_id, :user_id])
 
     create table(:stories) do
       add :name, :string, null: false

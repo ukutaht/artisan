@@ -1,8 +1,8 @@
-defmodule Artisan.ProjectUser do
+defmodule Artisan.Collaborator do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "project_users" do
+  schema "collaborators" do
     field :project_id, :integer
     field :user_id, :integer
 

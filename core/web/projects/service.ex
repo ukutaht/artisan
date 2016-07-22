@@ -1,7 +1,7 @@
 defmodule Artisan.Projects do
   use Artisan.Web, :model
   alias Artisan.Project
-  alias Artisan.ProjectUser
+  alias Artisan.Collaborator
   alias Artisan.Iterations
   alias Artisan.User
   alias Artisan.Projects.Slug
@@ -27,15 +27,15 @@ defmodule Artisan.Projects do
   end
 
   def remove_collaborator(project_id, user_id) do
-    Repo.delete_all(from pu in ProjectUser,
-     where: pu.user_id == ^user_id,
-     where: pu.project_id == ^project_id
+    Repo.delete_all(from c in Collaborator,
+     where: c.user_id == ^user_id,
+     where: c.project_id == ^project_id
     )
     :ok
   end
 
   def add_collaborator(project_id, collaborator_id) do
-    {:ok, _} = Repo.insert(%ProjectUser{project_id: project_id, user_id: collaborator_id})
+    {:ok, _} = Repo.insert(%Collaborator{project_id: project_id, user_id: collaborator_id})
     :ok
   end
 
@@ -43,8 +43,8 @@ defmodule Artisan.Projects do
     query = "%#{query}%"
 
     Repo.all(from u in User,
-     left_join: pu in ProjectUser, on: u.id == pu.user_id and pu.project_id == ^project_id,
-     where: is_nil(pu.user_id),
+     left_join: c in Collaborator, on: u.id == c.user_id and c.project_id == ^project_id,
+     where: is_nil(c.user_id),
      where: ilike(u.name, ^query) or ilike(u.email, ^query),
      limit: 10,
      select: u
@@ -61,9 +61,9 @@ defmodule Artisan.Projects do
   end
 
   def is_collaborator?(project_id, user_id) do
-    query = from(pu in ProjectUser,
-      where: pu.project_id == ^project_id,
-      where: pu.user_id == ^user_id
+    query = from(c in Collaborator,
+      where: c.project_id == ^project_id,
+      where: c.user_id == ^user_id
     )
 
     Repo.aggregate(query, :count, :id) > 0
@@ -76,7 +76,7 @@ defmodule Artisan.Projects do
   defp create_first_iteration(error), do: error
 
   defp add_as_collaborator({:ok, project}, user_id) do
-    {:ok, _} = Repo.insert(%ProjectUser{project_id: project.id, user_id: user_id})
+    {:ok, _} = Repo.insert(%Collaborator{project_id: project.id, user_id: user_id})
     {:ok, project}
   end
   defp add_as_collaborator(error, _), do: error
@@ -90,8 +90,8 @@ defmodule Artisan.Projects do
 
   defp projects_for(user_id) do
     from(p in Project,
-      join: pu in ProjectUser, on: pu.project_id == p.id,
-      where: pu.user_id == ^user_id,
+      join: c in Collaborator, on: c.project_id == p.id,
+      where: c.user_id == ^user_id,
       select: p
     )
   end
