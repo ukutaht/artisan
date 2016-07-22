@@ -1,4 +1,4 @@
-import {Socket} from 'phoenix-js'
+import {Socket} from 'phoenix-socket'
 
 const HOST = 'ws://localhost:4000'
 
