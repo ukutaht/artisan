@@ -14,7 +14,7 @@ class BoardSocket {
 
     socket.connect({token: localStorage.getItem('token')})
 
-    this.channel = socket.channel(`boards:${this.projectId}`, {})
+    this.channel = socket.channel(`projects:${this.projectId}`, {})
     this.channel.join()
 
     this.channel.on('story:update', callbacks.onUpdateStory)

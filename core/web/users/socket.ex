@@ -2,7 +2,7 @@ defmodule Artisan.Users.Socket do
   use Phoenix.Socket
   alias Artisan.Users.Token
 
-  channel "boards:*", Artisan.BoardChannel
+  channel "projects:*", Artisan.Projects.Channel
 
   transport :websocket, Phoenix.Transports.WebSocket
 

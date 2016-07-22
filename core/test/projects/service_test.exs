@@ -31,9 +31,7 @@ defmodule Artisan.ProjectsTest do
   test "automatically adds current user as collaborator", %{current_user: current_user} do
     {:ok, project} = Projects.create(current_user.id, @valid_project_params)
 
-    [%{id: collaborator_id}] = Projects.find(current_user.id, project.slug).collaborators
-
-    assert collaborator_id == current_user.id
+    assert Projects.is_collaborator?(project.id, current_user.id)
   end
 
   test "automatically generates slug for project", %{current_user: current_user} do
@@ -80,9 +78,7 @@ defmodule Artisan.ProjectsTest do
     :ok = Projects.add_collaborator(project.id, user2.id)
     :ok = Projects.remove_collaborator(project.id, user2.id)
 
-    collaborators = Projects.find(current_user.id, project.slug).collaborators
-
-    assert Enum.count(collaborators) == 1
+    refute Projects.is_collaborator?(project.id, user2.id)
   end
 
   test "can add a collaborator", %{current_user: current_user} do
@@ -90,9 +86,7 @@ defmodule Artisan.ProjectsTest do
     {:ok, user2}   = Artisan.Users.create(%{"name" => "User", "email" => "user2@email.com", "password" => "asdasd"})
     :ok = Projects.add_collaborator(project.id, user2.id)
 
-    collaborators = Projects.find(current_user.id, project.slug).collaborators
-
-    assert Enum.count(collaborators) == 2
+    assert Projects.is_collaborator?(project.id, user2.id)
   end
 
   test "can search for potential collaborators by name", %{current_user: current_user} do

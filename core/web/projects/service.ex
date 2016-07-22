@@ -60,6 +60,15 @@ defmodule Artisan.Projects do
     project |> do_edit(attrs)
   end
 
+  def is_collaborator?(project_id, user_id) do
+    query = from(pu in ProjectUser,
+      where: pu.project_id == ^project_id,
+      where: pu.user_id == ^user_id
+    )
+
+    Repo.aggregate(query, :count, :id) > 0
+  end
+
   defp create_first_iteration({:ok, project}) do
     {:ok, _} = Iterations.create_for(project.id)
     {:ok, project}

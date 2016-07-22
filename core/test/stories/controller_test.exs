@@ -1,6 +1,7 @@
 defmodule Artisan.StoryControllerTest do
   use Artisan.ConnCase
   use Artisan.ChannelCase
+  alias Artisan.Projects.Channel
   import Artisan.Test.APIHelper
 
   @valid_story_params %{
@@ -51,9 +52,7 @@ defmodule Artisan.StoryControllerTest do
   end
 
   test "broadcasts story create", %{project: project, user: user} do
-    topic = "boards:#{project["id"]}"
-
-    Artisan.Endpoint.subscribe(topic)
+    Channel.subscribe(project["id"])
 
     create_story(user["token"], project["id"])
     created = Repo.one(Artisan.Story) |> Repo.preload(:creator) |> Repo.preload(:assignee)
@@ -86,9 +85,8 @@ defmodule Artisan.StoryControllerTest do
 
   test "broadcasts story update", %{project: project, user: user} do
     %{"id" => id} = create_story(user["token"], project["id"])
-    topic = "boards:#{project["id"]}"
 
-    Artisan.Endpoint.subscribe(topic)
+    Channel.subscribe(project["id"])
 
     authenticated_conn(user["token"])
       |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name"}})
@@ -133,9 +131,8 @@ defmodule Artisan.StoryControllerTest do
 
   test "broadcasts a story move to clients", %{project: project, user: user} do
     %{"id" => id} = create_story(user["token"], project["id"])
-    topic = "boards:#{project["id"]}"
 
-    Artisan.Endpoint.subscribe(topic)
+    Channel.subscribe(project["id"])
 
     authenticated_conn(user["token"])
       |> post("/api/stories/#{id}/move", %{state: "working", index: 0})
