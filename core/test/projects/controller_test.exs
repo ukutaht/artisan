@@ -26,7 +26,7 @@ defmodule Artisan.Projects.ControllerTest do
       |> json_response(200)
 
     found = authenticated_conn(user["token"])
-      |> get("/api/projects/#{created["id"]}")
+      |> get("/api/projects/#{created["slug"]}")
       |> json_response(200)
 
     assert found["name"] == created["name"]
@@ -38,7 +38,7 @@ defmodule Artisan.Projects.ControllerTest do
       |> json_response(200)
 
     %{"collaborators" => [found]} = authenticated_conn(user["token"])
-      |> get("/api/projects/#{created["id"]}")
+      |> get("/api/projects/#{created["slug"]}")
       |> json_response(200)
 
     assert found["name"] == user["user"]["name"]
@@ -74,7 +74,7 @@ defmodule Artisan.Projects.ControllerTest do
       |> json_response(200)
 
     %{"collaborators" => collaborators} = authenticated_conn(user["token"])
-      |> get("/api/projects/#{created["id"]}")
+      |> get("/api/projects/#{created["slug"]}")
       |> json_response(200)
 
     assert Enum.count(collaborators) == 1
@@ -92,7 +92,7 @@ defmodule Artisan.Projects.ControllerTest do
       |> json_response(200)
 
     %{"collaborators" => collaborators} = authenticated_conn(user["token"])
-      |> get("/api/projects/#{created["id"]}")
+      |> get("/api/projects/#{created["slug"]}")
       |> json_response(200)
 
     assert Enum.count(collaborators) == 2

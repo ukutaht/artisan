@@ -27,7 +27,7 @@ const router = (
       <IndexRoute component={Dashboard} />
       <Route path="profile" component={Profile} />
       <Route path="projects/new" component={NewProject} />
-      <Route path="projects/:projectId" component={ProjectContainer}>
+      <Route path="projects/:slug" component={ProjectContainer}>
         <Route path="iterations/:iterationNumber" component={IterationView} />
         <Route path="settings" component={ProjectSettings}>
           <IndexRoute component={ProjectSettingsTab} />

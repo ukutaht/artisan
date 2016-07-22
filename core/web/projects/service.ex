@@ -19,9 +19,9 @@ defmodule Artisan.Projects do
     Repo.all(projects_for(user_id))
   end
 
-  def find(user_id, project_id) do
+  def find(user_id, slug) do
     Repo.one(from p in projects_for(user_id),
-     where: p.id == ^project_id,
+     where: p.slug == ^slug,
      preload: :collaborators
     )
   end
@@ -52,7 +52,12 @@ defmodule Artisan.Projects do
   end
 
   def update(user_id, project_id, attrs) do
-    find(user_id, project_id) |> do_edit(attrs)
+    project = Repo.one(from p in projects_for(user_id),
+     where: p.id == ^project_id,
+     preload: :collaborators
+    )
+
+    project |> do_edit(attrs)
   end
 
   defp create_first_iteration({:ok, project}) do

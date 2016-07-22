@@ -35,9 +35,8 @@ defmodule Artisan.Projects.Controller do
       |> render("collaborators.json", users: results)
   end
 
-  def find(conn, %{"id" => id}) do
-    {numeric_id, ""} = Integer.parse(id)
-    project = Projects.find(conn.assigns[:current_user], numeric_id)
+  def find(conn, %{"slug" => slug}) do
+    project = Projects.find(conn.assigns[:current_user], slug)
     if project do
       conn |> render("project.json", project: project)
     else

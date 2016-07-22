@@ -11,15 +11,18 @@ function nameSort(users) {
 export default class ProjectContainer extends React.Component {
   constructor(props) {
     super(props)
-    this.projectId = this.props.routeParams.projectId
     this.state = {}
   }
 
   componentDidMount() {
-    projects.find(this.projectId).then((project) => {
+    projects.find(this.props.routeParams.slug).then((project) => {
       nameSort(project.collaborators)
       this.setState({project: project})
     })
+  }
+
+  projectId() {
+    return this.state.project.id
   }
 
   updateProject(id, attrs) {
@@ -30,7 +33,7 @@ export default class ProjectContainer extends React.Component {
 
   addCollaborator(user) {
     return projects
-      .addCollaborator(this.projectId, user.id)
+      .addCollaborator(this.projectId(), user.id)
       .then(() => {
         const newState = update(this.state, {
           project: {collaborators: {$unshift: [user]}},
@@ -43,7 +46,7 @@ export default class ProjectContainer extends React.Component {
 
   removeCollaborator(userId) {
     projects
-      .removeCollaborator(this.projectId, userId)
+      .removeCollaborator(this.projectId(), userId)
       .then(() => {
         this.removeCollaboratorFromState(userId)
       })

@@ -28,7 +28,7 @@ defmodule Artisan.Router do
     scope "/projects", Projects do
       get    "/",                               Controller, :all
       post   "/",                               Controller, :create
-      get    "/:id",                            Controller, :find
+      get    "/:slug",                          Controller, :find
       put    "/:id",                            Controller, :update
       post   "/:id/collaborators",              Controller, :add_collaborator
       delete "/:id/collaborators/:user_id",     Controller, :remove_collaborator

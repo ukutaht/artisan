@@ -31,7 +31,7 @@ defmodule Artisan.ProjectsTest do
   test "automatically adds current user as collaborator", %{current_user: current_user} do
     {:ok, project} = Projects.create(current_user.id, @valid_project_params)
 
-    [%{id: collaborator_id}] = Projects.find(current_user.id, project.id).collaborators
+    [%{id: collaborator_id}] = Projects.find(current_user.id, project.slug).collaborators
 
     assert collaborator_id == current_user.id
   end
@@ -61,7 +61,7 @@ defmodule Artisan.ProjectsTest do
   test "finds a project", %{current_user: current_user} do
     {:ok, project} = Projects.create(current_user.id, @valid_project_params)
 
-    found = Projects.find(current_user.id, project.id)
+    found = Projects.find(current_user.id, project.slug)
 
     assert found.name == project.name
   end
@@ -69,7 +69,7 @@ defmodule Artisan.ProjectsTest do
   test "finds collaborators for a project", %{current_user: current_user} do
     {:ok, project} = Projects.create(current_user.id, @valid_project_params)
 
-    [%{id: collaborator_id}] = Projects.find(current_user.id, project.id).collaborators
+    [%{id: collaborator_id}] = Projects.find(current_user.id, project.slug).collaborators
 
     assert collaborator_id == current_user.id
   end
@@ -80,7 +80,7 @@ defmodule Artisan.ProjectsTest do
     :ok = Projects.add_collaborator(project.id, user2.id)
     :ok = Projects.remove_collaborator(project.id, user2.id)
 
-    collaborators = Projects.find(current_user.id, project.id).collaborators
+    collaborators = Projects.find(current_user.id, project.slug).collaborators
 
     assert Enum.count(collaborators) == 1
   end
@@ -90,7 +90,7 @@ defmodule Artisan.ProjectsTest do
     {:ok, user2}   = Artisan.Users.create(%{"name" => "User", "email" => "user2@email.com", "password" => "asdasd"})
     :ok = Projects.add_collaborator(project.id, user2.id)
 
-    collaborators = Projects.find(current_user.id, project.id).collaborators
+    collaborators = Projects.find(current_user.id, project.slug).collaborators
 
     assert Enum.count(collaborators) == 2
   end
@@ -132,7 +132,7 @@ defmodule Artisan.ProjectsTest do
     {:ok, project} = Projects.create(current_user.id, @valid_project_params)
     someone_else = 999
 
-    assert Projects.find(someone_else, project.id) == nil
+    assert Projects.find(someone_else, project.slug) == nil
   end
 
   test "updates a project", %{current_user: current_user} do

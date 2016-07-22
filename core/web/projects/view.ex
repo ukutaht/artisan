@@ -1,7 +1,7 @@
 defmodule Artisan.Projects.View do
   use Artisan.Web, :view
 
-  @fields [:id, :name]
+  @fields [:id, :name, :slug]
 
   def render("project.json", %{project: project}) do
     Map.take(project, @fields)
