@@ -24,7 +24,7 @@ describe('IterationView', () => {
 
   const iterationResponse = {
     iteration: {state: 'working'},
-    all_iterations: [],
+    all_iterations: [{number: 1}],
     stories: {
       backlog: [],
       ready: [],
@@ -44,7 +44,7 @@ describe('IterationView', () => {
 
   it('loads current iteration data when mounting', () => {
     expect(view.state.iteration).toEqual({state: 'working'})
-    expect(view.state.allIterations).toEqual([])
+    expect(view.state.allIterations).toEqual([{number: 1}])
     expect(view.state.stories.backlog).toEqual([])
   })
 
