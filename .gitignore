@@ -1,13 +1,8 @@
 # App artifacts
 /core/_build
-/core/db
 /core/deps
-/core/*.ez
-
-# Generate on crash by the VM
-/core/erl_crash.dump
 
 /app/node_modules
-/app/public
+#/app/public
 
 /core/config/prod.secret.exs
