@@ -15,9 +15,10 @@ class BoardSocket {
     const channel = socket.channel(`boards:${this.projectId}`, {})
     channel.join()
 
-    channel.on('update:story', callbacks.onUpdateStory)
-    channel.on('add:story',    callbacks.onAddStory)
-    channel.on('move:story',   callbacks.onMoveStory)
+    channel.on('story:update', callbacks.onUpdateStory)
+    channel.on('story:add',    callbacks.onAddStory)
+    channel.on('story:move',   callbacks.onMoveStory)
+    channel.on('story:delete', callbacks.onDeleteStory)
   }
 }
 

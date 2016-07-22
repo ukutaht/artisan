@@ -5,7 +5,7 @@ defmodule Artisan.Stories.Controller do
   def create(conn, %{"story" => story_params}) do
     case Stories.create(conn.assigns[:current_user], story_params["project_id"], story_params) do
       {:ok, created} ->
-        broadcast(created.project_id, "add:story", Phoenix.View.render(Artisan.Stories.View, "story.json", story: created))
+        broadcast(created.project_id, "story:add", Phoenix.View.render(Artisan.Stories.View, "story.json", story: created))
         conn |> render("story.json", story: created)
       {:error, changeset} ->
         conn |> invalid(changeset)
@@ -17,7 +17,7 @@ defmodule Artisan.Stories.Controller do
 
     case Stories.update(numeric_id, story_params) do
       {:ok, updated} ->
-        broadcast(updated.project_id, "update:story", Phoenix.View.render(Artisan.Stories.View, "story.json", story: updated))
+        broadcast(updated.project_id, "story:update", Phoenix.View.render(Artisan.Stories.View, "story.json", story: updated))
         conn |> render("story.json", story: updated)
       {:error, changeset} ->
         conn |> invalid(changeset)
@@ -30,7 +30,7 @@ defmodule Artisan.Stories.Controller do
 
     case Stories.move(numeric_id, user_id, state, index) do
       {:ok, project_id, updated} ->
-        broadcast(project_id, "move:story", Phoenix.View.render(Artisan.Stories.View, "by_state.json", stories: updated))
+        broadcast(project_id, "story:move", Phoenix.View.render(Artisan.Stories.View, "by_state.json", stories: updated))
         conn |> render("by_state.json", stories: updated)
       {:error, changeset} ->
         conn |> invalid(changeset)
