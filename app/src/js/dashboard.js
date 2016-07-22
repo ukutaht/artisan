@@ -12,6 +12,7 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
+    document.title = 'Artisan'
     projects.all().then((projects) => {
       this.setState({projects: projects})
     })

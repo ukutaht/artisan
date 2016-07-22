@@ -9,6 +9,10 @@ class ProjectSettingsTab extends React.Component {
     }
   }
 
+  componentDidMount() {
+    document.title = `${this.props.project.name} | Settings`
+  }
+
   componentWillReceiveProps(newProps) {
     this.state = newProps.project
   }

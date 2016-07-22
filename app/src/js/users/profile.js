@@ -15,6 +15,10 @@ export default class Profile extends React.Component {
     }
   }
 
+  componentDidMount() {
+    document.title = 'Profile'
+  }
+
   onSubmit(e) {
     e.preventDefault()
     users.updateProfile(this.state.user)

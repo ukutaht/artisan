@@ -20,6 +20,7 @@ class IterationView extends React.Component {
 
   componentDidMount() {
     this.loadIteration(this.props.project.id, this.props.routeParams.iterationNumber || "current")
+    document.title = `${this.props.project.name}`
 
     const boardSocket = new BoardSocket(this.props.project.id)
     boardSocket.join({

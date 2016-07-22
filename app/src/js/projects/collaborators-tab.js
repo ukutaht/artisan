@@ -7,6 +7,10 @@ import UserService from 'users/service'
 const users = new UserService()
 
 export default class CollaboratorsTab extends React.Component {
+  componentDidMount() {
+    document.title = `${this.props.project.name} | Collaborators`
+  }
+
   removeIcon(collaborator) {
     if (collaborator.id === users.current.id) {
       return null
