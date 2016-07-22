@@ -15,7 +15,7 @@ defmodule Artisan.Projects.Channel do
     if Projects.is_collaborator?(project_id, user_id) do
       {:ok, socket}
     else
-      :error
+      {:error, %{reason: "Unauthorized"}}
     end
   end
 end
