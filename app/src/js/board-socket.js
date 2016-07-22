@@ -8,7 +8,9 @@ class BoardSocket {
   }
 
   join(callbacks) {
-    const socket = new Socket(HOST + '/socket')
+    const socket = new Socket(HOST + '/socket', {
+      logger: ((kind, msg, data) => { console.log(`${kind}: ${msg}`, data) })
+    })
 
     socket.connect({token: localStorage.getItem('token')})
 

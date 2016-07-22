@@ -20,8 +20,6 @@ export default class ProjectSettings extends React.Component {
   }
 
   render() {
-    const slug = this.props.project.slug
-
     return (
       <div>
         <ProjectNav activeTab="settings" project={this.props.project}>
