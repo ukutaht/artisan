@@ -38,10 +38,12 @@ exports.config = {
   modules: {
     autoRequire: {
       'js/app.js': ['app'],
-      'js/test.js': ['test/run-tests']
+      'js/test.js': ['helpers/run-tests']
     },
     nameCleaner: (path) => {
-      return path.replace(/^src\/js\//, '');
+      return path
+        .replace(/^src\/js\//, '')
+        .replace(/^test\//, '');
     }
   },
 

@@ -28,7 +28,7 @@ export default class UserService {
   }
 
   logout() {
-    localStorage.setItem('token', null)
+    localStorage.removeItem('token')
     currentUser = null;
   }
 
@@ -49,9 +49,12 @@ export default class UserService {
   get current() {
     if (isLoggedIn() && currentUser) {
       return currentUser
-    } else {
-      throw 'User is either not logged in or loaded'
     }
+    return null
+  }
+
+  get token() {
+    return localStorage.getItem('token')
   }
 
   updateProfile(attrs) {

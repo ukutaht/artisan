@@ -1,19 +1,10 @@
 import React from 'react'
 import TestUtils from 'react/lib/ReactTestUtils'
+import fakePromise from 'helpers/fake-promise'
 import IterationView from 'iteration-view'
 
 import * as iterations from 'iterations/service'
 import * as stories from 'stories/service'
-
-const fakePromise = {
-  resolve(data) {
-    return {
-      then(callback) {
-        return callback(data)
-      }
-    }
-  }
-}
 
 describe('IterationView', () => {
   let view;
