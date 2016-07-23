@@ -3,8 +3,7 @@ use Mix.Config
 config :artisan, Artisan.Endpoint,
   url: [host: "example.com", port: 80],
   server: true,
-  http: [port: {:system, "PORT"}],
-  secret_key_base: {:system, "SECRET_KEY_BASE"}
+  http: [port: {:system, "PORT"}]
 
 config :logger, level: :info
 
