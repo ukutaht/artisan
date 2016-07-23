@@ -3,6 +3,8 @@ machine:
     PATH: "$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH"
   services:
     - postgresql
+  node:
+    version: 6.1.0
 
 dependencies:
   cache_directories:
@@ -10,6 +12,7 @@ dependencies:
     - ~/.mix
     - core/deps
     - core/_build
+    - app/node_modules
   pre:
     - if ! asdf | grep version; then git clone https://github.com/HashNuke/asdf.git ~/.asdf; fi
     - if ! asdf plugin-list | grep erlang; then asdf plugin-add erlang https://github.com/HashNuke/asdf-erlang.git; fi
@@ -19,7 +22,9 @@ dependencies:
     - mix local.hex --force
     - mix local.rebar --force
     - cd core && mix deps.get
+    - cd app && npm install
 
 test:
   override:
     - cd core && mix test
+    - cd app && npm run test
