@@ -7,6 +7,7 @@ machine:
 dependencies:
   cache_directories:
     - ~/.asdf
+    - ~/.mix
     - core/deps
     - core/_build
   pre:
@@ -18,7 +19,7 @@ dependencies:
     - mix local.hex --force
     - mix local.rebar --force
     - cd core && mix deps.get
-    - cd core && mix deps.compile
+    - cd core && MIX_ENV=test mix deps.compile
 
 database:
   override:
