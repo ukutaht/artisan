@@ -6,7 +6,8 @@ config :artisan, Artisan.Endpoint,
   secret_key_base: "ubBZ4vHcx5/VHUELbGFK9asWetpcln82rLpuDGsW9AWfUp6VRr2knrN0dKnEYTfh",
   render_errors: [accepts: ~w(json)],
   pubsub: [name: Artisan.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+           adapter: Phoenix.PubSub.PG2],
+  check_origin: ["artisan-staging-2045808215.eu-west-1.elb.amazonaws", "localhost"]
 
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
