@@ -29,3 +29,9 @@ test:
   override:
     - cd core && mix test
     - cd app && npm run test
+
+deployment:
+  staging:
+    branch: master
+    commands:
+      - cd core && rel/deploy
