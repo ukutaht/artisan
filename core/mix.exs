@@ -15,7 +15,7 @@ defmodule Artisan.Mixfile do
 
   def application do
     [mod: {Artisan, []},
-     applications: [:phoenix, :cowboy, :logger,
+     applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger,
                     :phoenix_ecto, :postgrex, :comeonin]]
   end
 
@@ -25,17 +25,20 @@ defmodule Artisan.Mixfile do
   defp deps do
     [
       {:phoenix, "~> 1.2"},
+      {:phoenix_pubsub, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_ecto, "~> 3.0"},
       {:cowboy, "~> 1.0"},
       {:comeonin, "~> 2.1"},
       {:cors_plug, "~> 1.1"},
-      {:slugger, "~> 0.1.0"}
+      {:slugger, "~> 0.1.0"},
+      {:distillery, "~> 0.8"}
    ]
   end
 
   defp aliases do
     ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-     "ecto.reset": ["ecto.drop", "ecto.setup"]]
+     "ecto.reset": ["ecto.drop", "ecto.setup"],
+     "test": ["ecto.create --quiet", "ecto.migrate", "test"]]
   end
 end
