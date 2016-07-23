@@ -5,7 +5,12 @@ config :artisan, Artisan.Endpoint,
   server: true,
   http: [port: {:system, "PORT"}]
 
-config :logger, level: :info
+config :logger,
+  backends: [{LoggerFileBackend, :file_logger}]
+
+config :logger, :file_logger,
+  path: "/var/log/artisan.log",
+  level: :info
 
 config :artisan, Artisan.Repo,
   adapter: Ecto.Adapters.Postgres,

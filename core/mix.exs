@@ -31,7 +31,8 @@ defmodule Artisan.Mixfile do
       {:cowboy, "~> 1.0"},
       {:comeonin, "~> 2.1"},
       {:slugger, "~> 0.1.0"},
-      {:distillery, "~> 0.8"}
+      {:distillery, "~> 0.8"},
+      {:logger_file_backend, "~> 0.0.8", only: :prod}
    ]
   end
 
