@@ -33,6 +33,10 @@ describe('IterationView', () => {
     );
   })
 
+  it('can fail', () => {
+    expect(1).toEqual(2)
+  })
+
   it('loads current iteration data when mounting', () => {
     expect(view.state.iteration).toEqual({state: 'working'})
     expect(view.state.allIterations).toEqual([{number: 1}])
