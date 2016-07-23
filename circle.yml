@@ -1,6 +1,8 @@
 machine:
   environment:
     PATH: "$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH"
+  services:
+    - postgresql
 
 dependencies:
   cache_directories:
@@ -17,6 +19,11 @@ dependencies:
     - mix local.rebar --force
     - cd core && mix deps.get
     - cd core && mix deps.compile
+
+database:
+  override:
+    - createdb artisan_test
+
 test:
   override:
     - cd core && mix test
