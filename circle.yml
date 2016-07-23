@@ -21,15 +21,11 @@ dependencies:
     - elixir_version=$(awk '/elixir/ { print $2 }' .tool-versions) && asdf install elixir ${elixir_version}
     - mix local.hex --force
     - mix local.rebar --force
-    - cd core && mix deps.get
-    - cd core && MIX_ENV=test mix compile
-    - cd app && npm install
-    - cd app && node_modules/brunch/bin/brunch build -j
+    - make
 
 test:
   override:
-    - cd core && mix test
-    - cd app && npm run test
+    - make check
 
 deployment:
   staging:
