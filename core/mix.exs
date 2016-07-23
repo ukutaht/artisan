@@ -31,8 +31,7 @@ defmodule Artisan.Mixfile do
       {:cowboy, "~> 1.0"},
       {:comeonin, "~> 2.1"},
       {:slugger, "~> 0.1.0"},
-      {:distillery, "~> 0.8"},
-      {:logger_file_backend, github: "onkel-dirtus/logger_file_backend", branch: "master", only: :prod}
+      {:distillery, "~> 0.8"}
    ]
   end
 
