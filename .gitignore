@@ -3,6 +3,6 @@
 /core/deps
 
 /app/node_modules
-#/app/public
+/app/public
 
 /core/config/prod.secret.exs
