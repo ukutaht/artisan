@@ -1,5 +1,7 @@
 # Artisan
 
+[![CircleCI](https://circleci.com/gh/ukutaht/artisan.svg?style=svg)](https://circleci.com/gh/ukutaht/artisan)
+
 To start your Phoenix app:
 
   * Install dependencies with `mix deps.get`
