@@ -21,6 +21,6 @@ defmodule Artisan.Projects.ChannelTest do
   end
 
   test "does not join if project does not exist", %{socket: socket} do
-    assert Channel.join("projects:1", "", socket) == :error
+    assert Channel.join("projects:1", "", socket) == {:error, %{reason: "Unauthorized"}}
   end
 end
