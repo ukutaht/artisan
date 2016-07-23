@@ -18,6 +18,5 @@ defmodule Artisan.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
 
-  plug CORSPlug
   plug Artisan.Router
 end
