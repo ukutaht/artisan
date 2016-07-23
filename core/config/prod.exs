@@ -9,7 +9,7 @@ config :logger,
   backends: [{LoggerFileBackend, :file_logger}]
 
 config :logger, :file_logger,
-  path: "/var/log/artisan.log",
+  path: "log/artisan.log",
   level: :info
 
 config :artisan, Artisan.Repo,
