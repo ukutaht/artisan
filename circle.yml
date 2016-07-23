@@ -22,6 +22,7 @@ dependencies:
     - mix local.hex --force
     - mix local.rebar --force
     - cd core && mix deps.get
+    - cd core && MIX_ENV=test mix compile
     - cd app && npm install
 
 test:
