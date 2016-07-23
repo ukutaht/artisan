@@ -24,7 +24,7 @@ dependencies:
     - cd core && mix deps.get
     - cd core && MIX_ENV=test mix compile
     - cd app && npm install
-    - cd app && brunch build -j
+    - cd app && node_modules/brunch/bin/brunch build -j
 
 test:
   override:
