@@ -76,6 +76,6 @@ defmodule Artisan.Stories.Ordering do
 
   defp should_autoassign(changeset) do
     is_nil(changeset.data.assignee_id) &&
-      changeset.changes[:state] in ["working", "complete"]
+      changeset.changes[:state] in ["working", "completed"]
   end
 end
