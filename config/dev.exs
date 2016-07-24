@@ -6,7 +6,7 @@ config :artisan, Artisan.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "-j",
-                    cd: Path.expand("../app", __DIR__)]]
+              cd: Path.expand("../", __DIR__)]]
 
 config :logger, :console, format: "[$level] $message\n"
 

@@ -2,28 +2,28 @@ exports.config = {
   files: {
     javascripts: {
       joinTo: {
-        'js/app.js': [/^src\/js/, /^node_modules/],
-        'js/test.js': [/^test/, /^src\/js/, /^node_modules/],
+        'js/app.js': [/^app\/src\/js/, /^node_modules/],
+        'js/test.js': [/^app\/test/, /^app\/src\/js/, /^node_modules/],
       }
     },
     stylesheets: {
       joinTo: 'css/app.css',
       order: {
         before: [
-          'src/vendor/normalize.css'
+          'app/src/vendor/normalize.css'
         ]
       }
     }
   },
 
   conventions: {
-    assets: /^(src\/assets)/,
+    assets: /^(app\/src\/assets)/,
     vendor: /^(node_modules)/
   },
 
   paths: {
-    watched: ['src', 'test'],
-    public: 'public'
+    watched: ['app/src', 'app/test'],
+    public: 'app/public'
   },
 
   plugins: {
@@ -31,7 +31,7 @@ exports.config = {
       presets: ['es2015', 'react']
     },
     eslint: {
-      pattern: /^src\/.*\.js?$/
+      pattern: /^app\/src\/.*\.js?$/
     }
   },
 
@@ -42,12 +42,8 @@ exports.config = {
     },
     nameCleaner: (path) => {
       return path
-        .replace(/^src\/js\//, '')
-        .replace(/^test\//, '');
+        .replace(/^app\/src\/js\//, '')
+        .replace(/^app\/test\//, '');
     }
   },
-
-  server: {
-    port: 4001,
-  }
 };

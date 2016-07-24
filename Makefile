@@ -19,10 +19,10 @@ build_core_prod:
 	MIX_ENV=prod mix release
 
 build_app:
-	cd app && npm install && node_modules/brunch/bin/brunch build -j && cd ..
+	npm install && node_modules/brunch/bin/brunch build -j
 
 build_app_prod:
-	cd app && node_modules/brunch/bin/brunch build -j --production && cd ..
+	node_modules/brunch/bin/brunch build -j --production
 
 check: check_core check_app
 
@@ -30,4 +30,4 @@ check_core:
 	mix test
 
 check_app:
-	cd app && npm run test && cd ..
+	npm run test

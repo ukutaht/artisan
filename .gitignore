@@ -2,7 +2,7 @@
 _build
 deps
 
-/app/node_modules
+node_modules
 /app/public
 
 config/prod.secret.exs
