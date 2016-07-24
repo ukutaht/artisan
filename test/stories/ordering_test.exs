@@ -150,14 +150,20 @@ defmodule Artisan.Stories.OrderingTest do
     assert found2.id == ready.id
   end
 
-  test "moving unassigned story to working or complete assigns user", %{user: user, project: project} do
+  test "moving unassigned story to working assigns user", %{user: user, project: project} do
     story = create_in_state(user.id, project.id, "ready")
 
-    {:ok, updated1} = Ordering.move(story.id, user.id, "working", 1)
-    {:ok, updated2} = Ordering.move(story.id, user.id, "complete", 1)
+    {:ok, updated} = Ordering.move(story.id, user.id, "working", 1)
 
-    assert updated1.assignee_id == user.id
-    assert updated2.assignee_id == user.id
+    assert updated.assignee_id == user.id
+  end
+
+  test "moving unassigned story to completed assigns user", %{user: user, project: project} do
+    story = create_in_state(user.id, project.id, "ready")
+
+    {:ok, updated} = Ordering.move(story.id, user.id, "completed", 1)
+
+    assert updated.assignee_id == user.id
   end
 
   test "moving unassigned story to ready or backlog does not assign user", %{user: user, project: project} do
@@ -178,7 +184,7 @@ defmodule Artisan.Stories.OrderingTest do
 
     {:ok, user2} = Artisan.Users.create(%{"name" => "User", "email" => "user2@email.com", "password" => "asdasd"})
 
-    {:ok, updated} = Ordering.move(story.id, user2.id, "complete", 1)
+    {:ok, updated} = Ordering.move(story.id, user2.id, "completed", 1)
 
     assert updated.assignee_id == user.id
   end
