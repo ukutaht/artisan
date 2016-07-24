@@ -143,9 +143,15 @@ class StoryModal extends React.Component {
     )
   }
 
+  onContainerClick(e) {
+    if (e.target === this.refs.container) {
+      this.props.onClose()
+    }
+  }
+
   render() {
     return (
-        <div className="modal-container">
+      <div className="modal-container" ref="container" onClick={this.onContainerClick.bind(this)}>
           <div className="modal">
             <header className="modal__header">
               <h3>{this.props.header}</h3>

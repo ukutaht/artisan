@@ -1,9 +1,9 @@
 {
   "description": "Artisan frontend",
   "license": "MIT",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/ukutaht/artisan"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ukutaht/artisan"
   },
   "scripts": {
     "start": "node_modules/brunch/bin/brunch watch -j",
