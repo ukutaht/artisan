@@ -1,0 +1,16 @@
+#/bin/bash
+set -e
+
+host=ubuntu@ec2-52-51-96-58.eu-west-1.compute.amazonaws.com
+
+MIX_ENV=prod mix release
+node_modules/brunch/bin/brunch build -j --production
+
+mv rel/artisan/releases/0.0.1/artisan.tar.gz .
+gunzip artisan.tar.gz
+tar -uf artisan.tar app/public
+gzip artisan.tar
+
+
+scp artisan.tar.gz $host:/home/ubuntu
+ssh $host 'cd /app && tar xfz /home/ubuntu/artisan.tar.gz && bin/artisan stop && sudo start artisan_api'

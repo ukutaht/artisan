@@ -9,10 +9,8 @@ machine:
 dependencies:
   cache_directories:
     - ~/.asdf
-    - ~/.mix
     - deps
     - _build
-    - node_modules
   override:
     - rel/install
 
@@ -24,4 +22,4 @@ deployment:
   staging:
     branch: master
     commands:
-      - make deploy
+      - rel/ship_it
