@@ -1,8 +1,8 @@
 # App artifacts
-/core/_build
-/core/deps
+_build
+deps
 
 /app/node_modules
 /app/public
 
-/core/config/prod.secret.exs
+config/prod.secret.exs

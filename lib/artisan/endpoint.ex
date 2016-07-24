@@ -4,7 +4,12 @@ defmodule Artisan.Endpoint do
   socket "/socket", Artisan.Users.Socket
 
   if code_reloading? do
+    plug Plug.Static,
+      at: "/", from: "app/public", gzip: false,
+      only: ~w(css fonts images js favicon.ico robots.txt)
+
     plug Phoenix.CodeReloader
+    plug Artisan.ServeIndex
   end
 
   plug Plug.RequestId
