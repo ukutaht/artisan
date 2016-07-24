@@ -2,7 +2,7 @@ module.exports = function(config) {
   config.set({
     browsers: ['Chrome'],
     frameworks: ['jasmine'],
-    basePath: 'app/public/js',
+    basePath: 'priv/static/js',
     preprocessors: {
       '**/*.js': ['sourcemap']
     },

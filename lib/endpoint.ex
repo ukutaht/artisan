@@ -5,7 +5,7 @@ defmodule Artisan.Endpoint do
 
   if code_reloading? do
     plug Plug.Static,
-      at: "/", from: "app/public", gzip: false,
+      at: "/", from: "priv/static", gzip: false,
       only: ~w(css fonts images js favicon.ico robots.txt)
 
     plug Phoenix.CodeReloader

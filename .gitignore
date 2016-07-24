@@ -3,6 +3,7 @@ _build
 deps
 
 node_modules
-/app/public
+/priv/static
+/rel/artisan
 
 config/prod.secret.exs

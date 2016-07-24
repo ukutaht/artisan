@@ -16,7 +16,7 @@ defmodule Artisan.ServeIndex do
 
   defp respond(_, conn) do
     conn
-    |> send_file(200, Path.expand("../app/public/index.html", __DIR__))
+    |> send_file(200, Path.expand("../priv/static/index.html", __DIR__))
     |> halt
   end
 end

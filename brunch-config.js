@@ -23,7 +23,7 @@ exports.config = {
 
   paths: {
     watched: ['app/src', 'app/test'],
-    public: 'app/public'
+    public: 'priv/static'
   },
 
   plugins: {
