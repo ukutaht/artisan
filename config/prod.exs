@@ -1,7 +1,7 @@
 use Mix.Config
 
 config :artisan, Artisan.Endpoint,
-  url: [host: "artisan-staging-2045808215.eu-west-1.elb.amazonaws.com", port: 80],
+  url: [host: "staging.artisan-app.com", port: 80],
   server: true,
   http: [port: {:system, "PORT"}]
 
