@@ -9,12 +9,6 @@ defmodule Artisan.Router do
     plug Artisan.Users.AuthenticationPlug
   end
 
-  scope "/" do
-    pipe_through :api
-
-    get "/api/health", Artisan.HealthController, :health
-  end
-
   scope "/api/users", Artisan.Users do
     pipe_through :api
 

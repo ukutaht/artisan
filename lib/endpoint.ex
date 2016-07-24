@@ -15,6 +15,8 @@ defmodule Artisan.Endpoint do
   plug Plug.RequestId
   plug Plug.Logger
 
+  plug Artisan.Health
+
   plug Plug.Parsers,
     parsers: [:json],
     pass: ["*/*"],

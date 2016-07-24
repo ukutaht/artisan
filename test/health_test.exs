@@ -1,4 +1,4 @@
-defmodule Artisan.HealthControllerTest do
+defmodule Artisan.HealthTest do
   use Artisan.ConnCase
 
   test "responds 200 OK" do

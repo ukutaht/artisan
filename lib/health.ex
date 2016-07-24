@@ -1,10 +1,25 @@
-defmodule Artisan.HealthController do
-  use Phoenix.Controller
+defmodule Artisan.Health do
+  import Plug.Conn
+  @behaviour Plug
+
   @current_sha System.cmd("git", ["rev-parse", "HEAD"])
   @formatted_sha String.trim_trailing(elem(@current_sha, 0))
 
-  def health(conn, _params) do
-    conn |> json(%{
+  def init(options) do
+    options
+  end
+
+  def call(%Plug.Conn{request_path: "/api/health"} = conn, _opts) do
+    conn
+      |> put_resp_content_type("application/json")
+      |> send_resp(200, health())
+      |> halt
+  end
+
+  def call(conn, _opts), do: conn
+
+  defp health do
+    Poison.encode!(%{
       database: db_status(),
       sha: @formatted_sha
     })
