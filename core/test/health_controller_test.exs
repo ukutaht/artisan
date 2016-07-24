@@ -6,6 +6,6 @@ defmodule Artisan.HealthControllerTest do
       |> get("/api/health")
       |> json_response(200)
 
-    assert res == "ok"
+    assert res == %{"database" => "ok"}
   end
 end
