@@ -5,8 +5,7 @@ config :artisan, Artisan.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "-j",
-              cd: Path.expand("../", __DIR__)]]
+  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "-j", "--stdin", cd: "."]]
 
 config :logger, :console, format: "[$level] $message\n"
 
