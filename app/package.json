@@ -15,6 +15,7 @@
     "brunch": "~2.8.0",
     "clean-css-brunch": "~2.0.0",
     "css-brunch": "~2.6.0",
+    "digest-brunch": "^1.5.1",
     "eslint": "^2.13.1",
     "eslint-brunch": "^3.6.0",
     "eslint-plugin-react": "^5.2.2",
