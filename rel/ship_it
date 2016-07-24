@@ -7,4 +7,4 @@ node_modules/brunch/bin/brunch build -j --production
 MIX_ENV=prod mix release
 
 scp rel/artisan/releases/0.0.1/artisan.tar.gz $host:/home/ubuntu
-ssh $host 'cd /app && tar xfz /home/ubuntu/artisan.tar.gz && bin/artisan stop && sudo start artisan_api'
+ssh $host './restart'
