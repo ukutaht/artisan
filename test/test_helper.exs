@@ -1,6 +1,7 @@
-ExUnit.configure formatters: [JUnitFormatter, ExUnit.CLIFormatter]
-ExUnit.start
+if System.get_env("CIRCLE_TEST_REPORTS") do
+  ExUnit.configure formatters: [JUnitFormatter]
+end
 
-IO.inspect(System.get_env("CIRCLE_TEST_REPORTS"))
+ExUnit.start
 
 Ecto.Adapters.SQL.Sandbox.mode(Artisan.Repo, :manual)
