@@ -122,6 +122,33 @@ defmodule Artisan.StoriesTest do
     assert found_in_working.id == working.id
   end
 
+  test "orders stories by their position in state", %{user: user, project: project} do
+    ready1 = create_in_state(user.id, project.id, "ready")
+    ready2 = create_in_state(user.id, project.id, "ready")
+
+    %{"ready" => [found1, found2]} = Stories.by_state(project.id)
+
+    assert found1.id == ready2.id
+    assert found2.id == ready1.id
+  end
+
+  test "associates creator when requesting by state", %{user: user, project: project} do
+    create_in_state(user.id, project.id, "ready")
+
+    %{"ready" => [found]} = Stories.by_state(project.id)
+
+    assert found.creator.id == user.id
+  end
+
+  test "associates assignee when requesting by state", %{user: user, project: project} do
+    story = create_in_state(user.id, project.id, "ready")
+    Stories.update(story.id, %{assignee_id: user.id})
+
+    %{"ready" => [found]} = Stories.by_state(project.id)
+
+    assert found.assignee.id == user.id
+  end
+
   test "does not find stories that are not part of the project", %{user: user, project: project} do
 
     {:ok, project2} = Repo.insert(%Artisan.Project{name: "project", slug: "slug3"})
@@ -184,6 +211,54 @@ defmodule Artisan.StoriesTest do
     %{"completed" => [found]} = Stories.completed_in(iteration.id)
 
     assert found.id == completed.id
+  end
+
+  test "finds stories completed in iteration", %{user: user, project: project} do
+    {:ok, iteration} = Repo.insert(%Artisan.Iteration{project_id: project.id, number: 1, state: "complete"})
+
+    story = create_in_state(user.id, project.id, "completed")
+    Stories.mark_completed_in(iteration)
+
+    %{"completed" => [found]} = Stories.completed_in(iteration.id)
+
+    assert found.id == story.id
+  end
+
+  test "orders stories by their position in completed in", %{user: user, project: project} do
+    {:ok, iteration} = Repo.insert(%Artisan.Iteration{project_id: project.id, number: 1, state: "complete"})
+
+    story1 = create_in_state(user.id, project.id, "completed")
+    story2 = create_in_state(user.id, project.id, "completed")
+
+    Stories.mark_completed_in(iteration)
+
+    %{"completed" => [found1, found2]} = Stories.completed_in(iteration.id)
+
+    assert found1.id == story2.id
+    assert found2.id == story1.id
+  end
+
+  test "associates creator when requesting completed stories", %{user: user, project: project} do
+    {:ok, iteration} = Repo.insert(%Artisan.Iteration{project_id: project.id, number: 1, state: "complete"})
+
+    story = create_in_state(user.id, project.id, "completed")
+    Stories.mark_completed_in(iteration)
+
+    %{"completed" => [found]} = Stories.completed_in(iteration.id)
+
+    assert found.creator.id == user.id
+  end
+
+  test "associates assignee when requesting completed stories", %{user: user, project: project} do
+    {:ok, iteration} = Repo.insert(%Artisan.Iteration{project_id: project.id, number: 1, state: "complete"})
+
+    story = create_in_state(user.id, project.id, "completed")
+    Stories.update(story.id, %{assignee_id: user.id})
+    Stories.mark_completed_in(iteration)
+
+    %{"completed" => [found]} = Stories.completed_in(iteration.id)
+
+    assert found.assignee.id == user.id
   end
 
   test "moves working stories back to ready", %{user: user, project: project} do

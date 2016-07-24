@@ -64,7 +64,8 @@ defmodule Artisan.Stories do
   def completed_in(iteration_id) do
     Repo.all(from s in Story,
       where: s.completed_in == ^iteration_id,
-      order_by: [desc: s.position]
+      order_by: s.position,
+      preload: [:creator, :assignee]
     )
     |> Enum.group_by(&(&1.state))
   end
