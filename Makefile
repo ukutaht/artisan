@@ -1,6 +1,4 @@
-.PHONY: build build_core build_core_prod build_app build_app_prod check deploy
-
-build: build_core build_app
+.PHONY: build_core_prod build_app_prod check deploy
 
 deploy: build_production_tarball
 	scp artisan.tar.gz ubuntu@ec2-52-51-96-58.eu-west-1.compute.amazonaws.com:/home/ubuntu
@@ -12,14 +10,8 @@ build_production_tarball: build_core_prod build_app_prod
 	tar -uf artisan.tar app/public && \
 	gzip artisan.tar
 
-build_core:
-	mix deps.get && MIX_ENV=test mix compile
-
 build_core_prod:
 	MIX_ENV=prod mix release
-
-build_app:
-	npm install && node_modules/brunch/bin/brunch build -j
 
 build_app_prod:
 	node_modules/brunch/bin/brunch build -j --production

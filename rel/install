@@ -1,0 +1,8 @@
+#/bin/bash
+
+set -e
+
+mix deps.get
+MIX_ENV=test mix compile
+npm install
+node_modules/brunch/bin/brunch build -j

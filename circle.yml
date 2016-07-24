@@ -21,7 +21,7 @@ dependencies:
     - elixir_version=$(awk '/elixir/ { print $2 }' .tool-versions) && asdf install elixir ${elixir_version}
     - mix local.hex --force
     - mix local.rebar --force
-    - make
+    - rel/install
 
 test:
   override:
