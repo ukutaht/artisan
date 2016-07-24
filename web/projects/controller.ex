@@ -1,5 +1,5 @@
 defmodule Artisan.Projects.Controller do
-  use Artisan.Web, :controller
+  use Phoenix.Controller
   alias Artisan.Projects
 
   def create(conn, %{"project" => project_params}) do

@@ -1,5 +1,5 @@
 defmodule Artisan.Users.View do
-  use Artisan.Web, :view
+  use Phoenix.View, root: ""
 
   @fields [:id, :name, :email, :avatar]
 

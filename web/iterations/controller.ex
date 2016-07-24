@@ -1,5 +1,5 @@
 defmodule Artisan.Iterations.Controller do
-  use Artisan.Web, :controller
+  use Phoenix.Controller
   alias Artisan.Iterations
 
   def current(conn, %{"project_id" => project_id}) do

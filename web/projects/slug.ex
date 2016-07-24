@@ -1,5 +1,5 @@
 defmodule Artisan.Projects.Slug do
-  use Artisan.Web, :model
+  use Artisan.Repo
   alias Artisan.Project
 
   def generate(name) do

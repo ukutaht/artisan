@@ -1,5 +1,5 @@
 defmodule Artisan.Iterations do
-  use Artisan.Web, :model
+  use Artisan.Repo
   alias Artisan.Iteration
 
   def create_for(project_id) do

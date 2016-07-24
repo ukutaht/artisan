@@ -1,5 +1,5 @@
 defmodule Artisan.Stories.Controller do
-  use Artisan.Web, :controller
+  use Phoenix.Controller
   alias Artisan.Stories
   alias Artisan.Projects.Channel
 

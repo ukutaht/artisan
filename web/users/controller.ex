@@ -1,5 +1,5 @@
 defmodule Artisan.Users.Controller do
-  use Artisan.Web, :controller
+  use Phoenix.Controller
   alias Artisan.Users
 
   def signup(conn, %{"user" => user}) do

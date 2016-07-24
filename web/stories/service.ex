@@ -1,5 +1,5 @@
 defmodule Artisan.Stories do
-  use Artisan.Web, :model
+  use Artisan.Repo
   alias Artisan.Story
   alias Artisan.Stories.Ordering
 

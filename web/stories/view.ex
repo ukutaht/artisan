@@ -1,5 +1,5 @@
 defmodule Artisan.Stories.View do
-  use Artisan.Web, :view
+  use Phoenix.View, root: ""
 
   @fields [:id, :acceptance_criteria, :project_id, :completed_in, :name, :state, :number, :estimate, :optimistic, :realistic, :pessimistic, :position, :tags]
 

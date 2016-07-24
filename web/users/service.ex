@@ -1,5 +1,5 @@
 defmodule Artisan.Users do
-  use Artisan.Web, :model
+  use Artisan.Repo
   alias Artisan.User
   alias Artisan.Users.Password
 

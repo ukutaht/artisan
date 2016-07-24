@@ -1,5 +1,5 @@
 defmodule Artisan.Iterations.View do
-  use Artisan.Web, :view
+  use Phoenix.View, root: ""
 
   @fields [:id, :project_id, :number, :state]
 

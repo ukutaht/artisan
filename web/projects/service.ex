@@ -1,5 +1,5 @@
 defmodule Artisan.Projects do
-  use Artisan.Web, :model
+  use Artisan.Repo
   alias Artisan.Project
   alias Artisan.Collaborator
   alias Artisan.Iterations
