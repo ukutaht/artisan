@@ -16,7 +16,11 @@ defmodule Artisan.ConnCase do
     end
   end
 
-  setup _ do
+  setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Artisan.Repo)
+
+    unless tags[:async] do
+      Ecto.Adapters.SQL.Sandbox.mode(Artisan.Repo, {:shared, self()})
+    end
   end
 end

@@ -1,6 +1,6 @@
 defmodule Artisan.StoryControllerTest do
+  use Phoenix.ChannelTest
   use Artisan.ConnCase
-  use Artisan.ChannelCase
   alias Artisan.Projects.Channel
   import Artisan.Test.APIHelper
 

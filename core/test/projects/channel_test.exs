@@ -1,5 +1,4 @@
 defmodule Artisan.Projects.ChannelTest do
-  use Artisan.ModelCase
   use Artisan.ChannelCase
   alias Artisan.Projects.Channel
 
