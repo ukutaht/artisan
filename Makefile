@@ -1,4 +1,4 @@
-.PHONY: build_core_prod build_app_prod check deploy
+.PHONY: build_core_prod build_app_prod deploy
 
 deploy: build_production_tarball
 	scp artisan.tar.gz ubuntu@ec2-52-51-96-58.eu-west-1.compute.amazonaws.com:/home/ubuntu
@@ -15,11 +15,3 @@ build_core_prod:
 
 build_app_prod:
 	node_modules/brunch/bin/brunch build -j --production
-
-check: check_core check_app
-
-check_core:
-	mix test
-
-check_app:
-	npm run test

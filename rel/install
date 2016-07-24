@@ -1,5 +1,4 @@
 #/bin/bash
-
 set -e
 
 erlang_version=$(awk '/erlang/ { print $2 }' .tool-versions)

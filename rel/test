@@ -1,0 +1,6 @@
+#/bin/bash
+set -e
+
+mix test
+npm run test
+npm run lint
