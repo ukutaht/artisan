@@ -4,7 +4,7 @@
   "scripts": {
     "start": "node_modules/brunch/bin/brunch watch -j",
     "test": "node_modules/karma/bin/karma start --single-run",
-    "lint": "node_modules/eslint/bin/eslint.js src/js"
+    "lint": "node_modules/eslint/bin/eslint.js app/src/js"
   },
   "devDependencies": {
     "auto-reload-brunch": "^2.7.1",
