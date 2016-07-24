@@ -1,2 +1,5 @@
-erlang 18.2.1
-elixir 1.3.0
+erlang   18.2.1
+elixir   1.3.0
+node     6.2.2
+npm      3.9.5
+postgres 9.5.3
