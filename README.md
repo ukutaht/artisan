@@ -34,7 +34,7 @@ npm run test
 If you want to run the whole thing, there's a script at `rel/test` which runs both test suites
 and lints the code as well.
 
-### Continous {Integration,Deliver}
+### Continous {Integration,Delivery}
 
 All pull requests are built, tested and linted using the `rel/test` command. Make sure that passes before
 submitting a PR. The master branch is automatically deployed to staging after a sucessful build.
