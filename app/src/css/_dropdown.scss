@@ -30,6 +30,8 @@
 }
 
 .dropdown.hoverable {
+  @include clearfix;
+
   .dropdown__content {
     display: none;
   }
