@@ -2,5 +2,11 @@
 set -e
 
 mix test
-npm run test
+
+if [ -n "$CIRCLE_TEST_REPORTS" ]; then
+  npm run test -- --reporters=junit;
+else
+  npm run test
+fi
+
 npm run lint

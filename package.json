@@ -1,6 +1,10 @@
 {
   "description": "Artisan frontend",
   "license": "MIT",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/ukutaht/artisan"
+  },
   "scripts": {
     "start": "node_modules/brunch/bin/brunch watch -j",
     "test": "node_modules/karma/bin/karma start --single-run",
@@ -23,6 +27,7 @@
     "karma": "^1.1.1",
     "karma-chrome-launcher": "^1.0.1",
     "karma-jasmine": "^1.0.2",
+    "karma-junit-reporter": "^1.1.0",
     "karma-mocha-reporter": "^2.0.4",
     "karma-sourcemap-loader": "^0.3.7",
     "sass-brunch": "^2.6.0",

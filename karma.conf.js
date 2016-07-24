@@ -9,5 +9,10 @@ module.exports = function(config) {
     files: ['**/*.js'],
     colors: true,
     reporters: ['mocha'],
+
+    junitReporter: {
+      useBrowserName: false,
+      outputFile: 'test-results.xml'
+    }
   })
 }
