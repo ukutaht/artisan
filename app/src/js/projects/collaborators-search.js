@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Avatar from 'users/avatar'
+import DebounceInput from 'projects/debounce-input'
 import ProjectService from 'projects/service'
 const projects = new ProjectService()
 
@@ -31,16 +32,16 @@ export default class CollaboratorsSearch extends React.Component {
       })
   }
 
-  queryChanged(e) {
+  queryChanged(newQuery) {
     this.setState({
-      query: e.target.value,
-      selectedUser: null
+      query: newQuery,
+      selectedUser: null,
     })
 
-    if (e.target.value.length < 1) {
+    if (newQuery.length < 1) {
       this.hideResults()
     } else {
-      projects.autocompleteCollaborators(this.props.projectId, e.target.value)
+      projects.autocompleteCollaborators(this.props.projectId, newQuery)
         .then((results) => {
           this.setState({
             searchResults: results,
@@ -100,39 +101,50 @@ export default class CollaboratorsSearch extends React.Component {
   }
 
   renderResults() {
-    if (!this.state.showResults || this.state.searchResults.length === 0) return null
+    if (!this.state.showResults) return null
 
-    return (
-      <div className="dropdown">
-        <div className="dropdown__content collaborator-results">
-          {
-            this.state.searchResults.map((result, index) => {
-              const active = index === this.state.selectedIndex ? 'active' : ''
-
-              return (
-                <a
-                  key={result.id}
-                  className={`result ${active}`}
-                  data-index={index}
-                  onMouseOver={this.hoveringOverResult.bind(this)}
-                  onClick={this.clickResult.bind(this)}>
-                  <Avatar src={result.avatar} size={16} />
-                  {result.name} ({result.email})
-                </a>
-              )
-            })
-          }
+    if (this.state.searchResults.length === 0) {
+      return (
+        <div className="dropdown">
+          <div className="dropdown__content collaborator-results">
+            <div className="no-results">Could not find <b>{this.state.query}</b></div>
+          </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return (
+        <div className="dropdown">
+          <div className="dropdown__content collaborator-results">
+            {
+              this.state.searchResults.map((result, index) => {
+                const active = index === this.state.selectedIndex ? 'active' : ''
+
+                return (
+                  <a key={result.id}
+                    className={`result clickable ${active}`}
+                    data-index={index}
+                    onMouseOver={this.hoveringOverResult.bind(this)}
+                    onClick={this.clickResult.bind(this)}>
+
+                    <Avatar src={result.avatar} size={16} />
+                    {result.name} ({result.email})
+                  </a>
+                  )
+              })
+            }
+          </div>
+        </div>
+      )
+    }
   }
 
   render() {
     return (
       <div onKeyDown={this.onKeyDown.bind(this)}>
+
         <label>Search by Full Name or Email</label>
         <div className="input-with-button">
-          <input type="text" value={this.state.query} onChange={this.queryChanged.bind(this)}/>
+          <DebounceInput value={this.state.query} onChange={this.queryChanged.bind(this)} onBlur={this.hideResults.bind(this)} delay={200} />
           <button disabled={!this.state.selectedUser} className="button primary" onClick={this.addCollaborator.bind(this)}>
             <span className="hide-large-desk-and-up">Add</span>
             <span className="show-large-desk-and-up">Add Collaborator</span>

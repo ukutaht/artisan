@@ -29,8 +29,9 @@
 
 .collaborator-results {
   width: 78%;
+  transform: translateY(-2px);
 
-  .result {
+  .result, .no-results {
     padding: $spacing-small;
   }
 
