@@ -213,9 +213,9 @@ export default class StoryBoard extends React.Component {
   }
 
   renderActions() {
-    const lastIteration = this.props.allIterations[this.props.allIterations.length - 1]
+    const currentIteration = this.props.allIterations[0]
 
-    if (this.props.iteration.state === 'completed' && this.props.iteration.id === lastIteration.id) {
+    if (this.props.iteration.state === 'completed' && this.props.iteration.id === currentIteration.id) {
       return (
         <button className="button primary"
                 onClick={this.props.newIteration}>
