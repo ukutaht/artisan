@@ -11,7 +11,7 @@ export default class ProjectNav extends React.Component {
       <nav className="project__nav">
         <ul className="project__nav__breadcrumb">
           <li>
-            <span>{this.props.project.name}</span>
+            <Link to={`/${this.props.project.slug}`} >{this.props.project.name}</Link>
           </li>
 
           <li>
