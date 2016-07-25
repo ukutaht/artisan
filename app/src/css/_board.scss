@@ -82,17 +82,23 @@
     }
   }
 
-  .truncated {
-    @include ellipsis(60%);
+  &__title {
+    cursor: pointer;
+    @include ellipsis(100%)
 
-    @include media($tablet) {
-      @include ellipsis(70%);
-    }
+    &.truncated {
+      @include ellipsis(60%);
 
-    @include media($large-desk) {
-      @include ellipsis(78%);
+      @include media($tablet) {
+        @include ellipsis(70%);
+      }
+
+      @include media($large-desk) {
+        @include ellipsis(78%);
+      }
     }
   }
+
 
   &__tags {
     display: inline-block;

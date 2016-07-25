@@ -7,8 +7,12 @@ class Card extends React.Component {
     this.props.onClick(this.props.story)
   }
 
-  displayEstimate() {
-    if (this.props.story.estimate !== null) {
+  shouldComponentUpdate(nextProps) {
+    return nextProps.story !== this.props.story
+  }
+
+  renderEstimate() {
+    if (this.props.story.estimate) {
       return (
        <span className="story-card__estimate">
          <i className="ion-connection-bars right-padded-icon show-desk-and-up"></i>
@@ -18,8 +22,15 @@ class Card extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return nextProps.story !== this.props.story
+  renderTitle() {
+    const story = this.props.story
+    const truncated = story.estimate ? 'truncated' : ''
+
+    return (
+      <a title={story.name} className={`story-card__title ${truncated}`} onClick={this.onClick.bind(this)}>
+        {story.number}. {story.name}
+      </a>
+    )
   }
 
   render() {
@@ -30,10 +41,8 @@ class Card extends React.Component {
     return (
       <li className="story-card" data-id={this.props.story.id}>
         <div className="story-card__first-line">
-          <a title={story.name} className="truncated clickable" onClick={this.onClick.bind(this)}>
-            {story.number}. {story.name}
-          </a>
-          {this.displayEstimate()}
+          {this.renderTitle()}
+          {this.renderEstimate()}
         </div>
         <div className="story-card__second-line">
           <ul className="story-card__tags truncated">

@@ -3,7 +3,7 @@ import fecha from 'fecha'
 
 import pert from 'stories/pert'
 
-const largestAllowedEstimate = 9999999999999999999
+const largestAllowedEstimate = 1000
 const ESCAPE = 27
 
 function isDigit(val) {
