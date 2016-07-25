@@ -213,7 +213,9 @@ export default class StoryBoard extends React.Component {
   }
 
   renderActions() {
-    if (this.props.iteration.state === 'completed') {
+    const lastIteration = this.props.allIterations[this.props.allIterations.length - 1]
+
+    if (this.props.iteration.state === 'completed' && this.props.iteration.id === lastIteration.id) {
       return (
         <button className="button primary"
                 onClick={this.props.newIteration}>
@@ -231,7 +233,7 @@ export default class StoryBoard extends React.Component {
           </button>
         </div>
       )
-    } else {
+    } else if (this.props.iteration.state === 'working') {
       return (
         <div>
           <button className="button primary" onClick={this.openAddStory.bind(this)}>
@@ -243,6 +245,7 @@ export default class StoryBoard extends React.Component {
         </div>
       )
     }
-  }
 
+    return false
+  }
 }
