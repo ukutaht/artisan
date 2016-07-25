@@ -22,8 +22,8 @@ class IterationView extends React.Component {
     this.loadIteration(this.props.project.id, this.props.routeParams.iterationNumber || 'current')
     document.title = `${this.props.project.name}`
 
-    this.boardSocket = new ProjectSocket(this.props.project.id)
-    this.boardSocket.join({
+    this.socket = new ProjectSocket(this.props.project.id)
+    this.socket.join({
       onAddStory: this.doAddStory.bind(this),
       onUpdateStory: this.doUpdateStory.bind(this),
       onMoveStory: this.doMoveStory.bind(this),
@@ -31,7 +31,7 @@ class IterationView extends React.Component {
   }
 
   componentWillUnmount() {
-    this.boardSocket.leave()
+    this.socket.leave()
   }
 
   componentWillReceiveProps(newProps) {
