@@ -3,14 +3,13 @@ import update from 'react/lib/update'
 
 import AvatarSelect from 'users/avatar-select'
 import Avatar from 'users/avatar'
-import UserService from 'users/service'
-const users = new UserService()
+import * as users from 'users/service'
 
 export default class Profile extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      user: users.current,
+      user: users.current(),
       selectingNewAvatar: false
     }
   }
@@ -23,7 +22,7 @@ export default class Profile extends React.Component {
     e.preventDefault()
     users.updateProfile(this.state.user)
       .then(() => {
-        this.setState({user: users.current})
+        this.setState({user: users.current()})
       })
   }
 

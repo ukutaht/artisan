@@ -3,8 +3,7 @@ import React from 'react'
 import CollaboratorsSearch from 'projects/collaborators-search'
 
 import Avatar from 'users/avatar'
-import UserService from 'users/service'
-const users = new UserService()
+import * as users from 'users/service'
 
 export default class CollaboratorsTab extends React.Component {
   componentDidMount() {
@@ -12,7 +11,7 @@ export default class CollaboratorsTab extends React.Component {
   }
 
   removeIcon(collaborator) {
-    if (collaborator.id === users.current.id) {
+    if (collaborator.id === users.current().id) {
       return null
     } else {
       return <i className="ion-close clickable pull-right right-padded-icon"

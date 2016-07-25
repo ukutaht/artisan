@@ -1,9 +1,7 @@
 import React from 'react'
 import browserHistory from 'react-router/lib/browserHistory'
 
-import UserService from 'users/service'
-
-const users = new UserService()
+import * as users from 'users/service'
 
 class Login extends React.Component {
   constructor(props) {

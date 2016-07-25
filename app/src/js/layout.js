@@ -4,8 +4,7 @@ import browserHistory from 'react-router/lib/browserHistory'
 
 import Avatar from 'users/avatar'
 
-import UserService from 'users/service'
-const users = new UserService()
+import * as users from 'users/service'
 
 export default class Layout extends React.Component {
   constructor(props) {
