@@ -33,10 +33,16 @@ class Card extends React.Component {
     )
   }
 
+  renderAvatar() {
+    if (this.props.story.assignee) {
+      return <Avatar src={this.props.story.assignee.avatar} size={20} />
+    }
+    return null
+  }
+
   render() {
     const story = this.props.story
     const tags = story.tags || []
-    const avatar = story.assignee ? story.assignee.avatar : null
 
     return (
       <li className="story-card" data-id={this.props.story.id}>
@@ -50,7 +56,7 @@ class Card extends React.Component {
               return <li className="story-card__tags__item" key={tag}>{tag}</li>
             })}
           </ul>
-          <Avatar src={avatar} size={20} />
+          {this.renderAvatar()}
         </div>
       </li>
     )
