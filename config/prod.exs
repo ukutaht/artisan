@@ -5,7 +5,7 @@ config :artisan, Artisan.Endpoint,
   server: true,
   http: [port: {:system, "PORT"}]
 
-config :logger, level: :info
+config :logger, level: :debug
 
 config :artisan, Artisan.Repo,
   adapter: Ecto.Adapters.Postgres,
