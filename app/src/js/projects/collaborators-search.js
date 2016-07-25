@@ -140,11 +140,11 @@ export default class CollaboratorsSearch extends React.Component {
 
   render() {
     return (
-      <div onKeyDown={this.onKeyDown.bind(this)}>
+      <div onKeyDown={this.onKeyDown.bind(this)} >
 
         <label>Search by Full Name or Email</label>
         <div className="input-with-button">
-          <DebounceInput value={this.state.query} onChange={this.queryChanged.bind(this)} onBlur={this.hideResults.bind(this)} delay={200} />
+          <DebounceInput value={this.state.query} onChange={this.queryChanged.bind(this)} delay={200} />
           <button disabled={!this.state.selectedUser} className="button primary" onClick={this.addCollaborator.bind(this)}>
             <span className="hide-large-desk-and-up">Add</span>
             <span className="show-large-desk-and-up">Add Collaborator</span>

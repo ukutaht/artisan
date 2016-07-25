@@ -21,6 +21,12 @@ export default class DebounceInput extends React.Component {
     }
   }
 
+  componentWillReceiveProps(newProps) {
+    this.setState({
+      value: newProps.value
+    })
+  }
+
   componentWillMount() {
     this.handleInputDebounced = debounce(() => {
       this.props.onChange.apply(this, [this.state.value]);
@@ -34,7 +40,7 @@ export default class DebounceInput extends React.Component {
 
   render() {
     return (
-      <input type="text" value={this.state.value} onChange={this.onChange.bind(this)} onBlur={this.props.onBlur}/>
+      <input type="text" value={this.state.value} onChange={this.onChange.bind(this)} />
     )
   }
 }
