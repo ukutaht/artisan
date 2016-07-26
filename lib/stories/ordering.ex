@@ -3,15 +3,18 @@ defmodule Artisan.Stories.Ordering do
   alias Artisan.Story
 
   def move(id, user_id, state, index) do
-    story = Repo.get(Story, id)
+    {:ok, updated} = Repo.transaction(fn ->
+      story = Repo.get(Story, id)
 
-    new_position = calculate_pivot(story, state, index)
-    vacate_position(story.project_id, new_position, state)
+      new_position = calculate_pivot(story, state, index)
+      vacate_position(story.project_id, new_position, state)
 
-    story
-      |> Story.change_position(state, new_position)
-      |> autoassign(user_id)
-      |> Repo.update
+      story
+        |> Story.change_position(state, new_position)
+        |> autoassign(user_id)
+        |> Repo.update
+    end)
+    updated
   end
 
   def vacate_position(project_id, position, state) do
@@ -19,10 +22,12 @@ defmodule Artisan.Stories.Ordering do
   end
 
   def vacate_many(project_id, position, state, amount) do
-    query = from(s in active_stories(project_id, state),
-      where: s.position >= ^position
-    )
-    increment_positions(query, amount)
+    Repo.transaction(fn ->
+      query = from(s in active_stories(project_id, state),
+        where: s.position >= ^position
+      )
+      increment_positions(query, amount)
+    end)
   end
 
 
