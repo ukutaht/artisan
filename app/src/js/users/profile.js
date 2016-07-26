@@ -38,7 +38,7 @@ export default class Profile extends React.Component {
           formState: formStates.success,
         })
       })
-      .catch((e) => {
+      .catch(() => {
         this.setState({
           formState: formStates.error,
         })
@@ -75,6 +75,13 @@ export default class Profile extends React.Component {
   nameChanged(e) {
     this.setState(update(this.state, {
       user: {name: {$set: e.target.value}},
+      formState: {$set: formStates.initial}
+    }))
+  }
+
+  emailChanged(e) {
+    this.setState(update(this.state, {
+      user: {email: {$set: e.target.value}},
       formState: {$set: formStates.initial}
     }))
   }
@@ -121,6 +128,10 @@ export default class Profile extends React.Component {
           <div className="form-group">
             <span>Name</span>
             <input type="text" onChange={this.nameChanged.bind(this)} value={this.state.user.name}/>
+          </div>
+          <div className="form-group">
+            <span>Email</span>
+            <input type="text" onChange={this.emailChanged.bind(this)} value={this.state.user.email}/>
           </div>
           <div className="button-with-loader">
             <button className="button primary no-margin">Update profile</button>
