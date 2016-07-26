@@ -29,27 +29,29 @@ export default class Layout extends React.Component {
     return (
       <div>
         <nav className="top-nav">
-          <div className="top-nav__brand">
-            <Link to="/">
-              <img src="/images/artisan-logo.png" />
-            </Link>
-          </div>
-          <div className="top-nav__right">
-            <div className="dropdown hoverable">
-              <span className="top-nav__username">
-                <Avatar src={this.state.currentUser.avatar} size={30} />
-                {this.state.currentUser.name}
-                <i className="ion-chevron-down left-padded-icon" />
-              </span>
-              <div className="dropdown__content space-top-tiny">
-                <Link to="/profile">
-                  <i className="ion-person right-padded-icon" />
-                  Profile
-                </Link>
-                <a onClick={this.logout.bind(this)}>
-                  <i className="ion-android-exit right-padded-icon" />
-                  Logout
-                </a>
+          <div className="container">
+            <div className="top-nav__brand">
+              <Link to="/">
+                <img src="/images/artisan-logo.png" />
+              </Link>
+            </div>
+            <div className="top-nav__right">
+              <div className="dropdown hoverable">
+                <span className="top-nav__username">
+                  <Avatar src={this.state.currentUser.avatar} size={30} />
+                  {this.state.currentUser.name}
+                  <i className="ion-chevron-down left-padded-icon" />
+                </span>
+                <div className="dropdown__content space-top-tiny">
+                  <Link to="/profile">
+                    <i className="ion-person right-padded-icon" />
+                    Profile
+                  </Link>
+                  <a onClick={this.logout.bind(this)}>
+                    <i className="ion-android-exit right-padded-icon" />
+                    Logout
+                  </a>
+                </div>
               </div>
             </div>
           </div>

@@ -15,11 +15,28 @@
 @import "spinner";
 
 .container {
-  @include outer-container(80%);
+  @include outer-container(95%);
+  min-width: 550px;
+
+  @include media($tablet) {
+    @include outer-container(90%);
+  }
+
+  @include media($desk) {
+    @include outer-container(85%);
+  }
+
+  @include media($large-desk) {
+    @include outer-container(80%);
+  }
+}
+
+main.container {
   margin-bottom: 50px;
 }
 
 footer {
+  min-width: 550px;
   bottom: 0;
   color: $dark-grey;
   height: 50px;
