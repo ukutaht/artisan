@@ -9,6 +9,7 @@ module.exports = function(config) {
     files: ['**/*.js'],
     colors: true,
     reporters: ['mocha'],
+    logLevel: config.LOG_WARN,
 
     junitReporter: {
       useBrowserName: false,
