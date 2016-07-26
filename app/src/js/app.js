@@ -16,14 +16,15 @@ import IterationView from 'iteration-view'
 import Profile from 'users/profile'
 import Signup from 'users/signup'
 import Login from 'users/login'
+import * as users from 'users/service'
 import NotFound from 'not_found'
 
 const router = (
   <Router history={browserHistory}>
-    <Route path="/signup" component={Signup} />
-    <Route path="/login" component={Login} />
-    <Route path="/404" component={NotFound}/>
-    <Route path="/" component={Layout}>
+    <Route path="/404" component={NotFound} />
+    <Route path="/signup" component={Signup} onEnter={users.redirectAuth}/>
+    <Route path="/login" component={Login} onEnter={users.redirectAuth}/>
+    <Route path="/" component={Layout} onEnter={users.requireAuth}>
       <IndexRoute component={Dashboard} />
       <Route path="profile" component={Profile} />
       <Route path="projects/new" component={NewProject} />

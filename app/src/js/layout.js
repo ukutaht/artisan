@@ -10,19 +10,11 @@ export default class Layout extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentUser: null
+      currentUser: users.current()
     }
   }
 
   componentDidMount() {
-    users.loadCurrent()
-      .then((user) => {
-        this.setState({currentUser: user})
-      })
-      .catch(() => {
-        browserHistory.push('/login')
-      })
-
     users.subscribeToChanges((updated) => {
       this.setState({currentUser: updated})
     })
@@ -34,8 +26,6 @@ export default class Layout extends React.Component {
   }
 
   render() {
-    if (!this.state.currentUser) return null
-
     return (
       <div>
         <nav className="top-nav">

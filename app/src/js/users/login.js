@@ -20,9 +20,14 @@ class Login extends React.Component {
 
   onSubmit(e) {
     e.preventDefault()
+    const {location} = this.props
 
     users.login(this.getFormData()).then(() => {
-      browserHistory.push('/')
+      if (location.state && location.state.nextPathname) {
+        browserHistory.push(location.state.nextPathname)
+      } else {
+        browserHistory.push('/')
+      }
     })
   }
 

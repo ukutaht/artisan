@@ -31,17 +31,37 @@ export function logout() {
   currentUser = null;
 }
 
-export function loadCurrent() {
+export function requireAuth(nextState, replace, callback) {
+  tryAuth(() => {
+    callback()
+  }, () => {
+    replace({
+      pathname: '/login',
+      state: {nextPathname: nextState.location.pathname}
+    })
+    callback()
+  })
+}
+
+export function redirectAuth(_, replace, callback) {
+  tryAuth(() => {
+    replace('/')
+    callback()
+  }, () => {
+    callback()
+  })
+}
+
+function tryAuth(onSuccess, onFailure) {
   if (isLoggedIn() && currentUser) {
-    return new Promise((resolve) => {
-      resolve(currentUser)
-    })
+    onSuccess()
   } else if (isLoggedIn()) {
-    return Api.get('/api/users/current').then(saveUser)
+    Api.get('/api/users/current')
+      .then(saveUser)
+      .then(onSuccess)
+      .catch(onFailure)
   } else {
-    return new Promise((_resolve, reject) => {
-      reject('Not logged in!')
-    })
+    onFailure()
   }
 }
 
