@@ -2,8 +2,7 @@ import React from 'react'
 
 import Avatar from 'users/avatar'
 import DebounceInput from 'projects/debounce-input'
-import ProjectService from 'projects/service'
-const projects = new ProjectService()
+import * as projects from 'projects/service'
 
 const UP_ARROW = 38
 const DOWN_ARROW = 40

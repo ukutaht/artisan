@@ -1,9 +1,7 @@
 import React from 'react'
 import Link from 'react-router/lib/Link'
 
-import ProjectService from 'projects/service'
-
-const projects = new ProjectService()
+import * as projects from 'projects/service'
 
 class Dashboard extends React.Component {
   constructor(props) {

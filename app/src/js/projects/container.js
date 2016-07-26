@@ -1,8 +1,7 @@
 import React from 'react'
 import update from 'react/lib/update'
 
-import ProjectService from 'projects/service'
-const projects = new ProjectService()
+import * as projects from 'projects/service'
 
 function nameSort(users) {
   users.sort((user1, user2) => user1.name > user2.name)
