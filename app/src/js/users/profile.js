@@ -1,16 +1,25 @@
 import React from 'react'
 import update from 'react/lib/update'
 
+import Spinner from 'spinner'
 import AvatarSelect from 'users/avatar-select'
 import Avatar from 'users/avatar'
 import * as users from 'users/service'
+
+const formStates = {
+  initial: 'initial',
+  saving: 'saving',
+  success: 'success',
+  error: 'error'
+}
 
 export default class Profile extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       user: users.current(),
-      selectingNewAvatar: false
+      selectingNewAvatar: false,
+      formState: formStates.initial
     }
   }
 
@@ -20,9 +29,19 @@ export default class Profile extends React.Component {
 
   onSubmit(e) {
     e.preventDefault()
+    this.setState({formState: formStates.saving})
+
     users.updateProfile(this.state.user)
       .then(() => {
-        this.setState({user: users.current()})
+        this.setState({
+          user: users.current(),
+          formState: formStates.success,
+        })
+      })
+      .catch((e) => {
+        this.setState({
+          formState: formStates.error,
+        })
       })
   }
 
@@ -42,21 +61,27 @@ export default class Profile extends React.Component {
     this.setState({selectingNewAvatar: true})
   }
 
+  closeAvatarSelect() {
+    this.setState({selectingNewAvatar: false})
+  }
+
   avatarChanged(newUrl) {
     this.setState(update(this.state, {
-      user: {avatar: {$set: newUrl}}
+      user: {avatar: {$set: newUrl}},
+      formState: {$set: formStates.initial}
     }))
   }
 
   nameChanged(e) {
     this.setState(update(this.state, {
-      user: {name: {$set: e.target.value}}
+      user: {name: {$set: e.target.value}},
+      formState: {$set: formStates.initial}
     }))
   }
 
   avatarSelect() {
     if (this.state.selectingNewAvatar) {
-      return <AvatarSelect onChange={this.avatarChanged.bind(this)}/>
+      return <AvatarSelect onChange={this.avatarChanged.bind(this)} onClose={this.closeAvatarSelect.bind(this)} />
     } else {
       return (
         <button onClick={this.selectNewAvatar.bind(this)}
@@ -65,6 +90,18 @@ export default class Profile extends React.Component {
         </button>
       )
     }
+  }
+
+  renderFormState() {
+    if (this.state.formState === formStates.saving) {
+      return <Spinner />
+    } else if (this.state.formState === formStates.success) {
+      return <i className="ion-checkmark success" />
+    } else if (this.state.formState === formStates.error) {
+      return <i className="ion-close error" />
+    }
+
+    return null
   }
 
   render() {
@@ -85,7 +122,10 @@ export default class Profile extends React.Component {
             <span>Name</span>
             <input type="text" onChange={this.nameChanged.bind(this)} value={this.state.user.name}/>
           </div>
-          <button className="button primary no-margin">Update profile</button>
+          <div className="button-with-loader">
+            <button className="button primary no-margin">Update profile</button>
+            {this.renderFormState()}
+          </div>
         </form>
       </div>
     )

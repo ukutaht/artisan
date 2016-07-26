@@ -46,6 +46,7 @@ export default class AvatarSelect extends React.Component {
   render() {
     return (
       <div>
+        <i className="ion-close pull-right clickable" onClick={this.props.onClose}/>
         <ul className="social-links">
           <li onClick={this.selectSocial('twitter')} className={this.selectedClass('twitter')}>
             <i className="ion-social-twitter" />
@@ -60,7 +61,7 @@ export default class AvatarSelect extends React.Component {
             className="button primary"
             disabled={!this.isPreviewEnabled()}
             onClick={this.change.bind(this)}>
-            Change
+            Preview
           </button>
         </div>
       </div>

@@ -12,6 +12,7 @@
 @import "modal";
 @import "profile";
 @import "dropdown";
+@import "spinner";
 
 .container {
   @include outer-container(80%);
@@ -100,4 +101,12 @@ img.avatar {
       border-color: $light-blue;
     }
   }
+}
+
+.success {
+  color: $green;
+}
+
+.error {
+  color: $error;
 }
