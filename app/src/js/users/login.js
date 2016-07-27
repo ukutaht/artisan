@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'react-router/lib/Link'
 import browserHistory from 'react-router/lib/browserHistory'
 
 import * as users from 'users/service'
@@ -40,11 +41,14 @@ class Login extends React.Component {
   render() {
     return (
       <div className="skinny-box">
-        <h2>Log into Artisan</h2>
+        <div className="login-header">
+          <h2 className="space-bottom-tiny">Log into Artisan</h2>
+          <p className="space-top-tiny">Or <Link to="/signup">sign up</Link> instead</p>
+        </div>
         <form onSubmit={this.onSubmit.bind(this)}>
           <div className="form-group">
             <span>Email</span>
-            <input ref="email" type="text" autoFocus/>
+            <input ref="email" type="email" autoFocus/>
           </div>
           <div className="form-group">
             <span>Password</span>

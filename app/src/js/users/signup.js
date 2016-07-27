@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'react-router/lib/Link'
 import browserHistory from 'react-router/lib/browserHistory'
 
 import * as users from 'users/service'
@@ -62,7 +63,10 @@ class Signup extends React.Component {
   render() {
     return (
       <div className='skinny-box'>
-        <h2>Sign up for Artisan</h2>
+        <div className="login-header">
+          <h2 className="space-bottom-tiny">Sign up for Artisan</h2>
+          <p className="space-top-tiny">Or <Link to="/login">log in</Link> instead</p>
+        </div>
         <form onSubmit={this.onSubmit.bind(this)}>
           <div className='form-group'>
             <span>Email</span>

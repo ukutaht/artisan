@@ -83,47 +83,20 @@ footer {
   margin-bottom: $spacing-medium;
 }
 
-.avatar {
-  border-radius: 3px;
-}
-
-img.avatar {
- vertical-align: bottom;
-}
-
-.social-links {
-  margin-top: 0px;
-  margin-bottom: 12px;
-
-  li {
-    border-radius: 3px;
-    color: $dark-grey;
-    border: 1px solid $dark-grey;
-    display: inline-block;
-    height: 32px;
-    text-align: center;
-    width: 32px;
-    margin-right: $spacing-small;
-    padding-top: 4px;
-    cursor: pointer;
-    font-size: 20px;
-
-    &:hover {
-      color: $light-blue;
-      border-color: $light-blue;
-    }
-
-    &.selected {
-      color: $light-blue;
-      border-color: $light-blue;
-    }
-  }
-}
-
 .success {
   color: $green;
 }
 
 .error {
   color: $error;
+}
+
+.login-header {
+  h2 {
+    margin-bottom: 0;
+  }
+
+  p {
+    margin-top: 0;
+  }
 }
