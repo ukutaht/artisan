@@ -51,9 +51,10 @@ exports.config = {
       },
       files: {
         javascripts: {
-          joinTo: {
-            'js/app.js': [/^app\/src\/js/, /^node_modules/],
-          }
+          joinTo: {},
+          entryPoints: {
+            'app/src/js/app.js': 'js/app.js',
+          },
         }
       }
     }
