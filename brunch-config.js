@@ -3,7 +3,7 @@ exports.config = {
     javascripts: {
       joinTo: {
         'js/app.js': [/^app\/src\/js/, /^node_modules/],
-        'js/test.js': [/^app\/test/, /^app\/src\/js/, /^node_modules/],
+        'js/test.js': [/^app\/test/],
       }
     },
     stylesheets: {
@@ -30,9 +30,6 @@ exports.config = {
     babel: {
       presets: ['es2015', 'react']
     },
-    eslint: {
-      pattern: /^app\/src\/.*\.js?$/
-    }
   },
 
   modules: {
@@ -46,4 +43,19 @@ exports.config = {
         .replace(/^app\/test\//, '');
     }
   },
+
+  overrides: {
+    production: {
+      paths: {
+        watched: ['app/src'],
+      },
+      files: {
+        javascripts: {
+          joinTo: {
+            'js/app.js': [/^app\/src\/js/, /^node_modules/],
+          }
+        }
+      }
+    }
+  }
 };

@@ -3,10 +3,13 @@ module.exports = function(config) {
     browsers: ['Chrome'],
     frameworks: ['jasmine'],
     basePath: 'priv/static/js',
+    files: [
+      'app.js',
+      'test.js'
+    ],
     preprocessors: {
       '**/*.js': ['sourcemap']
     },
-    files: ['**/*.js'],
     colors: true,
     reporters: ['mocha'],
     logLevel: config.LOG_WARN,
