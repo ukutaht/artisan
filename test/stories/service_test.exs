@@ -241,7 +241,7 @@ defmodule Artisan.StoriesTest do
   test "associates creator when requesting completed stories", %{user: user, project: project} do
     {:ok, iteration} = Repo.insert(%Artisan.Iteration{project_id: project.id, number: 1, state: "complete"})
 
-    story = create_in_state(user.id, project.id, "completed")
+    create_in_state(user.id, project.id, "completed")
     Stories.mark_completed_in(iteration)
 
     %{"completed" => [found]} = Stories.completed_in(iteration.id)
