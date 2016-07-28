@@ -8,7 +8,7 @@ class Login extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      errors: {}
+      loginError: false
     }
   }
 
@@ -29,13 +29,20 @@ class Login extends React.Component {
       } else {
         browserHistory.push('/')
       }
+    }).catch(() => {
+      this.setState({loginError: true})
     })
   }
 
-  renderError(name) {
-    if (this.state.errors[name]) {
-      return <span className="input-error">{this.state.errors[name]}</span>
+  renderError() {
+    if (this.state.loginError) {
+      return (
+        <div className="error-box">
+          The email and password does not match any of our records. Please try again.
+        </div>
+      )
     }
+    return false;
   }
 
   render() {
@@ -45,14 +52,19 @@ class Login extends React.Component {
           <h2 className="space-bottom-tiny">Log into Artisan</h2>
           <p className="space-top-tiny">Or <Link to="/signup">sign up</Link> instead</p>
         </div>
+        {this.renderError()}
         <form onSubmit={this.onSubmit.bind(this)}>
           <div className="form-group">
-            <span>Email</span>
-            <input ref="email" type="email" autoFocus/>
+            <div className="input-with-icon">
+              <input ref="email" type="email" placeholder="Email" />
+              <i className="ion-person light" />
+            </div>
           </div>
           <div className="form-group">
-            <span>Password</span>
-            <input ref="password" type="password" />
+            <div className="input-with-icon">
+              <input ref="password" type="password" placeholder="Password"/>
+              <i className="ion-locked light" />
+            </div>
           </div>
           <button className="button primary no-margin full-width">Log in</button>
         </form>

@@ -2,11 +2,6 @@
   margin-bottom: 1rem;
 }
 
-.input-error {
-  margin-left: 1rem;
-  color: $error;
-}
-
 input, textarea {
   width: 100%;
   padding: $spacing-tiny $spacing-small;
@@ -46,5 +41,29 @@ input:focus, textarea:focus {
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
     transform: translateX(-1px);
+  }
+}
+
+.input-with-icon {
+  position: relative;
+
+  i {
+    position: absolute;
+    top: 10px;
+    left: 6px;
+  }
+
+  input {
+    padding-left: 22px;
+  }
+}
+
+.input-with-icon-right {
+  position: relative;
+
+  .icon {
+    position: absolute;
+    top: 10px;
+    right: 12px;
   }
 }

@@ -13,6 +13,7 @@
 @import "profile";
 @import "dropdown";
 @import "spinner";
+@import "tooltip";
 
 .container {
   @include outer-container(95%);
@@ -59,6 +60,15 @@ footer {
   margin: 100px auto;
 }
 
+.error-box {
+  color: $error;
+  border: 1px solid $error;
+  border-radius: 3px;
+  padding: $spacing-small;
+  margin-top: $spacing-medium;
+  margin-bottom: $spacing-medium;
+}
+
 .space-top-tiny {
   margin-top: $spacing-tiny;
 }
@@ -99,4 +109,8 @@ footer {
   p {
     margin-top: 0;
   }
+}
+
+.light {
+ color: $dark-grey;
 }
