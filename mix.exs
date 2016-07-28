@@ -29,7 +29,7 @@ defmodule Artisan.Mixfile do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_ecto, "~> 3.0"},
       {:cowboy, "~> 1.0"},
-      {:comeonin, "~> 2.1"},
+      {:comeonin, "~> 2.5"},
       {:slugger, "~> 0.1.0"},
       {:distillery, "~> 0.8"},
       {:junit_formatter, "~> 1.1.0", only: :test}
