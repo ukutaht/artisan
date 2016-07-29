@@ -27,7 +27,8 @@ class StoryModal extends React.Component {
       optimistic: props.story.optimistic,
       realistic: props.story.realistic,
       pessimistic: props.story.pessimistic,
-      tags: props.story.tags.join(','),
+      tagsInput: props.story.tags.join(','),
+      tags: props.story.tags,
       assignee_id: props.story.assignee ? props.story.assignee.id : null
     }
   }
@@ -53,16 +54,33 @@ class StoryModal extends React.Component {
     document.onkeydown = null
   }
 
+  changedFields() {
+    const story = this.props.story
+
+    return Object.keys(this.state).reduce((updated, field) => {
+      if (this.state[field] === story[field]) {
+        return updated
+      } else {
+        return Object.assign({[field]: this.state[field]}, updated )
+      }
+    }, {id: story.id, project_id: this.props.project.id, state: story.state})
+
+  }
+
   handleSubmit(e) {
     e.preventDefault()
-    const story = Object.assign({}, this.state, {
-      id: this.props.story.id,
-      project_id: this.props.project.id,
-      state: this.props.story.state,
-      tags: splitTags(this.state.tags)
-    })
+    const story = this.props.story
 
-    this.props.onSubmit(story)
+    const updated = this.changedFields();
+
+    const currentAssignee = story.assignee || {id: null}
+    if (updated.assignee_id === currentAssignee.id) {
+      delete updated.assignee_id
+    }
+
+    delete updated.tagsInput
+
+    this.props.onSubmit(updated)
   }
 
   nameChanged(e) {
@@ -74,7 +92,10 @@ class StoryModal extends React.Component {
   }
 
   tagsChanged(e) {
-    this.setState({tags: e.target.value})
+    this.setState({
+      tags: splitTags(e.target.value),
+      tagsInput: e.target.value
+    })
   }
 
   extractEstimate(e, estimate) {
@@ -192,7 +213,7 @@ class StoryModal extends React.Component {
 
                   <section className="form-group">
                     <label>Tags</label>
-                    <input type="text" placeholder="Comma-separated" value={this.state.tags} onChange={this.tagsChanged.bind(this)}/>
+                    <input type="text" placeholder="Comma-separated" value={this.state.tagsInput} onChange={this.tagsChanged.bind(this)}/>
                   </section>
 
                   <button className="button primary save-story-button">{this.props.buttonText}</button>

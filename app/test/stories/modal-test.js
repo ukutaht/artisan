@@ -22,16 +22,33 @@ describe('StoryModal', () => {
     creator: {name: 'Creator name'}
   }
 
-  const submit = jasmine.createSpy('submit')
+  let submit;
+  let onClose;
   const fakeSubmitEvent = { preventDefault() {} }
 
   beforeEach(() => {
+    onClose = jasmine.createSpy('onClose')
+    submit  = jasmine.createSpy('submit')
+
     view = TestUtils.renderIntoDocument(<StoryModal
       story={story}
       project={project}
       onSubmit={submit}
+      onClose={onClose}
       routeParams={{iterationNumber: 'current'}}/>
     );
+  })
+
+  it('closes when user presses escape', () => {
+    document.onkeydown({keyCode: 27})
+
+    expect(onClose).toHaveBeenCalled()
+  })
+
+  it('does not close when user presses any other character', () => {
+    document.onkeydown({keyCode: 13})
+
+    expect(onClose).not.toHaveBeenCalled()
   })
 
   it('calls the onSubmit handler when form is submitted', () => {
@@ -57,16 +74,16 @@ describe('StoryModal', () => {
   })
 
   it('submits estimates as numbers', () => {
-    view.estimateChanged('optimistic')({target: {value: '1'}})
-    view.estimateChanged('realistic')({target: {value: '2'}})
-    view.estimateChanged('pessimistic')({target: {value: '3'}})
+    view.estimateChanged('optimistic')({target: {value: '2'}})
+    view.estimateChanged('realistic')({target: {value: '3'}})
+    view.estimateChanged('pessimistic')({target: {value: '4'}})
 
     view.handleSubmit(fakeSubmitEvent)
 
     const submitted = submit.calls.mostRecent().args[0]
-    expect(submitted.optimistic).toEqual(1)
-    expect(submitted.realistic).toEqual(2)
-    expect(submitted.pessimistic).toEqual(3)
+    expect(submitted.optimistic).toEqual(2)
+    expect(submitted.realistic).toEqual(3)
+    expect(submitted.pessimistic).toEqual(4)
   })
 
   it('submits null values for empty estimates', () => {
@@ -83,14 +100,14 @@ describe('StoryModal', () => {
   })
 
   it('calculates and submits total estimate', () => {
-    view.estimateChanged('optimistic')({target: {value: '1'}})
-    view.estimateChanged('realistic')({target: {value: '2'}})
-    view.estimateChanged('pessimistic')({target: {value: '3'}})
+    view.estimateChanged('optimistic')({target: {value: '2'}})
+    view.estimateChanged('realistic')({target: {value: '3'}})
+    view.estimateChanged('pessimistic')({target: {value: '4'}})
 
     view.handleSubmit(fakeSubmitEvent)
 
     const submitted = submit.calls.mostRecent().args[0]
-    expect(submitted.estimate).toEqual(2.75)
+    expect(submitted.estimate).toEqual(3.75)
   })
 
   it('splits tags before posting to backend', () => {
@@ -118,4 +135,13 @@ describe('StoryModal', () => {
     expect(submitted.project_id).toEqual(project.id)
   })
 
+  it('only submits data that has been changed', () => {
+    view.estimateChanged('pessimistic')({target: {value: '3'}})
+
+    view.handleSubmit(fakeSubmitEvent)
+
+    const submitted = submit.calls.mostRecent().args[0]
+    expect(submitted.acceptance_criteria).toBeUndefined()
+    expect(submitted.assignee_id).toBeUndefined()
+  })
 })
