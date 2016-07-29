@@ -50,7 +50,7 @@ class Login extends React.Component {
       <div className="skinny-box">
         <div className="login-header">
           <h2 className="space-bottom-tiny">Log into Artisan</h2>
-          <p className="space-top-tiny">Or <Link to="/signup">sign up</Link> instead</p>
+          <p className="space-top-tiny">Or <Link className="blue" to="/signup">sign up</Link> instead</p>
         </div>
         {this.renderError()}
         <form onSubmit={this.onSubmit.bind(this)}>

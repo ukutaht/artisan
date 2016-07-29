@@ -95,7 +95,7 @@ class Signup extends React.Component {
       <div className='skinny-box'>
         <div className="login-header">
           <h2 className="space-bottom-tiny">Sign up for Artisan</h2>
-          <p className="space-top-tiny">Or <Link to="/login">log in</Link> instead</p>
+          <p className="space-top-tiny">Or <Link className="blue" to="/login">log in</Link> instead</p>
         </div>
         <form noValidate={true} onSubmit={this.onSubmit.bind(this)}>
           <div className='form-group'>

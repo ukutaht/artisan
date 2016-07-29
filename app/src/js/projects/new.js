@@ -28,7 +28,7 @@ class NewProject extends React.Component {
             <h2>New project</h2>
           </div>
           <div className="new-project-form__header--right">
-            or <a href="javascript://">import from Artisan v1</a>
+            or <a className="blue" href="javascript://">import from Artisan v1</a>
           </div>
           <div className="form-group">
             <input type="text" placeholder="Name" value={this.state.name} onChange={this.nameChanged.bind(this)} />
