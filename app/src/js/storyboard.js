@@ -77,7 +77,12 @@ export default class StoryBoard extends React.Component {
   }
 
   addStory(story) {
-    this.props.addStory(story).then(this.closeAddStory.bind(this))
+    const newStory = Object.assign({}, story, {
+      state: this.state.visibleColumns[0],
+      project_id: this.props.project.id
+    })
+
+    this.props.addStory(newStory).then(this.closeAddStory.bind(this))
   }
 
   isBacklogVisible() {
@@ -170,12 +175,8 @@ export default class StoryBoard extends React.Component {
 
   renderAddStoryModal() {
     if (this.state.addingStory) {
-      const story = Object.assign({}, newStory, {
-        state: this.state.visibleColumns[0]
-      })
-
       return (
-        <StoryModal story={story}
+        <StoryModal story={newStory}
                     project={this.props.project}
                     onClose={this.closeAddStory.bind(this)}
                     onSubmit={this.addStory.bind(this)}
