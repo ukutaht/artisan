@@ -3,6 +3,7 @@ import Link from 'react-router/lib/Link'
 import browserHistory from 'react-router/lib/browserHistory'
 
 import Avatar from 'users/avatar'
+import Notifications from 'notifications/notifications'
 
 import * as users from 'users/service'
 
@@ -28,6 +29,7 @@ export default class Layout extends React.Component {
   render() {
     return (
       <div>
+        <Notifications />
         <nav className="top-nav">
           <div className="container">
             <div className="top-nav__brand">

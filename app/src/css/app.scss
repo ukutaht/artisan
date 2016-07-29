@@ -14,6 +14,7 @@
 @import "dropdown";
 @import "spinner";
 @import "tooltip";
+@import "notifications";
 
 .container {
   @include outer-container(95%);
