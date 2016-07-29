@@ -98,11 +98,24 @@ class Column extends React.Component {
     return !_dragging
   }
 
+  renderStoryPoints() {
+    const totalPoints = this.props.stories.reduce((total, {estimate}) => total + estimate, 0)
+
+    if (totalPoints > 0) {
+      return (
+        <span>{totalPoints} pts</span>
+      )
+    }
+
+    return false
+  }
+
   render() {
     return (
       <div className="board__column">
         <div className="board__column__header">
           <h3>{columnTitles[this.props.name]}</h3>
+          {this.renderStoryPoints()}
         </div>
         <ul ref="sortable" className="stories-list" data-column={this.props.name}>
           {

@@ -33,7 +33,20 @@
     }
 
     &__header {
+      position: relative;
       text-align: center;
+      width: 100%;
+
+      h3 {
+        display: inline-block;
+      }
+
+      span {
+        color: $dark-grey;
+        right: $spacing-medium;
+        position: absolute;
+        top: 24px;
+      }
     }
   }
 }
