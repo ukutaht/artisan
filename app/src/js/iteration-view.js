@@ -71,10 +71,12 @@ class IterationView extends React.Component {
     )
   }
 
-  moveStory(storyId, toColumn, toIndex, done) {
+  moveStory(storyId, toColumn, toIndex, dragDone, dragAbort) {
     stories.move(storyId, toColumn, toIndex).then((updated) => {
-      done()
+      dragDone()
       this.doMoveStory(updated)
+    }).catch(() => {
+      dragAbort()
     })
   }
 

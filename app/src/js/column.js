@@ -80,14 +80,22 @@ class Column extends React.Component {
     this.props.onDrag(Number(evt.item.dataset.id),
                       evt.to.dataset.column,
                       evt.newIndex,
-                      () => this.cleanUpDrag(evt, react_placeholder))
+                      () => this.done(evt, react_placeholder),
+                      () => this.abort(evt, react_placeholder))
   }
 
-  cleanUpDrag(evt, react_placeholder) {
+  done(evt, react_placeholder) {
     evt.to.removeChild(_ghost)
     enableSortables()
     _dragging = false
     if (evt.from === evt.to) react_placeholder.style.display = 'block'
+  }
+
+  abort(evt, react_placeholder) {
+    evt.to.removeChild(_ghost)
+    enableSortables()
+    _dragging = false
+    react_placeholder.style.display = 'block'
   }
 
   componentWillUnmount() {
