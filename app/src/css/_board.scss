@@ -26,7 +26,19 @@
   &__column {
     margin-top: $spacing-large;
     border-right: 1px dashed $border-grey;
-    flex: 1;
+    flex-grow: 1;
+
+    &--2 {
+      width: 50%;
+    }
+
+    &--3 {
+      width: 33.333333%;
+    }
+
+    &--4 {
+      width: 25%;
+    }
 
     &:last-of-type {
       border-right: none;
