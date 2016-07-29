@@ -6,8 +6,6 @@ function values(object) {
   return Object.keys(object).map((key) => object[key]);
 }
 
-let nextId = 0
-
 export default class Notifications extends React.Component {
   componentWillMount() {
     this.setState({notifications: []})
@@ -16,14 +14,12 @@ export default class Notifications extends React.Component {
   }
 
   addNotification(notification) {
-    const newId = nextId++;
-    const withId = Object.assign({}, notification, {id: newId})
     this.setState({
-      notifications: Object.assign({}, this.state.notifications, {[newId]: withId})
+      notifications: Object.assign({}, this.state.notifications, {[notification.id]: notification})
     })
 
     window.setTimeout(() => {
-      this.removeNotification(newId)
+      this.removeNotification(notification.id)
     }, notification.timeout)
   }
 

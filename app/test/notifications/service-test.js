@@ -35,4 +35,19 @@ describe('Notifications service', () => {
     const notification = subscriber.calls.mostRecent().args[0]
     expect(notification.timeout).toEqual(2500)
   })
+
+  it('assigns ids to notifications', () => {
+    const subscriber = jasmine.createSpy('subscriber')
+    notifications.subscribe(subscriber)
+
+    notifications.info('Information1')
+    notifications.info('Information2')
+    notifications.info('Information3')
+
+    const notification1 = subscriber.calls.argsFor(0)[0]
+    const notification2 = subscriber.calls.argsFor(1)[0]
+    const notification3 = subscriber.calls.argsFor(2)[0]
+    expect(notification2.id).toEqual(notification1.id + 1)
+    expect(notification3.id).toEqual(notification2.id + 1)
+  })
 })
