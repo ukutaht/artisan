@@ -2,6 +2,7 @@ import React from 'react'
 import update from 'react/lib/update'
 import browserHistory from 'react-router/lib/browserHistory'
 
+import ProjectNav from 'projects/nav'
 import StoryBoard from 'storyboard'
 import ProjectSocket from 'projects/socket'
 import * as iterations from 'iterations/service'
@@ -119,7 +120,43 @@ class IterationView extends React.Component {
     })
   }
 
-  render() {
+  changeView(e) {
+    browserHistory.push(e.target.value)
+  }
+
+  iterationRoute(iterationNumber) {
+    const currentIteration = this.state.allIterations[0];
+
+    if (iterationNumber === currentIteration.number) {
+      return `/${this.props.project.slug}`;
+    } else {
+      return `/${this.props.project.slug}/iterations/${iterationNumber}`;
+    }
+  }
+
+  renderBreadCrumb() {
+    if (!this.state.iteration || !this.state.allIterations) return null
+
+    return (
+      <select value={this.iterationRoute(this.state.iteration.number)} onChange={this.changeView}>
+        {
+          this.state.allIterations.map((iteration) => {
+            return <option key={iteration.number} value={this.iterationRoute(iteration.number)}>Iteration {iteration.number}</option>
+          })
+        }
+      </select>
+    )
+  }
+
+  renderProjectNav() {
+    return (
+      <ProjectNav activeTab="storyboard" project={this.props.project}>
+        {this.renderBreadCrumb()}
+      </ProjectNav>
+    )
+  }
+
+  renderStoryBoard() {
     if (!this.state.stories) return null
 
     return (
@@ -136,6 +173,15 @@ class IterationView extends React.Component {
         completeIteration={this.completeIteration.bind(this)}
         project={this.props.project}
       />
+    )
+  }
+
+  render() {
+    return (
+      <div>
+        {this.renderProjectNav()}
+        {this.renderStoryBoard()}
+      </div>
     )
   }
 }

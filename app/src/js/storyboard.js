@@ -1,7 +1,5 @@
 import React from 'react'
-import browserHistory from 'react-router/lib/browserHistory'
 
-import ProjectNav from 'projects/nav'
 import Column from 'column'
 import StoryModal from 'stories/modal'
 
@@ -101,38 +99,9 @@ export default class StoryBoard extends React.Component {
     return canToggleBacklog[this.props.iteration.state]
   }
 
-  changeView(e) {
-    browserHistory.push(e.target.value)
-  }
-
-  iterationRoute(iterationNumber) {
-    const currentIteration = this.props.allIterations[0];
-
-    if (iterationNumber === currentIteration.number) {
-      return `/${this.props.project.slug}`;
-    } else {
-      return `/${this.props.project.slug}/iterations/${iterationNumber}`;
-    }
-  }
-
-  renderProjectNav() {
-    return (
-      <ProjectNav activeTab="storyboard" project={this.props.project}>
-        <select value={this.iterationRoute(this.props.iteration.number)} onChange={this.changeView}>
-          {
-            this.props.allIterations.map((iteration) => {
-              return <option key={iteration.number} value={this.iterationRoute(iteration.number)}>Iteration {iteration.number}</option>
-            })
-          }
-        </select>
-      </ProjectNav>
-    )
-  }
-
   render() {
     return (
       <div>
-        {this.renderProjectNav()}
         <div className="board">
           <div className="board__actions">
             <div className="board__actions__left">
