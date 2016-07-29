@@ -1,7 +1,7 @@
 import Api from 'api'
 
-export function update(story) {
-  return Api.put(`/api/stories/${story.id}`, {story: story})
+export function update(id, attrs) {
+  return Api.put(`/api/stories/${id}`, {story: attrs})
 }
 
 export function move(storyId, state, index) {

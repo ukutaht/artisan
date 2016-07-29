@@ -59,8 +59,8 @@ export default class StoryBoard extends React.Component {
     this.setState({editingStory: null})
   }
 
-  updateStory(story) {
-    this.props.updateStory(story).then(this.closeEditStory.bind(this))
+  updateStory(id, story) {
+    this.props.updateStory(id, story).then(this.closeEditStory.bind(this))
   }
 
   deleteStory(storyId) {
@@ -191,7 +191,7 @@ export default class StoryBoard extends React.Component {
         <StoryModal story={this.state.editingStory}
                     project={this.props.project}
                     onClose={this.closeEditStory.bind(this)}
-                    onSubmit={this.updateStory.bind(this)}
+                    onSubmit={this.updateStory.bind(this, this.state.editingStory.id)}
                     onDelete={() => this.deleteStory(this.state.editingStory)}
                     header="Edit"
                     buttonText="Update" />

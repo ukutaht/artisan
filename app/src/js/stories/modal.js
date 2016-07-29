@@ -61,10 +61,9 @@ class StoryModal extends React.Component {
       if (this.state[field] === story[field]) {
         return updated
       } else {
-        return Object.assign({[field]: this.state[field]}, updated )
+        return Object.assign({[field]: this.state[field]}, updated)
       }
-    }, {id: story.id, project_id: this.props.project.id, state: story.state})
-
+    }, {})
   }
 
   handleSubmit(e) {

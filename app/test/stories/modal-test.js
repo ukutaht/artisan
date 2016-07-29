@@ -128,13 +128,6 @@ describe('StoryModal', () => {
     expect(submitted.assignee_id).toEqual(1)
   })
 
-  it('submits story with project id', () => {
-    view.handleSubmit(fakeSubmitEvent)
-
-    const submitted = submit.calls.mostRecent().args[0]
-    expect(submitted.project_id).toEqual(project.id)
-  })
-
   it('only submits data that has been changed', () => {
     view.estimateChanged('pessimistic')({target: {value: '3'}})
 

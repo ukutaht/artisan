@@ -58,8 +58,8 @@ class IterationView extends React.Component {
     )
   }
 
-  updateStory(story) {
-    return stories.update(story).then(this.doUpdateStory.bind(this))
+  updateStory(id, story) {
+    return stories.update(id, story).then(this.doUpdateStory.bind(this))
   }
 
   doUpdateStory(story) {
