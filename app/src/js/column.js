@@ -103,7 +103,10 @@ class Column extends React.Component {
 
     if (totalPoints > 0) {
       return (
-        <span>{totalPoints} pts</span>
+        <span className="points">
+          <span className="ion-connection-bars right-padded-icon"></span>
+          {totalPoints}
+        </span>
       )
     }
 

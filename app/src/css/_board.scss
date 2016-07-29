@@ -53,9 +53,9 @@
         display: inline-block;
       }
 
-      span {
+      .points {
         color: $dark-grey;
-        right: $spacing-medium;
+        right: $spacing-medium + 6;
         position: absolute;
         top: 24px;
       }
