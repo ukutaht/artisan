@@ -138,8 +138,9 @@ export default class StoryBoard extends React.Component {
               {this.renderActions()}
             </div>
           </div>
-
-          {this.renderColumns()}
+          <div className="board__columns">
+            {this.renderColumns()}
+          </div>
         </div>
         {this.renderAddStoryModal()}
         {this.renderEditStoryModal()}
@@ -199,12 +200,9 @@ export default class StoryBoard extends React.Component {
   }
 
   renderColumns() {
-    const count = this.state.visibleColumns.length
-
     return this.state.visibleColumns.map((column) => {
       return <Column stories={this.props.stories[column]}
               key={column}
-              count={count}
               name={column}
               onStoryClick={this.openEditStory.bind(this)}
               onDrag={this.props.moveStory}

@@ -100,7 +100,7 @@ class Column extends React.Component {
 
   render() {
     return (
-      <div className={`board__column board__column--${this.props.count}`}>
+      <div className="board__column">
         <div className="board__column__header">
           <h3>{columnTitles[this.props.name]}</h3>
         </div>

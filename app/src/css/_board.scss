@@ -18,21 +18,15 @@
     }
   }
 
+  &__columns {
+    overflow: hidden;
+    display: flex;
+  }
+
   &__column {
     margin-top: $spacing-large;
     border-right: 1px dashed $border-grey;
-
-    &--2 {
-      @include span-columns(6, $display: block-collapse);
-    }
-
-    &--3 {
-      @include span-columns(4, $display: block-collapse);
-    }
-
-    &--4 {
-      @include span-columns(3, $display: block-collapse);
-    }
+    flex: 1;
 
     &:last-of-type {
       border-right: none;
@@ -45,7 +39,7 @@
 }
 
 .stories-list {
-  min-height: 500px;
+  height: 105%;
 }
 
 .story-card {
