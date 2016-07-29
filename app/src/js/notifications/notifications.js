@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup'
-import update from 'react/lib/update'
 import * as notifications from 'notifications/service'
 
 function values(object) {

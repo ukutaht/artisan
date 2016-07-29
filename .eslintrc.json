@@ -16,7 +16,7 @@
     "block-spacing": [2, "always"],
     "brace-style": [2, "1tbs", {"allowSingleLine": true}],
     "comma-style": [2, "last"],
-    "func-style": [2, "declaration"],
+    "func-style": 0,
     "semi": 0,
     "quotes": [2, "single", "avoid-escape"],
     "indent": [2, 2, {"SwitchCase": 1}],
