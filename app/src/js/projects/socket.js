@@ -1,4 +1,5 @@
 import {Socket} from 'phoenix-socket'
+import * as users from 'users/service'
 
 export default class ProjectSocket {
   constructor(projectId) {
@@ -7,7 +8,7 @@ export default class ProjectSocket {
 
   join(callbacks) {
     const socket = new Socket('/socket', {
-      params: {token: localStorage.getItem('token')},
+      params: {token: users.token()},
       //logger: ((kind, msg, data) => { console.log(`${kind}: ${msg}`, data) })
     })
 
