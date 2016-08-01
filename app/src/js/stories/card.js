@@ -15,7 +15,6 @@ class Card extends React.Component {
     if (this.props.story.estimate) {
       return (
        <span className="story-card__estimate">
-         <i className="ion-connection-bars right-padded-icon show-desk-and-up"></i>
          {this.props.story.estimate}
        </span>
       )

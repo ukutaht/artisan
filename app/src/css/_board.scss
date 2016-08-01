@@ -109,11 +109,11 @@
       @include ellipsis(60%);
 
       @include media($tablet) {
-        @include ellipsis(70%);
+        @include ellipsis(78%);
       }
 
       @include media($large-desk) {
-        @include ellipsis(78%);
+        @include ellipsis(86%);
       }
     }
   }
