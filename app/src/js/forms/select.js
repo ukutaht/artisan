@@ -33,7 +33,7 @@ export default class Select extends React.Component {
   }
 
   toggle() {
-    this.setState({isOpen: true})
+    this.setState({isOpen: !this.state.isOpen})
   }
 
   selectOption(newValue) {
