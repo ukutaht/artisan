@@ -45,19 +45,12 @@ export default class Invite extends React.Component {
   }
 
   options() {
-    const emptyOption = {
-      label: 'Choose project to join',
-      value: null
-    }
-
-    const projectOptions = this.state.projects.map((project) => {
+    return this.state.projects.map((project) => {
       return {
         label: project.name,
         value: project.id
       }
     })
-
-    return projectOptions.concat(emptyOption)
   }
 
   render() {
@@ -74,7 +67,7 @@ export default class Invite extends React.Component {
                 <InputWithError type="text" error={this.state.error} value={this.state.email} onChange={this.emailChanged.bind(this)} placeholder="Email"/>
               </section>
 
-              <Select value={this.state.project} options={this.options()} onChange={this.projectChanged.bind(this)} />
+              <Select value={this.state.project} options={this.options()} onChange={this.projectChanged.bind(this)} placeholder="Choose project to join"/>
 
               <button className="button primary no-margin full-width space-top">Invite</button>
             </form>

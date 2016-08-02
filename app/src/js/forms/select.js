@@ -32,13 +32,18 @@ export default class Select extends React.Component {
     return this.state.isOpen ? 'open' : ''
   }
 
-  open() {
+  toggle() {
     this.setState({isOpen: true})
   }
 
   selectOption(newValue) {
     this.props.onChange(newValue)
     this.setState({isOpen: false})
+  }
+
+  discard(e) {
+    this.selectOption(null);
+    e.stopPropagation()
   }
 
   renderOption(option) {
@@ -61,18 +66,29 @@ export default class Select extends React.Component {
   renderIcon() {
     if (this.state.isOpen) {
       return <i className="ion-arrow-up-b" />
-    } else  {
+    } else if (this.props.value) {
+      return <i className="ion-backspace-outline clickable" onClick={this.discard.bind(this)} />
+    } else {
       return <i className="ion-arrow-down-b" />
     }
   }
 
-  render() {
-    const selected = this.props.options.find((option) => option.value === this.props.value);
+  value() {
+    if (this.props.value) {
+      const selected = this.props.options.find((option) => option.value === this.props.value);
+      return selected.label
+    } else {
+      return this.props.placeholder
+    }
+  }
 
+  render() {
     return (
       <div className={`dropdown select ${this.openClass()}`}>
-        <input value={selected.label} readOnly onClick={this.open.bind(this)}></input>
-        {this.renderIcon()}
+        <div onClick={this.toggle.bind(this)}>
+          <input value={this.value()} readOnly />
+          {this.renderIcon()}
+        </div>
         {this.renderOptions()}
       </div>
     )

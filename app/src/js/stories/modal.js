@@ -127,12 +127,11 @@ export default class StoryModal extends React.Component {
     const options = this.props.project.collaborators.map((user) => {
       return {value: user.id, label: user.name}
     })
-    options.push({value: null, label: 'Unassigned'})
 
     return (
       <section className="form-group">
         <label>Assigned user</label>
-        <Select options={options} onChange={this.assigneeChanged.bind(this)} value={this.state.assignee_id}  />
+        <Select options={options} onChange={this.assigneeChanged.bind(this)} value={this.state.assignee_id} placeholder="Unassigned" />
       </section>
     )
   }
