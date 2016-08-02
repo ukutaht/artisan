@@ -11,6 +11,7 @@ defmodule Artisan.StoriesTest do
     realistic: 1,
     pessimistic: 2,
     tags: ["bug"],
+    assignee_id: nil
   }
 
   @invalid_story_params %{
@@ -18,7 +19,7 @@ defmodule Artisan.StoriesTest do
   }
 
   setup do
-    {:ok, project} = Repo.insert(%Artisan.Project{name: "project", slug: "slug"})
+    project = Helpers.create_project()
     {:ok, user} = Artisan.Users.create(%{"name" => "User", "email" => "user@email.com", "password" => "asdasd"})
     {:ok, %{project: project, user: user}}
   end
@@ -33,8 +34,7 @@ defmodule Artisan.StoriesTest do
   end
 
   test "creates a story with valid params", %{project: project, user: user} do
-    params = Map.put(@valid_story_params, :assignee_id, user.id)
-    {:ok, story} = Stories.create(user.id, project.id, params)
+    {:ok, story} = Stories.create(user.id, project.id, %{@valid_story_params | assignee_id: user.id})
 
     assert Repo.aggregate(Story, :count, :id) == 1
 
@@ -60,7 +60,7 @@ defmodule Artisan.StoriesTest do
   end
 
   test "number is generated per-project", %{project: project, user: user} do
-    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project", slug: "slug3"})
+    project2 = Helpers.create_project(slug: "slug2")
 
     {:ok, story1} = Stories.create(user.id, project.id, @valid_story_params)
     {:ok, story2} = Stories.create(user.id, project2.id, @valid_story_params)
@@ -151,7 +151,7 @@ defmodule Artisan.StoriesTest do
 
   test "does not find stories that are not part of the project", %{user: user, project: project} do
 
-    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project", slug: "slug3"})
+    project2 = Helpers.create_project(slug: "slug2")
     create_in_state(user.id, project2.id, "ready")
 
     found = Stories.by_state(project.id)
@@ -160,7 +160,7 @@ defmodule Artisan.StoriesTest do
   end
 
   test "does not find stories that were completed in a previous iteration", %{user: user, project: project} do
-    {:ok, %{iteration: iteration}} = Artisan.Iterations.create_for(project.id)
+    iteration = Helpers.create_iteration(project.id, state: "complete")
     create_in_state(user.id, project.id, "completed")
     Stories.mark_completed_in(iteration)
 
@@ -170,7 +170,7 @@ defmodule Artisan.StoriesTest do
   end
 
   test "marks stories as completed in", %{project: project, user: user} do
-    {:ok, %{iteration: iteration}} = Artisan.Iterations.create_for(project.id)
+    iteration = Helpers.create_iteration(project.id, state: "complete")
     working = create_in_state(user.id, project.id, "working")
     completed = create_in_state(user.id, project.id, "completed")
 
@@ -181,29 +181,30 @@ defmodule Artisan.StoriesTest do
   end
 
   test "stories are not marked twice", %{project: project, user: user} do
-    {:ok, %{iteration: iteration1}} = Artisan.Iterations.create_for(project.id)
+    iteration1 = Helpers.create_iteration(project.id, state: "complete")
     completed = create_in_state(user.id, project.id, "completed")
 
     Stories.mark_completed_in(iteration1)
 
-    {:ok, %{iteration: iteration2}} = Artisan.Iterations.create_for(project.id)
+    iteration2 = Helpers.create_iteration(project.id, state: "complete")
+
     Stories.mark_completed_in(iteration2)
 
     assert Repo.get(Story, completed.id).completed_in == iteration1.id
   end
 
   test "stories are only marked within the project", %{user: user, project: project} do
-    {:ok, project2} = Repo.insert(%Artisan.Project{name: "project", slug: "slug2"})
-    {:ok, %{iteration: iteration}} = Artisan.Iterations.create_for(project.id)
+    project2 = Helpers.create_project(slug: "slug2")
     completed_in_project2 = create_in_state(user.id, project2.id, "completed")
 
+    iteration = Helpers.create_iteration(project.id, state: "complete")
     Stories.mark_completed_in(iteration)
 
     assert Repo.get(Story, completed_in_project2.id).completed_in == nil
   end
 
   test "gets stories completed in an iteration", %{user: user, project: project} do
-    {:ok, %{iteration: iteration}} = Artisan.Iterations.create_for(project.id)
+    iteration = Helpers.create_iteration(project.id, state: "complete")
     completed = create_in_state(user.id, project.id, "completed")
     create_in_state(user.id, project.id, "working")
 
@@ -214,7 +215,7 @@ defmodule Artisan.StoriesTest do
   end
 
   test "finds stories completed in iteration", %{user: user, project: project} do
-    {:ok, iteration} = Repo.insert(%Artisan.Iteration{project_id: project.id, number: 1, state: "complete"})
+    iteration = Helpers.create_iteration(project.id, state: "complete")
 
     story = create_in_state(user.id, project.id, "completed")
     Stories.mark_completed_in(iteration)
@@ -225,7 +226,7 @@ defmodule Artisan.StoriesTest do
   end
 
   test "orders stories by their position in completed in", %{user: user, project: project} do
-    {:ok, iteration} = Repo.insert(%Artisan.Iteration{project_id: project.id, number: 1, state: "complete"})
+    iteration = Helpers.create_iteration(project.id, state: "complete")
 
     story1 = create_in_state(user.id, project.id, "completed")
     story2 = create_in_state(user.id, project.id, "completed")
@@ -239,7 +240,7 @@ defmodule Artisan.StoriesTest do
   end
 
   test "associates creator when requesting completed stories", %{user: user, project: project} do
-    {:ok, iteration} = Repo.insert(%Artisan.Iteration{project_id: project.id, number: 1, state: "complete"})
+    iteration = Helpers.create_iteration(project.id, state: "complete")
 
     create_in_state(user.id, project.id, "completed")
     Stories.mark_completed_in(iteration)
@@ -250,7 +251,7 @@ defmodule Artisan.StoriesTest do
   end
 
   test "associates assignee when requesting completed stories", %{user: user, project: project} do
-    {:ok, iteration} = Repo.insert(%Artisan.Iteration{project_id: project.id, number: 1, state: "complete"})
+    iteration = Helpers.create_iteration(project.id, state: "complete")
 
     story = create_in_state(user.id, project.id, "completed")
     Stories.update(story.id, %{assignee_id: user.id})
