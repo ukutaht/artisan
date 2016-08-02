@@ -35,12 +35,24 @@ defmodule Artisan.Users do
     Repo.one(from u in User, where: u.id == ^id)
   end
 
-  def invite(current_user_id, email, project_id) do
-    if Artisan.Projects.is_collaborator?(project_id, current_user_id) do
-      Emails.invite(email, project_id)
+  def invite(current_user, email, nil) do
+    inviter = find(current_user)
+
+    Emails.invite(inviter, email)
+      |> Artisan.Mailer.deliver_later
+    :ok
+  end
+
+  def invite(current_user, email, project_id) do
+    project = Artisan.Projects.find_by_id(current_user, project_id)
+
+    if project do
+      inviter = find(current_user)
+      Emails.invite_to_project(inviter, email, project)
         |> Artisan.Mailer.deliver_later
+      :ok
     else
-      {:error, "Unauthorized"}
+      {:error, "Not found"}
     end
   end
 end

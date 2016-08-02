@@ -39,9 +39,12 @@ defmodule Artisan.Users.Controller do
   end
 
   def invite(conn, %{"email" => email, "project_id" => project_id}) do
-    Users.invite(conn.assigns[:current_user], email, project_id)
-
-    conn |> send_resp(202, "")
+    case Users.invite(conn.assigns[:current_user], email, project_id) do
+      :ok ->
+        conn |> send_resp(202, "")
+      {:error, "Not found"} ->
+        conn |> send_resp(404, "")
+    end
   end
 
   defp invalid(conn, user) do

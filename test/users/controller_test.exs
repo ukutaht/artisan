@@ -83,4 +83,29 @@ defmodule Artisan.Users.ControllerTest do
 
     assert found["name"] == user["user"]["name"]
   end
+
+  test "return 202 ACCEPTED for sucessful invite" do
+    user = create_user()
+
+    res = authenticated_conn(user["token"])
+      |> post("/api/users/invite", %{email: "new@email.com", project_id: nil})
+
+    assert res.status == 202
+  end
+
+  test "return 401 UNAUTHORIZED when inviter does not have a valid token" do
+    res = authenticated_conn("invalid")
+      |> post("/api/users/invite", %{email: "new@email.com", project_id: nil})
+
+    assert res.status == 401
+  end
+
+  test "return 404 NOT FOUND when project to join does not exist" do
+    user = create_user()
+
+    res = authenticated_conn(user["token"])
+      |> post("/api/users/invite", %{email: "new@email.com", project_id: -1})
+
+    assert res.status == 404
+  end
 end

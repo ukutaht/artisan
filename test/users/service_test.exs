@@ -53,13 +53,20 @@ defmodule Artisan.UsersTest do
     refute user.password_hash == ""
   end
 
-  test "invites another user to artisan" do
+  test "invites another user to artisan as part of a project" do
     {:ok, current_user} = Users.create(@valid_params)
     project = Helpers.create_project
     Artisan.Projects.add_collaborator(project.id, current_user.id)
     Users.invite(current_user.id, "another@email.com", project.id)
 
-    assert_delivered_email(Artisan.Users.Email.Emails.invite("another@email.com", 1))
+    assert_delivered_email(Artisan.Users.Email.Emails.invite_to_project(current_user, "another@email.com", project))
+  end
+
+  test "invites another user to artisan without a project" do
+    {:ok, current_user} = Users.create(@valid_params)
+    Users.invite(current_user.id, "another@email.com", nil)
+
+    assert_delivered_email(Artisan.Users.Email.Emails.invite(current_user, "another@email.com"))
   end
 
   test "does not send out invite if current user is not a collaborator on project" do
