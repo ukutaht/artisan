@@ -26,6 +26,10 @@ export function login(user) {
   return Api.post('/api/users/login', user).then(saveAuth)
 }
 
+export function invite(email, projectId) {
+  return Api.post('/api/users/invite', {email: email, project_id: projectId})
+}
+
 export function logout() {
   localStorage.removeItem('token')
   currentUser = null;

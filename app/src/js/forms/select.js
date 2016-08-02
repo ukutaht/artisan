@@ -92,7 +92,7 @@ export default class Select extends React.Component {
     return (
       <div className={`dropdown select ${this.openClass()} ${this.disabledClass()}`}>
         <div onClick={this.toggle.bind(this)}>
-          <input value={this.value()} readOnly />
+          <input className="clickable" value={this.value()} readOnly />
           {this.renderIcon()}
         </div>
         {this.renderOptions()}

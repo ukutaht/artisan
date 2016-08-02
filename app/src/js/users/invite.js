@@ -4,6 +4,7 @@ import Select from 'forms/select'
 import Modal from 'forms/modal'
 import InputWithError from 'forms/input-with-error'
 import * as projects from 'projects/service'
+import * as users from 'users/service'
 
 export default class Invite extends React.Component {
   constructor() {
@@ -41,6 +42,8 @@ export default class Invite extends React.Component {
 
     if (this.state.email === '') {
       this.setState({error: 'Email is required'})
+    } else {
+      users.invite(this.state.email, this.state.project)
     }
   }
 
