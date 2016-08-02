@@ -69,10 +69,9 @@ export default class Invite extends React.Component {
 
               <Select value={this.state.project} options={this.options()} onChange={this.projectChanged.bind(this)} placeholder="Choose project to join"/>
 
-              <button className="button primary no-margin full-width space-top">Invite</button>
+              <button className="button primary no-margin full-width space-top-large space-bottom">Invite</button>
             </form>
           </div>
-          <div className="modal__footer"></div>
         </div>
       </Modal>
     )

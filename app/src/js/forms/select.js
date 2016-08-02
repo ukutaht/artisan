@@ -12,17 +12,17 @@ export default class Select extends React.Component {
     this.handleDocumentClick = this.handleDocumentClick.bind(this)
   }
 
-  componentDidMount () {
+  componentDidMount() {
     document.addEventListener('click', this.handleDocumentClick, false)
     document.addEventListener('touchend', this.handleDocumentClick, false)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     document.removeEventListener('click', this.handleDocumentClick, false)
     document.removeEventListener('touchend', this.handleDocumentClick, false)
   }
 
-  handleDocumentClick (event) {
+  handleDocumentClick(event) {
     if (!ReactDOM.findDOMNode(this).contains(event.target)) {
       this.setState({isOpen: false})
     }
