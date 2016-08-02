@@ -25,9 +25,7 @@ defmodule Artisan.Users.ControllerTest do
   end
 
   test "allows user to update profile" do
-    created = build_conn()
-      |> post("/api/users/signup", %{user: @valid_user})
-      |> json_response(200)
+    created = create_user()
 
     updated = authenticated_conn(created["token"])
       |> put("/api/users/current", %{avatar: "avatar.com"})
@@ -37,9 +35,7 @@ defmodule Artisan.Users.ControllerTest do
   end
 
   test "updating with invalid params is a 400 BAD REQUEST" do
-    created = build_conn()
-      |> post("/api/users/signup", %{user: @valid_user})
-      |> json_response(200)
+    created = create_user()
 
     res = authenticated_conn(created["token"])
       |> put("/api/users/current", %{name: ""})
@@ -79,13 +75,7 @@ defmodule Artisan.Users.ControllerTest do
   end
 
   test "finds a user" do
-    build_conn()
-      |> post("/api/users/signup", %{user: @valid_user})
-      |> json_response(200)
-
-    user = build_conn()
-      |> post("/api/users/login", %{email: @valid_user[:email], password: @valid_user[:password]})
-      |> json_response(200)
+    user = create_user()
 
     found = authenticated_conn(user["token"])
       |> get("/api/users/current")
