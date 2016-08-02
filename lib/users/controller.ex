@@ -39,8 +39,10 @@ defmodule Artisan.Users.Controller do
   end
 
   def invite(conn, %{"email" => email, "project_id" => project_id}) do
-  end
+    Users.invite(conn.assigns[:current_user], email, project_id)
 
+    conn |> send_resp(202, "")
+  end
 
   defp invalid(conn, user) do
     conn |> put_status(400) |> render("invalid.json", user: user)

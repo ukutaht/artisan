@@ -2,6 +2,7 @@ defmodule Artisan.UsersTest do
   use Artisan.ModelCase
   alias Artisan.Users
   alias Artisan.User
+  use Bamboo.Test
 
   @valid_params %{
     "name" => "name",
@@ -50,5 +51,22 @@ defmodule Artisan.UsersTest do
     {:ok, user} = Users.create(@valid_params)
 
     refute user.password_hash == ""
+  end
+
+  test "invites another user to artisan" do
+    {:ok, current_user} = Users.create(@valid_params)
+    project = Helpers.create_project
+    Artisan.Projects.add_collaborator(project.id, current_user.id)
+    Users.invite(current_user.id, "another@email.com", project.id)
+
+    assert_delivered_email(Artisan.Users.Email.Emails.invite("another@email.com", 1))
+  end
+
+  test "does not send out invite if current user is not a collaborator on project" do
+    {:ok, current_user} = Users.create(@valid_params)
+    project = Helpers.create_project
+    Users.invite(current_user.id, "another@email.com", project.id)
+
+    assert_no_emails_delivered
   end
 end

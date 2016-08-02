@@ -54,4 +54,8 @@ defmodule Artisan.Router do
       delete "/:id",      Controller, :delete
     end
   end
+
+  if Mix.env == :dev do
+    forward "/emails", Bamboo.EmailPreviewPlug
+  end
 end

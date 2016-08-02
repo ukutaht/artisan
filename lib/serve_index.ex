@@ -14,6 +14,10 @@ defmodule Artisan.ServeIndex do
     conn
   end
 
+  defp respond("/emails" <> _, conn) do
+    conn
+  end
+
   defp respond(_, conn) do
     conn
     |> send_file(200, Path.expand("../priv/static/index.html", __DIR__))
