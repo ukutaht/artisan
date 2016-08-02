@@ -10,19 +10,10 @@
 
 .modal {
   opacity: 1;
-	min-width: 633px;
 	margin: 100px auto;
 	border-radius: 3px;
   background: white;
   border: 1px solid $border-grey;
-
-  width: 100%;
-
-  @include media($tablet) {
-    width: 90%;
-  }
-
-  max-width: 850px;
 
   &__header {
     border-bottom: 1px solid $border-grey;
@@ -53,7 +44,7 @@
 }
 
 .estimate-form {
-  margin-top: 20px;
+  margin-top: $spacing-large;
   margin-bottom: 20px;
 
   input {
@@ -89,18 +80,26 @@
   }
 }
 
-.assigned-user {
-  &__select {
-    display: block;
-  }
-}
-
 .story-right {
   position: relative;
 }
 
 .save-story-button {
   margin-left: 0px;
-  margin-top: 51px;
+  margin-top: 32px;
   width: 100%;
+}
+
+.invite-modal {
+  width: 400px;
+}
+
+.story-modal {
+  width: 100%;
+	min-width: 633px;
+  max-width: 850px;
+
+  @include media($tablet) {
+    width: 90%;
+  }
 }

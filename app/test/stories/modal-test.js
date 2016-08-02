@@ -7,7 +7,7 @@ describe('StoryModal', () => {
 
   const project = {
     id: 1,
-    collaborators: []
+    collaborators: [{id: 1, name: 'User'}]
   }
 
   const story = {
@@ -120,7 +120,7 @@ describe('StoryModal', () => {
   })
 
   it('submits assignee id', () => {
-    view.assigneeChanged({target: {value: '1'}})
+    view.assigneeChanged(1)
 
     view.handleSubmit(fakeSubmitEvent)
 

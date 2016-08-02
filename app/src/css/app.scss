@@ -119,3 +119,9 @@ footer {
 .light {
  color: $dark-grey;
 }
+
+.invite-link {
+  color: $inverted;
+  margin-left: $spacing-medium;
+  transform: translateY(10px);
+}

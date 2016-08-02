@@ -1,9 +1,12 @@
 .dropdown {
   position: relative;
+  width: 100%;
 
   &__content {
-    background-color: $inverted;
+    width: 100%;
+    background-color: white;
     border: 1px solid $border-grey;
+    border-radius: 3px;
     box-shadow: 0 6px 12px rgba(0,0,0,.175);
     line-height: $line-height * 1.25;
     min-width: 160px;
@@ -38,5 +41,31 @@
 
   &:hover .dropdown__content {
     display: block;
+  }
+}
+
+.dropdown.select {
+  input:focus {
+    border-color: $border-grey;
+  }
+
+  i {
+    position: absolute;
+    top: 11px;
+    right: 10px;
+  }
+
+  &.open {
+    input {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  .dropdown__content {
+    transform: translateY(-4px);
+    border-top: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
   }
 }

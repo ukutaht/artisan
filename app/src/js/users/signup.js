@@ -3,31 +3,7 @@ import Link from 'react-router/lib/Link'
 import browserHistory from 'react-router/lib/browserHistory'
 
 import * as users from 'users/service'
-
-class InputWithError extends React.Component {
-  renderInput() {
-    return (
-      <input type={this.props.type} placeholder={this.props.placeholder} onChange={this.props.onChange} value={this.props.value} />
-    )
-  }
-
-  render() {
-    if (this.props.error) {
-      return (
-        <div className="input-with-icon-right">
-          {this.renderInput()}
-          <div className="icon">
-            <div data-tooltip={this.props.error}>
-              <i className="ion-close error" />
-            </div>
-          </div>
-        </div>
-      )
-    } else {
-      return this.renderInput()
-    }
-  }
-}
+import InputWithError from 'forms/input-with-error'
 
 class Signup extends React.Component {
   constructor(props) {
