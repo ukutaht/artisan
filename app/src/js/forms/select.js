@@ -32,8 +32,14 @@ export default class Select extends React.Component {
     return this.state.isOpen ? 'open' : ''
   }
 
+  disabledClass() {
+    return this.props.options.length < 1 ? 'disabled' : ''
+  }
+
   toggle() {
-    this.setState({isOpen: !this.state.isOpen})
+    if (this.props.options.length > 0) {
+      this.setState({isOpen: !this.state.isOpen})
+    }
   }
 
   selectOption(newValue) {
@@ -84,7 +90,7 @@ export default class Select extends React.Component {
 
   render() {
     return (
-      <div className={`dropdown select ${this.openClass()}`}>
+      <div className={`dropdown select ${this.openClass()} ${this.disabledClass()}`}>
         <div onClick={this.toggle.bind(this)}>
           <input value={this.value()} readOnly />
           {this.renderIcon()}
