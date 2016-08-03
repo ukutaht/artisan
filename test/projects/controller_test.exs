@@ -1,6 +1,6 @@
 defmodule Artisan.Projects.ControllerTest do
   use Artisan.ConnCase
-  import Artisan.Test.APIHelper
+  import Artisan.Test.APIHelpers
 
   @valid_project_params %{
     name: "name"

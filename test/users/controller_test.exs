@@ -1,6 +1,6 @@
 defmodule Artisan.Users.ControllerTest do
   use Artisan.ConnCase
-  import Artisan.Test.APIHelper
+  import Artisan.Test.APIHelpers
 
   @valid_user %{
     name: "User name",

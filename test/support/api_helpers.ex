@@ -1,4 +1,4 @@
-defmodule Artisan.Test.APIHelper do
+defmodule Artisan.Test.APIHelpers do
   use Phoenix.ConnTest
   @endpoint Artisan.Endpoint
 

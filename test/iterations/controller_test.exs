@@ -1,6 +1,6 @@
 defmodule Artisan.Iterations.ControllerTest do
   use Artisan.ConnCase
-  import Artisan.Test.APIHelper
+  import Artisan.Test.APIHelpers
 
   setup do
     user = create_user()
