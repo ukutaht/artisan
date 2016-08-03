@@ -7,6 +7,8 @@ import * as projects from 'projects/service'
 import * as users from 'users/service'
 import * as notifications from 'notifications/service'
 
+const BAD_REQUEST = 400
+
 export default class Invite extends React.Component {
   constructor() {
     super()
@@ -50,7 +52,7 @@ export default class Invite extends React.Component {
           this.props.onClose()
           notifications.info(`Invite email sent to ${email}`)
         }).catch((e) => {
-          if (e.status === 400) {
+          if (e.status === BAD_REQUEST) {
             notifications.error(`${email} is already signed up`)
           }
         })
