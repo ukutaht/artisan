@@ -14,14 +14,22 @@
     opacity: 0.97;
     z-index: 100;
 
-    background-color: $dark-grey;
-    border: darken($dark-grey, 20%);
-    color: $inverted;
+    &.info {
+      background-color: $dark-grey;
+      border: darken($dark-grey, 20%);
+      color: $inverted;
+    }
 
     &.error {
       background-color: $error;
       color: $inverted;
       border: darken($error, 20%);
+    }
+
+    &.success {
+      background-color: $green;
+      color: $inverted;
+      border: darken($green, 20%);
     }
 
     i {

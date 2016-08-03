@@ -50,7 +50,7 @@ export default class Invite extends React.Component {
       users.invite(email, this.state.project)
         .then(() => {
           this.props.onClose()
-          notifications.info(`Invite email sent to ${email}`)
+          notifications.success(`Invite email sent to ${email}`)
         }).catch((e) => {
           if (e.status === BAD_REQUEST) {
             notifications.error(`${email} is already signed up`)

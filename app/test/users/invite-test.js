@@ -15,7 +15,7 @@ describe('Invite', () => {
   beforeEach(() => {
     onClose = jasmine.createSpy('onClose')
     spyOn(notifications, 'error')
-    spyOn(notifications, 'info')
+    spyOn(notifications, 'success')
     spyOn(projects, 'all').and.callFake(fakePromise.resolve(projectData))
     spyOn(users, 'invite').and.callFake(fakePromise.resolve(null))
 
@@ -35,7 +35,7 @@ describe('Invite', () => {
     invite.emailChanged({target: {value: 'user@email.com'}})
     invite.handleSubmit(fakeSubmit)
 
-    expect(notifications.info).toHaveBeenCalledWith('Invite email sent to user@email.com')
+    expect(notifications.success).toHaveBeenCalledWith('Invite email sent to user@email.com')
   })
 
   it('closes afte successful invite', () => {

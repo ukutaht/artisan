@@ -2,24 +2,27 @@ const DEFAULT_TIMEOUT = 2500
 let nextId = 0
 let subscriber = () => {}
 
+function sendNotification(type, text, timeout) {
+  subscriber({
+    type: type,
+    text: text,
+    timeout: timeout || DEFAULT_TIMEOUT,
+    id: nextId++
+  })
+}
+
 export function subscribe(fn) {
   subscriber = fn
 }
 
 export function info(text, timeout) {
-  subscriber({
-    type: 'info',
-    text: text,
-    timeout: timeout || DEFAULT_TIMEOUT,
-    id: nextId++
-  })
+  sendNotification('info', text, timeout)
+}
+
+export function success(text, timeout) {
+  sendNotification('success', text, timeout)
 }
 
 export function error(text, timeout) {
-  subscriber({
-    type: 'error',
-    text: text,
-    timeout: timeout || DEFAULT_TIMEOUT,
-    id: nextId++
-  })
+  sendNotification('error', text, timeout)
 }
