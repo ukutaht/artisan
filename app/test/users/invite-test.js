@@ -55,7 +55,7 @@ describe('Invite', () => {
   })
 
   it('notifies when user is already signed up', () => {
-    users.invite = jasmine.createSpy().and.callFake(fakePromise.reject({status: 400}))
+    users.invite.and.callFake(fakePromise.reject({status: 400}))
     invite.emailChanged({target: {value: 'user@email.com'}})
     invite.handleSubmit(fakeSubmit)
 
