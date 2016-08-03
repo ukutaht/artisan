@@ -108,4 +108,13 @@ defmodule Artisan.Users.ControllerTest do
 
     assert res.status == 404
   end
+
+  test "return 400 BAD REQUEST when invitee already exists" do
+    user = create_user()
+
+    res = authenticated_conn(user["token"])
+      |> post("/api/users/invite", %{email: user["user"]["email"], project_id: nil})
+
+    assert res.status == 400
+  end
 end

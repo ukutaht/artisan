@@ -59,21 +59,37 @@ defmodule Artisan.UsersTest do
     Artisan.Projects.add_collaborator(project.id, current_user.id)
     Users.invite(current_user.id, "another@email.com", project.id)
 
-    assert_delivered_email(Artisan.Users.Email.Emails.invite_to_project(current_user, "another@email.com", project))
+    assert_delivered_email(Artisan.Users.Email.Emails.invite(current_user, "another@email.com", project))
+  end
+
+  test "does not send out invite if current user is not a collaborator on project" do
+    {:ok, current_user} = Users.create(@valid_params)
+    project = Helpers.create_project
+    {:error, :not_found} = Users.invite(current_user.id, "another@email.com", project.id)
+
+    assert_no_emails_delivered
+  end
+
+  test "erros when trying to invite existing user to project" do
+    {:ok, current_user} = Users.create(@valid_params)
+    project = Helpers.create_project
+    Artisan.Projects.add_collaborator(project.id, current_user.id)
+    res = Users.invite(current_user.id, current_user.email, project.id)
+
+    assert res == {:error, :already_signed_up}
   end
 
   test "invites another user to artisan without a project" do
     {:ok, current_user} = Users.create(@valid_params)
     Users.invite(current_user.id, "another@email.com", nil)
 
-    assert_delivered_email(Artisan.Users.Email.Emails.invite(current_user, "another@email.com"))
+    assert_delivered_email(Artisan.Users.Email.Emails.invite(current_user, "another@email.com", nil))
   end
 
-  test "does not send out invite if current user is not a collaborator on project" do
+  test "erros when trying to invite existing user without a project" do
     {:ok, current_user} = Users.create(@valid_params)
-    project = Helpers.create_project
-    Users.invite(current_user.id, "another@email.com", project.id)
+    res = Users.invite(current_user.id, current_user.email, nil)
 
-    assert_no_emails_delivered
+    assert res == {:error, :already_signed_up}
   end
 end

@@ -2,7 +2,7 @@ defmodule Artisan.Users.Email.Emails do
   use Bamboo.Phoenix, view: Artisan.Users.Email.View
   @from "Artisan <noreply@artisan-app.com>"
 
-  def invite(inviter, email) do
+  def invite(inviter, email, nil) do
     link = "http://localhost:4000/signup?email=#{email}"
 
     base_email
@@ -11,7 +11,7 @@ defmodule Artisan.Users.Email.Emails do
       |> render(:invite, inviter: inviter, link: link)
   end
 
-  def invite_to_project(inviter, email, project) do
+  def invite(inviter, email, project) do
     link = "http://localhost:4000/signup?email=#{email}"
 
     base_email

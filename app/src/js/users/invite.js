@@ -49,6 +49,10 @@ export default class Invite extends React.Component {
         .then(() => {
           this.props.onClose()
           notifications.info(`Invite email sent to ${email}`)
+        }).catch((e) => {
+          if (e.status === 400) {
+            notifications.error(`${email} is already signed up`)
+          }
         })
     }
   }

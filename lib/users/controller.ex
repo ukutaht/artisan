@@ -42,7 +42,9 @@ defmodule Artisan.Users.Controller do
     case Users.invite(conn.assigns[:current_user], email, project_id) do
       :ok ->
         conn |> send_resp(202, "")
-      {:error, "Not found"} ->
+      {:error, :already_signed_up} ->
+        conn |> send_resp(400, "")
+      {:error, :not_found} ->
         conn |> send_resp(404, "")
     end
   end
