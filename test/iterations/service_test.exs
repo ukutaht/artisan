@@ -2,10 +2,11 @@ defmodule Artisan.IterationsTest do
   use Artisan.ModelCase
   alias Artisan.Iterations
   alias Artisan.Iteration
+  alias Artisan.Test.Helpers
 
   setup do
-    {:ok, project} = Repo.insert(%Artisan.Project{name: "project", slug: "slug"})
-    {:ok, user} = Artisan.Users.create(%{"name" => "User", "email" => "user@email.com", "password" => "asdasd"})
+    project = Helpers.create_project()
+    user = Helpers.create_user()
     {:ok, %{project: project, user: user}}
   end
 

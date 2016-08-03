@@ -18,8 +18,8 @@ function isLoggedIn() {
   return !!localStorage.getItem('token')
 }
 
-export function signup(user) {
-  return Api.post('/api/users/signup', {user: user}).then(saveAuth)
+export function signup(user, token) {
+  return Api.post('/api/users/signup', {user: user, token: token}).then(saveAuth)
 }
 
 export function login(user) {

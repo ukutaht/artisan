@@ -2,11 +2,17 @@ defmodule Artisan.Users.Controller do
   use Phoenix.Controller
   alias Artisan.Users
 
-  def signup(conn, %{"user" => user}) do
-    case Users.create(user) do
+  def signup(conn, %{"user" => user, "token" => token}) do
+    case Users.create(user, token) do
       {:ok, created} ->
-        token = Phoenix.Token.sign(conn, "user", created.id)
+        token = Artisan.Users.Token.sign(created.id)
         conn |> render("authenticated.json", user: created, token: token)
+      {:error, :invite_email_mismatch} ->
+        conn |> send_resp(403, "Provided email does not match the invite. Please make sure you've entered the same email you were invited with.")
+      {:error, :expired} ->
+        conn |> send_resp(403, "Your invite has expired. Please request another invite to sign up with it.")
+      {:error, :invalid} ->
+        conn |> send_resp(403, "Invalid invite token.")
       {:error, changeset} ->
         conn |> invalid(changeset)
     end
@@ -15,7 +21,7 @@ defmodule Artisan.Users.Controller do
   def login(conn, %{"email" => email, "password" => password}) do
     case Users.login(email, password) do
       {:ok, user} ->
-        token = Phoenix.Token.sign(conn, "user", user.id)
+        token = Artisan.Users.Token.sign(user.id)
         conn |> render("authenticated.json", user: user, token: token)
       :error ->
         conn |> send_resp(401, "")

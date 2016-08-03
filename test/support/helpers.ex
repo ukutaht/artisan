@@ -22,4 +22,16 @@ defmodule Artisan.Test.Helpers do
     {:ok, iteration} = Repo.insert(struct(Artisan.Iteration, params))
     iteration
   end
+
+  @user %{
+    name: "User",
+    email: "user@email.com",
+    password_hash: "hashed-pw"
+  }
+
+  def create_user(extra_params \\ []) do
+    params = Map.merge(@user, Enum.into(extra_params, %{}))
+    {:ok, user} = Repo.insert(struct(Artisan.User, params))
+    user
+  end
 end

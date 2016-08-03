@@ -9,8 +9,8 @@ defmodule Artisan.Stories.OrderingTest do
   }
 
   setup do
-    {:ok, project} = Repo.insert(%Artisan.Project{name: "project", slug: "slug"})
-    {:ok, user} = Artisan.Users.create(%{"name" => "User", "email" => "user@email.com", "password" => "asdasd"})
+    project = Helpers.create_project()
+    user = Helpers.create_user()
     {:ok, %{user: user, project: project}}
   end
 
@@ -182,7 +182,7 @@ defmodule Artisan.Stories.OrderingTest do
        assignee_id: user.id
      }))
 
-    {:ok, user2} = Artisan.Users.create(%{"name" => "User", "email" => "user2@email.com", "password" => "asdasd"})
+    user2 = Helpers.create_user(email: "user2@email.com")
 
     {:ok, updated} = Ordering.move(story.id, user2.id, "completed", 1)
 

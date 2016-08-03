@@ -12,8 +12,7 @@ defmodule Artisan.ProjectsTest do
   }
 
   setup do
-    {:ok, user} = Artisan.Users.create(%{"name" => "User", "email" => "user@email.com", "password" => "asdasd"})
-    {:ok, %{current_user: user}}
+    {:ok, %{current_user: Helpers.create_user()}}
   end
 
   test "creates a project with valid params", %{current_user: current_user} do
@@ -82,7 +81,7 @@ defmodule Artisan.ProjectsTest do
 
   test "removes collaborator for project", %{current_user: current_user} do
     {:ok, project} = Projects.create(current_user.id, @valid_project_params)
-    {:ok, user2}   = Artisan.Users.create(%{"name" => "User", "email" => "user2@email.com", "password" => "asdasd"})
+    user2 = Helpers.create_user(email: "user2@email.com")
     :ok = Projects.add_collaborator(project.id, user2.id)
     :ok = Projects.remove_collaborator(project.id, user2.id)
 
@@ -91,7 +90,7 @@ defmodule Artisan.ProjectsTest do
 
   test "can add a collaborator", %{current_user: current_user} do
     {:ok, project} = Projects.create(current_user.id, @valid_project_params)
-    {:ok, user2}   = Artisan.Users.create(%{"name" => "User", "email" => "user2@email.com", "password" => "asdasd"})
+    user2 = Helpers.create_user(email: "user2@email.com")
     :ok = Projects.add_collaborator(project.id, user2.id)
 
     assert Projects.is_collaborator?(project.id, user2.id)
@@ -99,8 +98,7 @@ defmodule Artisan.ProjectsTest do
 
   test "can search for potential collaborators by name", %{current_user: current_user} do
     {:ok, project} = Projects.create(current_user.id, @valid_project_params)
-    {:ok, user2}   = Artisan.Users.create(%{"name" => "Name", "email" => "irrelevant@email.com", "password" => "asdasd"})
-    {:ok, _}   = Artisan.Users.create(%{"name" => "Irrelevant", "email" => "irrelevant2@email.com", "password" => "asdasd"})
+    user2 = Helpers.create_user(email: "name@email.com")
 
     ids = Projects.autocomplete_collaborators(project.id, "name")
       |> Enum.map(&(&1.id))
@@ -111,8 +109,8 @@ defmodule Artisan.ProjectsTest do
 
   test "can search for potential collaborators by email", %{current_user: current_user} do
     {:ok, project} = Projects.create(current_user.id, @valid_project_params)
-    {:ok, user2}   = Artisan.Users.create(%{"name" => "Name", "email" => "account1@email.com", "password" => "asdasd"})
-    {:ok, _}   = Artisan.Users.create(%{"name" => "Name", "email" => "irrelevant@email.com", "password" => "asdasd"})
+    user2 = Helpers.create_user(email: "account@email.com")
+    Helpers.create_user(email: "irrelevant@email.com")
 
     ids = Projects.autocomplete_collaborators(project.id, "account")
       |> Enum.map(&(&1.id))
@@ -122,7 +120,7 @@ defmodule Artisan.ProjectsTest do
 
   test "excludes existing collaborators from search", %{current_user: current_user} do
     {:ok, project} = Projects.create(current_user.id, @valid_project_params)
-    {:ok, user2}   = Artisan.Users.create(%{"name" => "Name", "email" => "account1@email.com", "password" => "asdasd"})
+    user2 = Helpers.create_user(email: "account@email.com")
     :ok = Projects.add_collaborator(project.id, user2.id)
 
     results = Projects.autocomplete_collaborators(project.id, "account")
@@ -160,7 +158,7 @@ defmodule Artisan.ProjectsTest do
   end
 
   test "finds all projects for a user", %{current_user: current_user} do
-    {:ok, user2} = Artisan.Users.create(%{"name" => "User", "email" => "user1@email.com", "password" => "asdasd"})
+    user2 = Helpers.create_user(email: "account@email.com")
 
     {:ok, project1} = Projects.create(current_user.id, @valid_project_params)
     {:ok, project2} = Projects.create(current_user.id, %{@valid_project_params | name: "name2"})

@@ -20,7 +20,7 @@ defmodule Artisan.StoriesTest do
 
   setup do
     project = Helpers.create_project()
-    {:ok, user} = Artisan.Users.create(%{"name" => "User", "email" => "user@email.com", "password" => "asdasd"})
+    user = Helpers.create_user()
     {:ok, %{project: project, user: user}}
   end
 

@@ -5,11 +5,15 @@ import browserHistory from 'react-router/lib/browserHistory'
 import * as users from 'users/service'
 import InputWithError from 'forms/input-with-error'
 
+const BAD_REQUEST = 400;
+const FORBIDDEN = 403;
+
 class Signup extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      errors: {},
+      formErrors: {},
+      tokenError: null,
       form: {
         email: '',
         name: '',
@@ -20,44 +24,64 @@ class Signup extends React.Component {
   }
 
   validate() {
-    const errors = {}
+    const formErrors = {}
     const {form} = this.state
 
     if (form.name === '') {
-      errors['name'] = 'Cannot be blank'
+      formErrors['name'] = 'Cannot be blank'
     }
     if (form.email === '') {
-      errors['email'] = 'Cannot be blank'
+      formErrors['email'] = 'Cannot be blank'
     }
     if (form.password.length < 6) {
-      errors['password'] = 'Must be at least 6 characters long'
+      formErrors['password'] = 'Must be at least 6 characters long'
     }
     if (form.password !== form.passwordConfirmation) {
-      errors['passwordConfirmation'] = 'Must match the password'
+      formErrors['passwordConfirmation'] = 'Must match the password'
     }
 
-    return errors
+    return formErrors
   }
 
   onSubmit(e) {
     e.preventDefault()
 
-    const errors = this.validate()
-    if (Object.keys(errors).length > 0) {
+    const formErrors = this.validate()
+    if (Object.keys(formErrors).length > 0) {
       this.setState({
-        errors: errors
+        formErrors: formErrors
       })
     } else {
-      this.setState({errors: {}})
+      this.setState({formErrors: {}})
+      const token = this.props.location.query.token || null
 
-      users.signup(this.state.form).then(() => {
+      users.signup(this.state.form, token).then(() => {
         browserHistory.push('/')
-      }).catch((e) => {
-        this.setState({
-          errors: e.response.body.errors
-        })
+      }).catch(this.handleApiError.bind(this))
+    }
+  }
+
+  handleApiError(e) {
+    if (e.status === BAD_REQUEST) {
+      this.setState({
+        formErrors: e.response.body.errors
+      })
+    } else if (e.status === FORBIDDEN) {
+      this.setState({
+        tokenError: e.response.text
       })
     }
+  }
+
+  renderTokenError() {
+    if (this.state.tokenError) {
+      return (
+        <div className="error-box">
+          {this.state.tokenError}
+        </div>
+      )
+    }
+    return false;
   }
 
   change(field, e) {
@@ -73,18 +97,19 @@ class Signup extends React.Component {
           <h2 className="space-bottom-tiny">Sign up for Artisan</h2>
           <p className="space-top-tiny">Or <Link className="blue" to="/login">log in</Link> instead</p>
         </div>
+        {this.renderTokenError()}
         <form noValidate={true} onSubmit={this.onSubmit.bind(this)}>
           <div className='form-group'>
-            <InputWithError error={this.state.errors['email']} value={this.state.form.email} onChange={this.change.bind(this, 'email')} type='email' placeholder="Email"/>
+            <InputWithError error={this.state.formErrors['email']} value={this.state.form.email} onChange={this.change.bind(this, 'email')} type='email' placeholder="Email"/>
           </div>
           <div className='form-group'>
-            <InputWithError error={this.state.errors['name']} value={this.state.form.name} onChange={this.change.bind(this, 'name')} type='text' placeholder="Full name" />
+            <InputWithError error={this.state.formErrors['name']} value={this.state.form.name} onChange={this.change.bind(this, 'name')} type='text' placeholder="Full name" />
           </div>
           <div className='form-group'>
-            <InputWithError error={this.state.errors['password']} value={this.state.form.password} onChange={this.change.bind(this, 'password')} type='password' placeholder="Password" />
+            <InputWithError error={this.state.formErrors['password']} value={this.state.form.password} onChange={this.change.bind(this, 'password')} type='password' placeholder="Password" />
           </div>
           <div className='form-group'>
-            <InputWithError error={this.state.errors['passwordConfirmation']} value={this.state.form.passwordConfirmation} onChange={this.change.bind(this, 'passwordConfirmation')} type='password' placeholder="Confirm password" />
+            <InputWithError error={this.state.formErrors['passwordConfirmation']} value={this.state.form.passwordConfirmation} onChange={this.change.bind(this, 'passwordConfirmation')} type='password' placeholder="Confirm password" />
           </div>
           <button className='button primary no-margin full-width'>Sign up</button>
         </form>

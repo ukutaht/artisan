@@ -10,7 +10,7 @@ defmodule Artisan.Users.ControllerTest do
 
   test "signs up an user" do
     res = build_conn()
-      |> post("/api/users/signup", %{user: @valid_user})
+      |> post("/api/users/signup", user: @valid_user, token: nil)
       |> json_response(200)
 
     assert res["user"]["name"] == "User name"
@@ -19,9 +19,39 @@ defmodule Artisan.Users.ControllerTest do
 
   test "creating with invalid params is a 400 BAD REQUEST" do
     res = build_conn()
-      |> post("/api/users/signup", %{user: %{name: "", password: "blah"}})
+      |> post("/api/users/signup", user: %{name: "", password: "blah"}, token: nil)
 
     assert res.status == 400
+  end
+
+  test "return 403 FORBIDDEN when user tries to sign up with invalid token" do
+    res = build_conn()
+      |> post("/api/users/signup", user: @valid_user, token: "invalid")
+
+    assert res.status == 403
+  end
+
+  test "return 403 FORBIDDEN when user tries to sign up with email that doesn't match token" do
+    token = Artisan.Users.InviteToken.sign(%{email: "someone@else.com", project_id: 1})
+
+    res = build_conn()
+      |> post("/api/users/signup", user: @valid_user, token: token)
+
+    assert res.status == 403
+  end
+
+  test "signs up an user and adds to project when invited" do
+    inviter = create_user()
+    project = create_project(inviter["token"])
+
+    invitee_params = %{@valid_user | email: "someone@else.com"}
+
+    token = Artisan.Users.InviteToken.sign(%{email: invitee_params[:email], project_id: project["id"]})
+
+    res = build_conn()
+      |> post("/api/users/signup", user: invitee_params, token: token)
+
+    assert res.status == 200
   end
 
   test "allows user to update profile" do
@@ -45,7 +75,7 @@ defmodule Artisan.Users.ControllerTest do
 
   test "logs in an user" do
     build_conn()
-      |> post("/api/users/signup", %{user: @valid_user})
+      |> post("/api/users/signup", user: @valid_user, token: nil)
       |> json_response(200)
 
     res = build_conn()
@@ -65,7 +95,7 @@ defmodule Artisan.Users.ControllerTest do
 
   test "401s for wrong password" do
     build_conn()
-      |> post("/api/users/signup", %{user: @valid_user})
+      |> post("/api/users/signup", user: @valid_user, token: nil)
       |> json_response(200)
 
     res = build_conn()

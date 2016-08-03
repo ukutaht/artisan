@@ -3,14 +3,24 @@ defmodule Artisan.Users do
   alias Artisan.User
   alias Artisan.Users.Password
   alias Artisan.Users.Email.Emails
+  alias Artisan.Users.InviteToken
+  alias Artisan.Projects
 
-  def create(%{"password" => password} = user) do
+  def create(%{"password" => password} = user, nil) do
     hash = Password.hash(password)
 
     %User{}
       |> User.changeset(user)
       |> User.set_password(password, hash)
       |> Repo.insert
+  end
+
+  def create(user, invite_token) do
+    with {:ok, token} <- InviteToken.verify(invite_token),
+          :ok <- ensure_emails_match(user, token),
+         {:ok, created} <- create(user, nil),
+          :ok <- Projects.add_collaborator(token[:project_id], created.id),
+         do: {:ok, created}
   end
 
   def update(id, attrs) do
@@ -59,4 +69,7 @@ defmodule Artisan.Users do
       {:error, :already_signed_up}
     end
   end
+
+  defp ensure_emails_match(%{"email" => email}, %{email: email}), do: :ok
+  defp ensure_emails_match(_, _), do: {:error, :invite_email_mismatch}
 end
