@@ -73,6 +73,12 @@ class Signup extends React.Component {
     }
   }
 
+  change(field, e) {
+    this.setState({
+      form: Object.assign({}, this.state.form, {[field]: e.target.value})
+    })
+  }
+
   renderTokenError() {
     if (this.state.tokenError) {
       return (
@@ -82,12 +88,6 @@ class Signup extends React.Component {
       )
     }
     return false;
-  }
-
-  change(field, e) {
-    this.setState({
-      form: Object.assign({}, this.state.form, {[field]: e.target.value})
-    })
   }
 
   render() {
