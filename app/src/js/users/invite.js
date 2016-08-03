@@ -5,6 +5,7 @@ import Modal from 'forms/modal'
 import InputWithError from 'forms/input-with-error'
 import * as projects from 'projects/service'
 import * as users from 'users/service'
+import * as notifications from 'notifications/service'
 
 export default class Invite extends React.Component {
   constructor() {
@@ -39,11 +40,16 @@ export default class Invite extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
+    const {email} = this.state
 
-    if (this.state.email === '') {
+    if (email === '') {
       this.setState({error: 'Email is required'})
     } else {
-      users.invite(this.state.email, this.state.project)
+      users.invite(email, this.state.project)
+        .then(() => {
+          this.props.onClose()
+          notifications.info(`Invite email sent to ${email}`)
+        })
     }
   }
 
