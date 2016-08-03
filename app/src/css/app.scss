@@ -130,6 +130,7 @@ footer {
 
 .invite-link {
   color: $inverted;
-  margin-left: $spacing-medium;
-  transform: translateY(10px);
+  margin-left: $spacing-large;
+  transform: translateY(16px);
+  float: right;
 }

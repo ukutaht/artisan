@@ -54,7 +54,7 @@ export default class Layout extends React.Component {
               <Link to="/">
                 <img src="/images/artisan-logo.png" />
               </Link>
-              <a href="javascript://" className="invite-link" onClick={this.openInvite.bind(this)}>Invite</a>
+              <a className="invite-link clickable" onClick={this.openInvite.bind(this)}>Invite</a>
             </div>
             <div className="top-nav__right">
               <div className="dropdown hoverable">
