@@ -38,7 +38,7 @@ describe('Invite', () => {
     expect(notifications.success).toHaveBeenCalledWith('Invite email sent to user@email.com')
   })
 
-  it('closes afte successful invite', () => {
+  it('closes after successful invite', () => {
     invite.projectChanged(1)
     invite.emailChanged({target: {value: 'user@email.com'}})
     invite.handleSubmit(fakeSubmit)
