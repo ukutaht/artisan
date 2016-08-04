@@ -4,7 +4,7 @@ defmodule Artisan.Users.Email.Emails do
   @invite_subject "[Artisan] You've been invited to join Artisan"
 
   def invite(inviter, email, nil) do
-    link = "http://localhost:4000/signup"
+    link = base_url() <> "/signup"
 
     base_email
       |> to(email)
@@ -14,7 +14,7 @@ defmodule Artisan.Users.Email.Emails do
 
   def invite(inviter, email, project) do
     token = generate_invite_token(email, project) |> URI.encode_www_form
-    link = "http://localhost:4000/signup?token=#{token}"
+    link = base_url() <> "/signup?token=" <> token
 
     base_email
       |> to(email)
@@ -28,6 +28,10 @@ defmodule Artisan.Users.Email.Emails do
 
   def generate_invite_token(email, project) do
     Phoenix.Token.sign(Artisan.Endpoint, "invite", %{email: email, project_id: project.id})
+  end
+
+  defp base_url do
+    Artisan.Router.Helpers.url(Artisan.Endpoint)
   end
 
   defp base_email do
