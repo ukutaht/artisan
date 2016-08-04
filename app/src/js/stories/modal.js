@@ -2,9 +2,10 @@ import React from 'react'
 import fecha from 'fecha'
 
 import pert from 'stories/pert'
+import Modal from 'forms/modal'
+import Select from 'forms/select'
 
 const largestAllowedEstimate = 1000
-const ESCAPE = 27
 
 function isDigit(val) {
   return /^[0-9]+$/.test(val)
@@ -16,7 +17,7 @@ function splitTags(tags) {
     .filter((tag) => tag !== '')
 }
 
-class StoryModal extends React.Component {
+export default class StoryModal extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -31,27 +32,6 @@ class StoryModal extends React.Component {
       tags: props.story.tags,
       assignee_id: props.story.assignee ? props.story.assignee.id : null
     }
-  }
-
-  componentDidMount() {
-    this.listenForEscape()
-  }
-
-  componentWillUnmount() {
-    this.stopListeningForEscape()
-  }
-
-  listenForEscape() {
-    document.onkeydown = function(evt) {
-      evt = evt || window.event;
-      if (evt.keyCode === ESCAPE) {
-        this.props.onClose()
-      }
-    }.bind(this)
-  }
-
-  stopListeningForEscape() {
-    document.onkeydown = null
   }
 
   changedFields() {
@@ -139,96 +119,80 @@ class StoryModal extends React.Component {
     }
   }
 
-  assigneeChanged(e) {
-    this.setState({assignee_id: Number(e.target.value) || null})
+  assigneeChanged(newId) {
+    this.setState({assignee_id: newId})
   }
 
   renderAssigneeSelect() {
     const options = this.props.project.collaborators.map((user) => {
-      return <option key={user.id} value={user.id}>{user.name}</option>
+      return {value: user.id, label: user.name}
     })
-    options.unshift(
-      <option key="unassigned">Unassigned</option>
-    )
-
-    const value = this.state.assignee_id || ''
 
     return (
       <section className="form-group">
         <label>Assigned user</label>
-        <select onChange={this.assigneeChanged.bind(this)} value={value} className="assigned-user__select">
-          {options}
-        </select>
+        <Select options={options} onChange={this.assigneeChanged.bind(this)} value={this.state.assignee_id} placeholder="Unassigned" />
       </section>
     )
   }
 
-  onContainerClick(e) {
-    if (e.target === this.refs.container) {
-      this.props.onClose()
-    }
-  }
-
   render() {
     return (
-      <div className="modal-container" ref="container" onClick={this.onContainerClick.bind(this)}>
-          <div className="modal">
-            <header className="modal__header">
-              <h3>{this.props.header}</h3>
-              <i className="ion-android-close modal__close" onClick={this.props.onClose}></i>
-            </header>
-            <div className="modal__body row">
-              <form onSubmit={this.handleSubmit.bind(this)}>
-                <div className="eight-columns">
-                  <section className="form-group">
-                    <label>Name</label>
-                    <input autoFocus="true" type="text" value={this.state.name} onChange={this.nameChanged.bind(this)}/>
-                  </section>
-
-                  <label>Acceptance criteria</label>
-                  <textarea rows="15" value={this.state.acceptance_criteria} onChange={this.acceptanceCriteriaChanged.bind(this)}></textarea>
-                </div>
-                <div className="four-columns story-right">
-                  <div className="estimate-form">
-                    <section className="estimate-form__group">
-                      <label className="estimate-form__left">Optimistic:</label>
-                      <input type="text" className="estimate-form__right" value={this.displayEstimate('optimistic')} onChange={this.estimateChanged('optimistic')} />
-                    </section>
-                    <section className="estimate-form__group">
-                      <label className="estimate-form__left">Realistic:</label>
-                      <input type="text" className="estimate-form__right" value={this.displayEstimate('realistic')} onChange={this.estimateChanged('realistic')} />
-                    </section>
-                    <section className="estimate-form__group">
-                      <label className="estimate-form__left">Pessimistic:</label>
-                      <input type="text" className="estimate-form__right" value={this.displayEstimate('pessimistic')} onChange={this.estimateChanged('pessimistic')}/>
-                    </section>
-                    <section className="estimate-form__total">
-                      <label className="estimate-form__left">Estimate:</label>
-                      <span className="estimate-form__right">{this.state.estimate}</span>
-                    </section>
-                  </div>
-
-                  {this.renderAssigneeSelect()}
-
-                  <section className="form-group">
-                    <label>Tags</label>
-                    <input type="text" placeholder="Comma-separated" value={this.state.tagsInput} onChange={this.tagsChanged.bind(this)}/>
-                  </section>
-
-                  <button className="button primary save-story-button">{this.props.buttonText}</button>
-                </div>
-              </form>
-            </div>
-            <div className="modal__footer row">
+      <Modal onClose={this.props.onClose}>
+        <div className="modal story-modal">
+          <header className="modal__header">
+            <h3>{this.props.header}</h3>
+            <i className="ion-android-close modal__close" onClick={this.props.onClose}></i>
+          </header>
+          <div className="modal__body row">
+            <form onSubmit={this.handleSubmit.bind(this)}>
               <div className="eight-columns">
-                {this.bottomSection()}
+                <section className="form-group">
+                  <label>Name</label>
+                  <input autoFocus="true" type="text" value={this.state.name} onChange={this.nameChanged.bind(this)}/>
+                </section>
+
+                <label>Acceptance criteria</label>
+                <textarea rows="15" value={this.state.acceptance_criteria} onChange={this.acceptanceCriteriaChanged.bind(this)}></textarea>
               </div>
+              <div className="four-columns story-right">
+                <div className="estimate-form">
+                  <section className="estimate-form__group">
+                    <label className="estimate-form__left">Optimistic:</label>
+                    <input type="text" className="estimate-form__right" value={this.displayEstimate('optimistic')} onChange={this.estimateChanged('optimistic')} />
+                  </section>
+                  <section className="estimate-form__group">
+                    <label className="estimate-form__left">Realistic:</label>
+                    <input type="text" className="estimate-form__right" value={this.displayEstimate('realistic')} onChange={this.estimateChanged('realistic')} />
+                  </section>
+                  <section className="estimate-form__group">
+                    <label className="estimate-form__left">Pessimistic:</label>
+                    <input type="text" className="estimate-form__right" value={this.displayEstimate('pessimistic')} onChange={this.estimateChanged('pessimistic')}/>
+                  </section>
+                  <section className="estimate-form__total">
+                    <label className="estimate-form__left">Estimate:</label>
+                    <span className="estimate-form__right">{this.state.estimate}</span>
+                  </section>
+                </div>
+
+                {this.renderAssigneeSelect()}
+
+                <section className="form-group">
+                  <label>Tags</label>
+                  <input type="text" placeholder="Comma-separated" value={this.state.tagsInput} onChange={this.tagsChanged.bind(this)}/>
+                </section>
+
+                <button className="button primary save-story-button">{this.props.buttonText}</button>
+              </div>
+            </form>
+          </div>
+          <div className="modal__footer row">
+            <div className="eight-columns">
+              {this.bottomSection()}
             </div>
           </div>
         </div>
-
+      </Modal>
     )
   }
 }
-
-export default StoryModal

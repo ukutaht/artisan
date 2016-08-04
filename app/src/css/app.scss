@@ -94,6 +94,14 @@ footer {
   margin-bottom: $spacing-medium;
 }
 
+.space-top-large {
+  margin-top: $spacing-large;
+}
+
+.space-bottom-large {
+  margin-bottom: $spacing-large;
+}
+
 .success {
   color: $green;
 }
@@ -118,4 +126,11 @@ footer {
 
 .light {
  color: $dark-grey;
+}
+
+.invite-link {
+  color: $inverted;
+  margin-left: $spacing-large;
+  transform: translateY(16px);
+  float: right;
 }

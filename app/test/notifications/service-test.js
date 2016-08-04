@@ -25,6 +25,18 @@ describe('Notifications service', () => {
     expect(notification.text).toEqual('Error')
   })
 
+  it('sends success notification to subscriber', () => {
+    const subscriber = jasmine.createSpy('subscriber')
+    notifications.subscribe(subscriber)
+
+    notifications.success('Success')
+
+    expect(subscriber).toHaveBeenCalled()
+    const notification = subscriber.calls.mostRecent().args[0]
+    expect(notification.type).toEqual('success')
+    expect(notification.text).toEqual('Success')
+  })
+
   it('timeout defaults to 2500ms', () => {
     const subscriber = jasmine.createSpy('subscriber')
     notifications.subscribe(subscriber)

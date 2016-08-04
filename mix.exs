@@ -16,7 +16,7 @@ defmodule Artisan.Mixfile do
   def application do
     [mod: {Artisan, []},
      applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :slugger,
-                    :phoenix_ecto, :postgrex, :comeonin]]
+                    :phoenix_ecto, :postgrex, :comeonin, :bamboo]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -25,6 +25,7 @@ defmodule Artisan.Mixfile do
   defp deps do
     [
       {:phoenix, "~> 1.2"},
+      {:phoenix_html, "~> 2.6.2"},
       {:phoenix_pubsub, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_ecto, "~> 3.0"},
@@ -32,7 +33,8 @@ defmodule Artisan.Mixfile do
       {:comeonin, "~> 2.5"},
       {:slugger, "~> 0.1.0"},
       {:distillery, "~> 0.8"},
-      {:junit_formatter, "~> 1.1.0", only: :test}
+      {:junit_formatter, "~> 1.1.0", only: :test},
+      {:bamboo, "~> 0.7"}
    ]
   end
 

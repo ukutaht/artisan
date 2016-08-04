@@ -11,7 +11,7 @@ describe('Users service', () => {
   }
 
   it('logs user in', () => {
-    spyOn(Api, 'post').and.callFake(() => fakePromise.resolve(loginSuccess))
+    spyOn(Api, 'post').and.callFake(fakePromise.resolve(loginSuccess))
 
     users.login()
     expect(users.current().name).toEqual('User name')
@@ -19,7 +19,7 @@ describe('Users service', () => {
   })
 
   it('logs user out', () => {
-    spyOn(Api, 'post').and.callFake(() => fakePromise.resolve(loginSuccess))
+    spyOn(Api, 'post').and.callFake(fakePromise.resolve(loginSuccess))
 
     users.logout()
     expect(users.current()).toBeNull()
@@ -36,7 +36,7 @@ describe('Users service', () => {
     })
 
     it('lets user through if they are logged in', () => {
-      spyOn(Api, 'post').and.callFake(() => fakePromise.resolve(loginSuccess))
+      spyOn(Api, 'post').and.callFake(fakePromise.resolve(loginSuccess))
       users.login()
 
       users.requireAuth(nextState, replace, callback)
@@ -84,7 +84,7 @@ describe('Users service', () => {
     })
 
     it('redirects logged in users to dashboard', () => {
-      spyOn(Api, 'post').and.callFake(() => fakePromise.resolve(loginSuccess))
+      spyOn(Api, 'post').and.callFake(fakePromise.resolve(loginSuccess))
       users.login()
 
       users.redirectAuth({}, replace, callback)

@@ -1,4 +1,4 @@
-defmodule Artisan.Test.APIHelper do
+defmodule Artisan.Test.APIHelpers do
   use Phoenix.ConnTest
   @endpoint Artisan.Endpoint
 
@@ -26,7 +26,7 @@ defmodule Artisan.Test.APIHelper do
   def create_user(extra_params \\ []) do
     params = Map.merge(@user, Enum.into(extra_params, %{}))
     build_conn()
-      |> post("/api/users/signup", %{user: params})
+      |> post("/api/users/signup", %{user: params, token: nil})
       |> json_response(200)
   end
 

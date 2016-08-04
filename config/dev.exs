@@ -18,3 +18,6 @@ config :artisan, Artisan.Repo,
   database: "artisan_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :artisan, Artisan.Mailer,
+  adapter: Bamboo.LocalAdapter

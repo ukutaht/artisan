@@ -2,7 +2,7 @@ import React from 'react'
 
 import Avatar from 'users/avatar'
 
-class Card extends React.Component {
+export default class Card extends React.Component {
   onClick() {
     this.props.onClick(this.props.story)
   }
@@ -61,5 +61,3 @@ class Card extends React.Component {
     )
   }
 }
-
-export default Card

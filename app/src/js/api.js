@@ -14,7 +14,7 @@ function handleErrors(err) {
     users.logout()
     browserHistory.push('/login')
   } else if (err.status === NOT_FOUND) {
-    browserHistory.push('/404')
+    browserHistory.replace('/404')
   }
 
   return new Promise((resolve, reject) => reject(err))

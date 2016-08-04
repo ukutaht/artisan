@@ -26,6 +26,12 @@ defmodule Artisan.Projects do
     )
   end
 
+  def find_by_id(user_id, id) do
+    Repo.one(from p in projects_for(user_id),
+     where: p.id == ^id
+    )
+  end
+
   def remove_collaborator(project_id, user_id) do
     Repo.delete_all(from c in Collaborator,
      where: c.user_id == ^user_id,

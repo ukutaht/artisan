@@ -1,0 +1,3 @@
+<%= @inviter.name %> has invited you to join Artisan.
+
+Click this link to finish creating your account: <%= @link %>

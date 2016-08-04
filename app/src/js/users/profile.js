@@ -1,7 +1,7 @@
 import React from 'react'
 import update from 'react/lib/update'
 
-import Spinner from 'spinner'
+import Spinner from 'forms/spinner'
 import AvatarSelect from 'users/avatar-select'
 import Avatar from 'users/avatar'
 import * as users from 'users/service'

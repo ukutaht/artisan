@@ -1,0 +1,3 @@
+<p><%= @inviter.name %> has invited you to join Artisan as a collaborator on <%= @project.name %>.</p>
+
+<a href="<%= @link %>">Click here</a> to finish creating your account.</a>

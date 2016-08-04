@@ -2,7 +2,7 @@ defmodule Artisan.StoryControllerTest do
   use Phoenix.ChannelTest
   use Artisan.ConnCase
   alias Artisan.Projects.Channel
-  import Artisan.Test.APIHelper
+  import Artisan.Test.APIHelpers
 
   @valid_story_params %{
     name: "name",

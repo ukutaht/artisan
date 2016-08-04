@@ -15,3 +15,8 @@ config :artisan, Artisan.Repo,
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :comeonin, :bcrypt_log_rounds, 4
+
+config :artisan, Artisan.Mailer,
+  adapter: Bamboo.TestAdapter
+
+config :bamboo, :refute_timeout, 1

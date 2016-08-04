@@ -25,7 +25,7 @@ describe('IterationView', () => {
   }
 
   beforeEach(() => {
-    spyOn(iterations, 'get').and.callFake(() => fakePromise.resolve(iterationResponse))
+    spyOn(iterations, 'get').and.callFake(fakePromise.resolve(iterationResponse))
 
     view = TestUtils.renderIntoDocument(<IterationView
       project={project}
@@ -40,15 +40,18 @@ describe('IterationView', () => {
   })
 
   it('can add a story', () => {
-    spyOn(stories, 'add').and.callFake((story) => {
-      return fakePromise.resolve(Object.assign({}, story, {
+    const storyData = {state: 'working', name: 'Hello'}
+    const response = Object.assign({}, storyData,
+      {
         id: 1,
         number: 1,
         creator: {
           avatar: null
         }
-      }))
-    })
+      }
+    )
+
+    spyOn(stories, 'add').and.callFake(fakePromise.resolve(response))
 
     view.addStory({state: 'working', name: 'Hello'})
 
@@ -74,14 +77,11 @@ describe('IterationView', () => {
       }
     })
 
-    spyOn(stories, 'update').and.callFake((story) => {
-      return fakePromise.resolve(Object.assign({}, story, {
-        creator: {
-          avatar: null
-        }
-      }))
-    })
-    view.updateStory({id: 1, state: 'working', name: 'New name'})
+    const storyData = {id: 1, state: 'working', name: 'New name'}
+    const response = Object.assign({}, storyData, {creator: { avatar: null }})
+
+    spyOn(stories, 'update').and.callFake(fakePromise.resolve(response))
+    view.updateStory(storyData)
 
     expect(view.state.stories.working[0].name).toEqual('New name')
   })

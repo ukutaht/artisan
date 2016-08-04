@@ -4,11 +4,11 @@ defmodule Artisan.ModelCase do
   using do
     quote do
       alias Artisan.Repo
+      alias Artisan.Test.Helpers
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query, only: [from: 1, from: 2]
-      import Artisan.ModelCase
     end
   end
 

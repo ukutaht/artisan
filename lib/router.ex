@@ -23,6 +23,7 @@ defmodule Artisan.Router do
     scope "/users", Users do
       get "/current", Controller, :current
       put "/current", Controller, :update_profile
+      post "/invite", Controller, :invite
     end
 
     scope "/projects", Projects do
@@ -52,5 +53,9 @@ defmodule Artisan.Router do
       post   "/:id/move", Controller, :move
       delete "/:id",      Controller, :delete
     end
+  end
+
+  if Mix.env == :dev do
+    forward "/emails", Bamboo.EmailPreviewPlug
   end
 end

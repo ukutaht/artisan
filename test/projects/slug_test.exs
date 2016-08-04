@@ -1,6 +1,5 @@
 defmodule Artisan.Projects.SlugTest do
   use Artisan.ModelCase
-  alias Artisan.Project
   alias Artisan.Projects.Slug
 
   test "generates a slug based on name" do
@@ -8,20 +7,20 @@ defmodule Artisan.Projects.SlugTest do
   end
 
   test "increments slug number if it already exists" do
-    Repo.insert(%Project{name: "name", slug: "name"})
+    Helpers.create_project(slug: "name")
     assert Slug.generate("name") == "name-1"
   end
 
   test "increments slug number if previously incremented slug number exists" do
-    Repo.insert(%Project{name: "name", slug: "name"})
-    Repo.insert(%Project{name: "name", slug: "name-1"})
+    Helpers.create_project(slug: "name")
+    Helpers.create_project(slug: "name-1")
 
     assert Slug.generate("name") == "name-2"
   end
 
   test "ignores non-numbers after dash" do
-    Repo.insert(%Project{name: "name", slug: "name"})
-    Repo.insert(%Project{name: "name", slug: "name-something-else"})
+    Helpers.create_project(slug: "name")
+    Helpers.create_project(slug: "name-something-else")
 
     assert Slug.generate("name") == "name-1"
   end
