@@ -26,6 +26,35 @@ describe('Users service', () => {
     expect(users.token()).toBeNull()
   })
 
+  describe('Profile update', () => {
+    beforeEach(() => {
+      spyOn(Api, 'post').and.callFake(fakePromise.resolve(loginSuccess))
+
+      users.login()
+    })
+
+    it('updates the profile', () => {
+      const updatedUser = {name: 'New name'}
+      spyOn(Api, 'put').and.callFake(fakePromise.resolve(updatedUser))
+
+      users.updateProfile(updatedUser)
+
+      expect(Api.put).toHaveBeenCalledWith('/api/users/current', updatedUser);
+      expect(users.current().name).toEqual('New name')
+    })
+
+    it('notifies subscriber of profile update', () => {
+      const updatedUser = {name: 'New name'}
+      const subscriber = jasmine.createSpy('subscriber')
+      spyOn(Api, 'put').and.callFake(fakePromise.resolve(updatedUser))
+
+      users.subscribeToChanges(subscriber)
+      users.updateProfile(updatedUser)
+
+      expect(subscriber).toHaveBeenCalledWith(updatedUser)
+    })
+  })
+
   describe('requireAuth', () => {
     const nextState = {location: {pathname: 'next'}}
     let replace, callback;
