@@ -21,11 +21,16 @@ defmodule Artisan do
   end
 
   defp configure do
-    add_env(:artisan, Artisan.Mailer, api_key: System.get_env("SENDGRID_API_KEY"))
+    merge_env(:artisan, Artisan.Mailer,   api_key:         System.get_env("SENDGRID_API_KEY"))
+    merge_env(:artisan, Artisan.Endpoint, secret_key_base: System.get_env("SECRET_KEY_BASE"))
   end
 
-  defp add_env(application, key, kv) do
+  defp merge_env(application, key, overrides) do
     existing = Application.get_env(application, key, [])
-    Application.put_env(application, key, Keyword.merge(existing, kv))
+    merged = Keyword.merge(existing, overrides, fn(_k, v1, v2) ->
+      v2 || v1
+    end)
+
+    Application.put_env(application, key, merged)
   end
 end
