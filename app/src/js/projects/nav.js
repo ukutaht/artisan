@@ -1,38 +1,37 @@
 import React from 'react'
 import Link from 'react-router/lib/Link'
 
-export default class ProjectNav extends React.Component {
-  activeClass(tab) {
-    return this.props.activeTab === tab ? 'active' : ''
-  }
+function activeClass(props, tab) {
+  return props.activeTab === tab ? 'active' : ''
+}
 
-  render() {
-    return (
-      <nav className="project__nav">
-        <ul className="project__nav__breadcrumb">
-          <li>
-            <Link to={`/${this.props.project.slug}`} >{this.props.project.name}</Link>
-          </li>
 
-          <li>
-            {this.props.children}
-          </li>
-        </ul>
+export default function ProjectNav(props) {
+  return (
+    <nav className="project__nav">
+    <ul className="project__nav__breadcrumb">
+      <li>
+        <Link to={`/${props.project.slug}`} >{props.project.name}</Link>
+      </li>
 
-        <div className="project__nav__tabs">
-          <Link to={`/${this.props.project.slug}`}
-                className={this.activeClass('storyboard')}>
-            <i className="ion-grid right-padded-icon" />
-            Story board
-          </Link>
+      <li>
+        {props.children}
+      </li>
+    </ul>
 
-          <Link to={`/${this.props.project.slug}/settings`}
-                className={this.activeClass('settings')}>
-            <i className="ion-gear-b right-padded-icon" />
-            Settings
-          </Link>
-        </div>
-      </nav>
-    )
-  }
+    <div className="project__nav__tabs">
+      <Link to={`/${props.project.slug}`}
+        className={activeClass(props, 'storyboard')}>
+        <i className="ion-grid right-padded-icon" />
+        Story board
+      </Link>
+
+      <Link to={`/${props.project.slug}/settings`}
+        className={activeClass(props, 'settings')}>
+        <i className="ion-gear-b right-padded-icon" />
+        Settings
+      </Link>
+    </div>
+    </nav>
+  )
 }

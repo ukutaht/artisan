@@ -1,27 +1,25 @@
 import React from 'react'
 
-export default class InputWithError extends React.Component {
-  renderError() {
-    if (this.props.error) {
-      return (
-        <div className="icon">
-          <div data-tooltip={this.props.error}>
-            <i className="ion-close error" />
-          </div>
-        </div>
-      )
-    }
-
-    return false
-  }
-
-  render() {
+function renderError(props) {
+  if (props.error) {
     return (
-      <div className="input-with-icon-right">
-        <input type={this.props.type} placeholder={this.props.placeholder} onChange={this.props.onChange} value={this.props.value} />
-        {this.renderError()}
+      <div className="icon">
+        <div data-tooltip={props.error}>
+          <i className="ion-close error" />
+        </div>
       </div>
     )
   }
+
+  return false
+}
+
+export default function InputWithError(props) {
+  return (
+    <div className="input-with-icon-right">
+      <input type={props.type} placeholder={props.placeholder} onChange={props.onChange} value={props.value} />
+      {renderError(props)}
+    </div>
+  )
 }
 
