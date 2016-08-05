@@ -4,6 +4,8 @@ defmodule Artisan do
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
+    configure()
+
     children = [
       supervisor(Artisan.Endpoint, []),
       supervisor(Artisan.Repo, []),
@@ -16,5 +18,14 @@ defmodule Artisan do
   def config_change(changed, _new, removed) do
     Artisan.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  defp configure do
+    add_env(:artisan, Artisan.Mailer, api_key: System.get_env("SENDGRID_API_KEY"))
+  end
+
+  defp add_env(application, key, kv) do
+    existing = Application.get_env(application, key, [])
+    Application.put_env(application, key, Keyword.merge(existing, kv))
   end
 end

@@ -11,3 +11,6 @@ config :artisan, Artisan.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: {:system, "DB_URL"},
   pool_size: 20
+
+config :artisan, Artisan.Mailer,
+  adapter: Bamboo.SendgridAdapter
