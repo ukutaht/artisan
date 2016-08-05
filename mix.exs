@@ -15,7 +15,7 @@ defmodule Artisan.Mixfile do
 
   def application do
     [mod: {Artisan, []},
-     applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :slugger,
+     applications: [:phoenix, :phoenix_html, :phoenix_pubsub, :cowboy, :logger, :slugger,
                     :phoenix_ecto, :postgrex, :comeonin, :bamboo]]
   end
 
