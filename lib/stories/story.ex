@@ -2,6 +2,8 @@ defmodule Artisan.Story do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @allowed_states ["backlog", "ready", "working", "completed"]
+
   schema "stories" do
     field :name
     field :state
@@ -24,7 +26,8 @@ defmodule Artisan.Story do
   def new(story, attributes) do
     story
     |> cast(attributes, [:name, :acceptance_criteria, :estimate, :optimistic, :realistic, :pessimistic, :tags, :state, :assignee_id])
-    |> validate_required([:name, :project_id, :creator_id])
+    |> validate_required([:name, :state, :project_id, :creator_id])
+    |> validate_inclusion(:state, @allowed_states)
   end
 
   def edit(story, attributes) do
@@ -36,6 +39,8 @@ defmodule Artisan.Story do
   def change_position(story, state, position) do
     story
     |> cast(%{position: position, state: state}, [:position, :state])
+    |> validate_required([:position, :state])
+    |> validate_inclusion(:state, @allowed_states)
   end
 
   def assign(story, assignee_id) do

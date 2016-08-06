@@ -16,7 +16,8 @@ defmodule Artisan.StoryControllerTest do
   }
 
   @invalid_story_params %{
-    name: nil
+    name: nil,
+    state: "ready"
   }
 
   setup do
