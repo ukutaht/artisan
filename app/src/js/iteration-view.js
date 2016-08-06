@@ -11,7 +11,6 @@ import * as stories from 'stories/service'
 class IterationView extends React.Component {
   constructor(props) {
     super(props)
-    this.projectId = props.project.id
     this.state = {
       iteration: null,
       allIterations: null,
@@ -98,7 +97,7 @@ class IterationView extends React.Component {
   }
 
   newIteration() {
-    iterations.create(this.projectId).then(() => {
+    iterations.create(this.props.project.id).then(() => {
       browserHistory.push(`/${this.props.project.slug}`)
     })
   }
