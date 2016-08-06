@@ -1,6 +1,7 @@
 defmodule Artisan.Project do
   use Ecto.Schema
   import Ecto.Changeset
+  @slug_format ~r/^[a-z0-9-]+$/
 
   schema "projects" do
     field :name
@@ -20,6 +21,7 @@ defmodule Artisan.Project do
     project
     |> cast(%{slug: slug}, [:slug])
     |> validate_required([:slug])
+    |> validate_format(:slug, @slug_format)
     |> unique_constraint(:slug)
   end
 
@@ -27,6 +29,7 @@ defmodule Artisan.Project do
     project
     |> cast(attributes, [:name, :slug])
     |> validate_required([:name, :slug])
+    |> validate_format(:slug, @slug_format)
     |> unique_constraint(:slug)
   end
 end
