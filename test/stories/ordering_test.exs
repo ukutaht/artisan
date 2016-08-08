@@ -188,4 +188,34 @@ defmodule Artisan.Stories.OrderingTest do
 
     assert updated.assignee_id == user.id
   end
+
+  describe "moving completed stories" do
+    test "moves a story to bottom", %{user: user, project: project} do
+      second = create_in_state(user.id, project.id, "completed")
+      first  = create_in_state(user.id, project.id, "completed")
+
+      iteration = Helpers.create_iteration(project.id)
+      Artisan.Iterations.complete(iteration.id)
+
+      {:ok, _} = Ordering.move(first.id, user.id, "completed", 1)
+      %{"completed" => [found1, found2]} = Stories.completed_in(iteration.id)
+
+      assert found1.id == second.id
+      assert found2.id == first.id
+    end
+
+    test "moves a story to top", %{user: user, project: project} do
+      second = create_in_state(user.id, project.id, "completed")
+      first  = create_in_state(user.id, project.id, "completed")
+
+      iteration = Helpers.create_iteration(project.id)
+      Artisan.Iterations.complete(iteration.id)
+
+      {:ok, _} = Ordering.move(second.id, user.id, "completed", 0)
+      %{"completed" => [found1, found2]} = Stories.completed_in(iteration.id)
+
+      assert found1.id == second.id
+      assert found2.id == first.id
+    end
+  end
 end

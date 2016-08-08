@@ -18,7 +18,7 @@ defmodule Artisan.Stories do
       |> Story.new(attrs)
 
     if changeset.valid? do
-      Ordering.vacate_position(project_id, 0, changeset.changes.state)
+      Ordering.vacate_position(changeset.data, 0, changeset.changes.state)
       Repo.insert(changeset)
         |> preload_creator
         |> preload_assignee
@@ -42,7 +42,7 @@ defmodule Artisan.Stories do
   def move(id, user_id, state, index) do
     case Ordering.move(id, user_id, state, index) do
       {:ok, updated} ->
-        {:ok, updated.project_id, by_state(updated.project_id)}
+        {:ok, updated.project_id, all_stories_for(updated)}
       {:error, error} ->
         {:error, error}
     end
@@ -82,6 +82,9 @@ defmodule Artisan.Stories do
       where: is_nil(s.completed_in)
     )
   end
+
+  defp all_stories_for(%Story{completed_in: nil, project_id: project_id}), do: by_state(project_id)
+  defp all_stories_for(story), do: completed_in(story.completed_in)
 
   defp preload_creator({:ok, story}), do: {:ok, Repo.preload(story, :creator)}
   defp preload_creator({:error, changeset}), do: {:error, changeset}
