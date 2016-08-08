@@ -26,10 +26,9 @@ defmodule Artisan.Stories.Ordering do
       query = from(s in active_stories(project_id, state),
         where: s.position >= ^position
       )
-      increment_positions(query, amount)
+      Repo.update_all(query, inc: [position: amount])
     end)
   end
-
 
   defp calculate_pivot(story, state, index) do
     pivot = position_at(story, state, index) || next_position(story.project_id, state)
@@ -59,10 +58,6 @@ defmodule Artisan.Stories.Ordering do
     story.state == state && story.position < new_position
   end
 
-  defp increment_positions(query, amount) do
-    Repo.update_all(query, inc: [position: amount])
-  end
-
   defp active_stories(project_id, state) do
     from(s in Story,
       where: s.project_id == ^project_id,
@@ -72,14 +67,14 @@ defmodule Artisan.Stories.Ordering do
   end
 
   defp autoassign(changeset, user_id) do
-    if should_autoassign(changeset) do
+    if should_autoassign?(changeset) do
       Story.assign(changeset, user_id)
     else
       changeset
     end
   end
 
-  defp should_autoassign(changeset) do
+  defp should_autoassign?(changeset) do
     is_nil(changeset.data.assignee_id) &&
       changeset.changes[:state] in ["working", "completed"]
   end
