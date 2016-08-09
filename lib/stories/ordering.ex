@@ -6,7 +6,7 @@ defmodule Artisan.Stories.Ordering do
     {:ok, updated} = Repo.transaction(fn ->
       story = Repo.get(Story, id)
 
-      new_position = calculate_pivot(story, state, index)
+      new_position = calculate_new_position(story, state, index)
       vacate_position(story, new_position, state)
 
       story
@@ -30,14 +30,13 @@ defmodule Artisan.Stories.Ordering do
     end)
   end
 
-  defp calculate_pivot(story, state, index) do
-    pivot = position_at(story, state, index) || next_position(story, state)
-
-    if moving_down?(story, state, pivot), do: pivot + 1, else: pivot
+  defp calculate_new_position(story, state, index) do
+    position_at(story, state, index) || next_position(story, state)
   end
 
-  defp position_at(%{project_id: project_id, completed_in: completed_in}, state, index) do
+  defp position_at(%{project_id: project_id, completed_in: completed_in, id: id}, state, index) do
     Repo.one(from s in active_stories(project_id, state, completed_in),
+      where: s.id != ^id,
       order_by: s.position,
       offset: ^index,
       select: s.position,
@@ -45,13 +44,11 @@ defmodule Artisan.Stories.Ordering do
     )
   end
 
-  defp next_position(%{project_id: project_id, completed_in: completed_in}, state) do
-    max_pos = Repo.aggregate(active_stories(project_id, state, completed_in), :max, :position) || 0
-    max_pos + 1
-  end
+  defp next_position(%{project_id: project_id, completed_in: completed_in, id: id}, state) do
+    max_pos = from(s in active_stories(project_id, state, completed_in), where: s.id != ^id)
+      |> Repo.aggregate(:max, :position)
 
-  defp moving_down?(story, state, new_position) do
-    story.state == state && story.position < new_position
+    (max_pos || 0) + 1
   end
 
   defp active_stories(project_id, state, nil) do
