@@ -45,7 +45,7 @@ describe('Notifications service', () => {
 
     expect(subscriber).toHaveBeenCalled()
     const notification = subscriber.calls.mostRecent().args[0]
-    expect(notification.timeout).toEqual(2500)
+    expect(notification.timeout).toEqual(3000)
   })
 
   it('assigns ids to notifications', () => {

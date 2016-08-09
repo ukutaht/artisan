@@ -1,4 +1,4 @@
-const DEFAULT_TIMEOUT = 2500
+const DEFAULT_TIMEOUT = 3000
 let nextId = 0
 let subscriber = () => {}
 
