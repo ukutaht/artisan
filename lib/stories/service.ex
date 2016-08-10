@@ -40,12 +40,7 @@ defmodule Artisan.Stories do
   end
 
   def move(id, user_id, state, index) do
-    case Ordering.move(id, user_id, state, index) do
-      {:ok, updated} ->
-        {:ok, updated.project_id, all_stories_for(updated)}
-      {:error, error} ->
-        {:error, error}
-    end
+    Ordering.move(id, user_id, state, index)
   end
 
   def mark_completed_in(iteration) do

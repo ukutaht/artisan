@@ -27,7 +27,7 @@ defmodule Artisan.Stories.OrderingTest do
     second = create_in_state(user.id, project.id, "working")
     first  = create_in_state(user.id, project.id, "working")
 
-    {:ok, _} = Ordering.move(first.id, user.id, "working", 0)
+    Ordering.move(first.id, user.id, "working", 0)
     [found1, found2] = find_in_state(project.id, "working")
 
     assert found1.id == first.id
@@ -37,17 +37,25 @@ defmodule Artisan.Stories.OrderingTest do
   test "moves a story to an empty state", %{user: user, project: project} do
     story = create_in_state(user.id, project.id, "ready")
 
-    {:ok, _} = Ordering.move(story.id, user.id, "working", 0)
+    Ordering.move(story.id, user.id, "working", 0)
     [found1] = find_in_state(project.id, "working")
 
     assert found1.id == story.id
+  end
+
+  test "returns the old and new state", %{user: user, project: project} do
+    story = create_in_state(user.id, project.id, "ready")
+
+    res = Ordering.move(story.id, user.id, "working", 0)
+
+    assert {:ok, _, "ready", "working"} = res
   end
 
   test "moves a story to bottom", %{user: user, project: project} do
     second = create_in_state(user.id, project.id, "working")
     first  = create_in_state(user.id, project.id, "working")
 
-    {:ok, _} = Ordering.move(first.id, user.id, "working", 1)
+    Ordering.move(first.id, user.id, "working", 1)
     [found1, found2] = find_in_state(project.id, "working")
 
     assert found1.id == second.id
@@ -58,7 +66,7 @@ defmodule Artisan.Stories.OrderingTest do
     second = create_in_state(user.id, project.id, "working")
     first  = create_in_state(user.id, project.id, "working")
 
-    {:ok, _} = Ordering.move(second.id, user.id, "working", 0)
+    Ordering.move(second.id, user.id, "working", 0)
     [found1, found2] = find_in_state(project.id, "working")
 
     assert found1.id == second.id
@@ -70,7 +78,7 @@ defmodule Artisan.Stories.OrderingTest do
     second = create_in_state(user.id, project.id, "working")
     first  = create_in_state(user.id, project.id, "working")
 
-    {:ok, _} = Ordering.move(first.id, user.id, "working", 1)
+    Ordering.move(first.id, user.id, "working", 1)
     [found1, found2, found3] = find_in_state(project.id, "working")
 
     assert found1.id == second.id
@@ -85,7 +93,7 @@ defmodule Artisan.Stories.OrderingTest do
     second = create_in_state(user.id, project.id, "working")
     first  = create_in_state(user.id, project.id, "working")
 
-    {:ok, _} = Ordering.move(story.id, user.id, "working", 2)
+    Ordering.move(story.id, user.id, "working", 2)
 
     [found1, found2, found3] = find_in_state(project.id, "working")
 
@@ -99,7 +107,7 @@ defmodule Artisan.Stories.OrderingTest do
     second = create_in_state(user.id, project.id, "working")
     first  = create_in_state(user.id, project.id, "working")
 
-    {:ok, _} = Ordering.move(story.id, user.id, "working", 0)
+    Ordering.move(story.id, user.id, "working", 0)
 
     [found1, found2, found3] = find_in_state(project.id, "working")
 
@@ -113,7 +121,7 @@ defmodule Artisan.Stories.OrderingTest do
     second = create_in_state(user.id, project.id, "working")
     first  = create_in_state(user.id, project.id, "working")
 
-    {:ok, _} = Ordering.move(story.id, user.id, "working", 1)
+    Ordering.move(story.id, user.id, "working", 1)
 
     [found1, found2, found3] = find_in_state(project.id, "working")
 
@@ -130,7 +138,7 @@ defmodule Artisan.Stories.OrderingTest do
 
     create_in_state(user.id, project2.id, "ready")
 
-    {:ok, _} = Ordering.move(first.id, user.id, "ready", 1)
+    Ordering.move(first.id, user.id, "ready", 1)
 
     [found1, found2] = find_in_state(project.id, "ready")
 
@@ -142,7 +150,7 @@ defmodule Artisan.Stories.OrderingTest do
     ready = create_in_state(user.id, project.id, "ready")
     working  = create_in_state(user.id, project.id, "working")
 
-    {:ok, _} = Ordering.move(ready.id, user.id, "working", 100)
+    Ordering.move(ready.id, user.id, "working", 100)
 
     [found1, found2] = find_in_state(project.id, "working")
 
@@ -150,43 +158,45 @@ defmodule Artisan.Stories.OrderingTest do
     assert found2.id == ready.id
   end
 
-  test "moving unassigned story to working assigns user", %{user: user, project: project} do
-    story = create_in_state(user.id, project.id, "ready")
+  describe "Autoassignment" do
+    test "moving unassigned story to working assigns user", %{user: user, project: project} do
+      story = create_in_state(user.id, project.id, "ready")
 
-    {:ok, updated} = Ordering.move(story.id, user.id, "working", 1)
+      {:ok, updated, _, _} = Ordering.move(story.id, user.id, "working", 1)
 
-    assert updated.assignee_id == user.id
-  end
+      assert updated.assignee_id == user.id
+    end
 
-  test "moving unassigned story to completed assigns user", %{user: user, project: project} do
-    story = create_in_state(user.id, project.id, "ready")
+    test "moving unassigned story to completed assigns user", %{user: user, project: project} do
+      story = create_in_state(user.id, project.id, "ready")
 
-    {:ok, updated} = Ordering.move(story.id, user.id, "completed", 1)
+      {:ok, updated, _, _} = Ordering.move(story.id, user.id, "completed", 1)
 
-    assert updated.assignee_id == user.id
-  end
+      assert updated.assignee_id == user.id
+    end
 
-  test "moving unassigned story to ready or backlog does not assign user", %{user: user, project: project} do
-    story = create_in_state(user.id, project.id, "ready")
+    test "moving unassigned story to ready or backlog does not assign user", %{user: user, project: project} do
+      story = create_in_state(user.id, project.id, "ready")
 
-    {:ok, updated1} = Ordering.move(story.id, user.id, "ready", 1)
-    {:ok, updated2} = Ordering.move(story.id, user.id, "backlog", 1)
+      {:ok, updated1, _, _} = Ordering.move(story.id, user.id, "ready", 1)
+      {:ok, updated2, _, _} = Ordering.move(story.id, user.id, "backlog", 1)
 
-    assert updated1.assignee_id == nil
-    assert updated2.assignee_id == nil
-  end
+      assert updated1.assignee_id == nil
+      assert updated2.assignee_id == nil
+    end
 
-  test "moving already assigned story does not autoassign at all", %{user: user, project: project} do
-    {:ok, story} = Stories.create(user.id, project.id, Map.merge(@story_params, %{
-       state: "working",
-       assignee_id: user.id
-     }))
+    test "moving already assigned story does not autoassign at all", %{user: user, project: project} do
+      {:ok, story} = Stories.create(user.id, project.id, Map.merge(@story_params, %{
+         state: "working",
+         assignee_id: user.id
+       }))
 
-    user2 = Helpers.create_user(email: "user2@email.com")
+      user2 = Helpers.create_user(email: "user2@email.com")
 
-    {:ok, updated} = Ordering.move(story.id, user2.id, "completed", 1)
+      {:ok, updated, _, _} = Ordering.move(story.id, user2.id, "completed", 1)
 
-    assert updated.assignee_id == user.id
+      assert updated.assignee_id == user.id
+    end
   end
 
   describe "moving completed stories" do
@@ -197,7 +207,7 @@ defmodule Artisan.Stories.OrderingTest do
       iteration = Helpers.create_iteration(project.id)
       Artisan.Iterations.complete(iteration.id)
 
-      {:ok, _} = Ordering.move(first.id, user.id, "completed", 1)
+      Ordering.move(first.id, user.id, "completed", 1)
       %{"completed" => [found1, found2]} = Stories.completed_in(iteration.id)
 
       assert found1.id == second.id
@@ -211,7 +221,7 @@ defmodule Artisan.Stories.OrderingTest do
       iteration = Helpers.create_iteration(project.id)
       Artisan.Iterations.complete(iteration.id)
 
-      {:ok, _} = Ordering.move(second.id, user.id, "completed", 0)
+      Ordering.move(second.id, user.id, "completed", 0)
       %{"completed" => [found1, found2]} = Stories.completed_in(iteration.id)
 
       assert found1.id == second.id

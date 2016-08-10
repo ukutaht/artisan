@@ -6,13 +6,17 @@ defmodule Artisan.Stories.Ordering do
     {:ok, updated} = Repo.transaction(fn ->
       story = Repo.get(Story, id)
 
+      old_state = story.state
+
       new_position = calculate_new_position(story, state, index)
       vacate_position(story, new_position, state)
 
-      story
+      {:ok, updated_story} = story
         |> Story.change_position(state, new_position)
         |> autoassign(user_id)
         |> Repo.update
+
+      {:ok, updated_story, old_state, updated_story.state}
     end)
     updated
   end

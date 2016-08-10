@@ -80,10 +80,14 @@ class IterationView extends React.Component {
     })
   }
 
-  doMoveStory(updatedStories) {
-    this.setState(
-      update(this.state, {stories: {$merge: updatedStories}})
-    )
+  doMoveStory(moveEvent) {
+    const removed = update(this.state.stories, {[moveEvent.from]: {$apply: (column) => {
+      return column.filter((existing) => existing.id !== moveEvent.story.id);
+    }}})
+
+    const added = update(removed, {[moveEvent.to]: {$splice: [[moveEvent.index, 0, moveEvent.story]]}})
+
+    this.setState({stories: added})
   }
 
   deleteStory(story) {

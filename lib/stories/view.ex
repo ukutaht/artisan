@@ -17,6 +17,15 @@ defmodule Artisan.Stories.View do
     |> Enum.into(@empty_states)
   end
 
+  def render("move.json", %{story: story, from: from, to: to, index: index}) do
+    %{
+      story: render("story.json", story: story),
+      from: from,
+      to: to,
+      index: index
+    }
+  end
+
   def render("story.json", %{story: story}) do
     Map.take(story, @fields)
       |> associate_creator(story)

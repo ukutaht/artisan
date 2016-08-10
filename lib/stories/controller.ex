@@ -6,8 +6,9 @@ defmodule Artisan.Stories.Controller do
   def create(conn, %{"story" => story_params}) do
     case Stories.create(conn.assigns[:current_user], story_params["project_id"], story_params) do
       {:ok, created} ->
-        Channel.broadcast(created.project_id, "story:add", Phoenix.View.render(Artisan.Stories.View, "story.json", story: created))
-        conn |> render("story.json", story: created)
+        view = Phoenix.View.render(Stories.View, "story.json", story: created)
+        Channel.broadcast(created.project_id, "story:add", view)
+        conn |> json(view)
       {:error, changeset} ->
         conn |> invalid(changeset)
     end
@@ -18,8 +19,9 @@ defmodule Artisan.Stories.Controller do
 
     case Stories.update(numeric_id, story_params) do
       {:ok, updated} ->
-        Channel.broadcast(updated.project_id, "story:update", Phoenix.View.render(Artisan.Stories.View, "story.json", story: updated))
-        conn |> render("story.json", story: updated)
+        view = Phoenix.View.render(Stories.View, "story.json", story: updated)
+        Channel.broadcast(updated.project_id, "story:update", view)
+        conn |> json(view)
       {:error, changeset} ->
         conn |> invalid(changeset)
     end
@@ -30,9 +32,10 @@ defmodule Artisan.Stories.Controller do
     user_id = conn.assigns[:current_user]
 
     case Stories.move(numeric_id, user_id, state, index) do
-      {:ok, project_id, updated} ->
-        Channel.broadcast(project_id, "story:move", Phoenix.View.render(Artisan.Stories.View, "by_state.json", stories: updated))
-        conn |> render("by_state.json", stories: updated)
+      {:ok, updated, from, to} ->
+        view = Phoenix.View.render(Stories.View, "move.json", story: updated, from: from, to: to, index: index)
+        Channel.broadcast(updated.project_id, "story:move", view)
+        conn |> json(view)
       {:error, changeset} ->
         conn |> invalid(changeset)
     end

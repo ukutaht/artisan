@@ -115,33 +115,18 @@ defmodule Artisan.StoryControllerTest do
       |> post("/api/stories/#{id}/move", %{state: "working", index: 0})
       |> json_response(200)
 
-    assert Enum.count(res["working"]) == 1
-  end
-
-  test "returns empty arrays for states with 0 stories", %{user: user, project: project} do
-    %{"id" => id} = create_story(user["token"], project["id"])
-
-    res = authenticated_conn(user["token"])
-      |> post("/api/stories/#{id}/move", %{state: "working", index: 0})
-      |> json_response(200)
-
-    assert res["backlog"] == []
-    assert res["ready"] == []
-    assert res["completed"] == []
+    assert res["story"]["state"] == "working"
   end
 
   test "broadcasts a story move to clients", %{project: project, user: user} do
-    %{"id" => id} = create_story(user["token"], project["id"])
+    story = create_story(user["token"], project["id"])
 
     Channel.subscribe(project["id"])
 
     authenticated_conn(user["token"])
-      |> post("/api/stories/#{id}/move", %{state: "working", index: 0})
+      |> post("/api/stories/#{story["id"]}/move", %{state: "working", index: 0})
 
-    stories = Artisan.Stories.by_state(project["id"])
-    json = Phoenix.View.render(Artisan.Stories.View, "by_state.json", stories: stories)
-
-    assert_broadcast("story:move", ^json)
+    assert_broadcast("story:move", %{story: _, from: "ready", to: "working", index: 0})
   end
 
   test "gets stories for the current iteration", %{project: project, user: user} do
