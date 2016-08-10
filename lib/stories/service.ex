@@ -41,6 +41,8 @@ defmodule Artisan.Stories do
 
   def move(id, user_id, state, index) do
     Ordering.move(id, user_id, state, index)
+      |> preload_creator
+      |> preload_assignee
   end
 
   def mark_completed_in(iteration) do
@@ -78,12 +80,11 @@ defmodule Artisan.Stories do
     )
   end
 
-  defp all_stories_for(%Story{completed_in: nil, project_id: project_id}), do: by_state(project_id)
-  defp all_stories_for(story), do: completed_in(story.completed_in)
-
   defp preload_creator({:ok, story}), do: {:ok, Repo.preload(story, :creator)}
+  defp preload_creator({:ok, story, from, to}), do: {:ok, Repo.preload(story, :creator), from, to}
   defp preload_creator({:error, changeset}), do: {:error, changeset}
 
   defp preload_assignee({:ok, story}), do: {:ok, Repo.preload(story, :assignee)}
+  defp preload_assignee({:ok, story, from, to}), do: {:ok, Repo.preload(story, :assignee), from, to}
   defp preload_assignee({:error, changeset}), do: {:error, changeset}
 end
