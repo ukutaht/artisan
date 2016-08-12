@@ -79,9 +79,9 @@ defmodule Artisan.StoryControllerTest do
       |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name", acceptance_criteria: "new ac"}})
       |> json_response(200)
 
-    assert res["name"] == "new name"
-    assert res["acceptance_criteria"] == "new ac"
-    assert res["creator"] == user["user"]
+    assert res["story"]["name"] == "new name"
+    assert res["story"]["acceptance_criteria"] == "new ac"
+    assert res["story"]["creator"] == user["user"]
   end
 
   test "broadcasts story update", %{project: project, user: user} do
@@ -92,10 +92,7 @@ defmodule Artisan.StoryControllerTest do
     authenticated_conn(user["token"])
       |> put("/api/stories/#{id}", %{story: %{@valid_story_params | name: "new name"}})
 
-    updated = Repo.get(Artisan.Story, id) |> Repo.preload(:creator) |> Repo.preload(:assignee)
-    json = Phoenix.View.render(Artisan.Stories.View, "story.json", story: updated)
-
-    assert_broadcast("story:update", ^json)
+    assert_broadcast("story:update", %{story: _, originator: _})
   end
 
   test "does not update a story when invalid", %{project: project, user: user} do
@@ -153,5 +150,18 @@ defmodule Artisan.StoryControllerTest do
       |> json_response(200)
 
     assert res["stories"]["ready"] == []
+  end
+
+  test "broadcasts a story delete", %{project: project, user: user} do
+    created = create_story(user["token"], project["id"])
+    Channel.subscribe(project["id"])
+
+    authenticated_conn(user["token"])
+      |> delete("/api/stories/#{created["id"]}")
+      |> json_response(200)
+
+    story_id = created["id"]
+
+    assert_broadcast("story:delete", %{id: ^story_id, from: "ready", originator: _})
   end
 end

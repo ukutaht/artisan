@@ -16,10 +16,11 @@ defmodule Artisan.Stories.Controller do
 
   def update(conn, %{"story" => story_params, "id" => id}) do
     {numeric_id, _} = Integer.parse(id)
+    originator_id = conn.assigns[:current_user]
 
-    case Stories.update(numeric_id, story_params) do
-      {:ok, updated} ->
-        view = Phoenix.View.render(Stories.View, "story.json", story: updated)
+    case Stories.update(numeric_id, originator_id, story_params) do
+      {:ok, updated, originator} ->
+        view = Phoenix.View.render(Stories.View, "update.json", story: updated, originator: originator)
         Channel.broadcast(updated.project_id, "story:update", view)
         conn |> json(view)
       {:error, changeset} ->
@@ -32,8 +33,8 @@ defmodule Artisan.Stories.Controller do
     user_id = conn.assigns[:current_user]
 
     case Stories.move(numeric_id, user_id, state, index) do
-      {:ok, updated, from, to} ->
-        view = Phoenix.View.render(Stories.View, "move.json", story: updated, from: from, to: to, index: index)
+      {:ok, updated, originator, from, to} ->
+        view = Phoenix.View.render(Stories.View, "move.json", story: updated, originator: originator, from: from, to: to, index: index)
         Channel.broadcast(updated.project_id, "story:move", view)
         conn |> json(view)
       {:error, changeset} ->
@@ -43,10 +44,13 @@ defmodule Artisan.Stories.Controller do
 
   def delete(conn, %{"id" => story_id}) do
     {numeric_id, _} = Integer.parse(story_id)
+    user_id = conn.assigns[:current_user]
 
-    case Stories.delete(numeric_id) do
-      {:ok, _} ->
-        conn |> json(%{})
+    case Stories.delete(user_id, numeric_id) do
+      {:ok, deleted, originator} ->
+        view = Phoenix.View.render(Stories.View, "deleted.json", story: deleted, originator: originator)
+        Channel.broadcast(deleted.project_id, "story:delete", view)
+        conn |> json(view)
       {:error, changeset} ->
         conn |> invalid(changeset)
     end

@@ -5,6 +5,7 @@ defmodule Artisan.Users.Socket do
   channel "projects:*", Artisan.Projects.Channel
 
   transport :websocket, Phoenix.Transports.WebSocket
+  transport :longpoll, Phoenix.Transports.LongPoll
 
   def connect(%{"token" => token}, socket) do
     case Token.verify(token) do
