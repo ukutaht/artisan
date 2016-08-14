@@ -1,5 +1,4 @@
 import React from 'react'
-import update from 'react/lib/update'
 import browserHistory from 'react-router/lib/browserHistory'
 
 import ProjectNav from 'projects/nav'
