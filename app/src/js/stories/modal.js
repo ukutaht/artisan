@@ -182,7 +182,7 @@ export default class StoryModal extends React.Component {
                   <input type="text" placeholder="Comma-separated" value={this.state.tagsInput} onChange={this.tagsChanged.bind(this)}/>
                 </section>
 
-                <button className="button primary save-story-button">{this.props.buttonText}</button>
+                <button className="button primary save-story-button" disabled={this.props.disabled}>{this.props.buttonText}</button>
               </div>
             </form>
           </div>

@@ -8,7 +8,7 @@ export default class Card extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return nextProps.story !== this.props.story
+    return nextProps !== this.props
   }
 
   renderEstimate() {
@@ -42,9 +42,10 @@ export default class Card extends React.Component {
   render() {
     const story = this.props.story
     const tags = story.tags || []
+    const disabledClass = this.props.disabled ? 'disabled' : ''
 
     return (
-      <li className="story-card" data-id={this.props.story.id}>
+      <li className={`story-card ${disabledClass}`} data-id={this.props.story.id}>
         <div className="story-card__first-line">
           {this.renderTitle()}
           {this.renderEstimate()}

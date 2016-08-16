@@ -52,6 +52,14 @@ class Column extends React.Component {
     });
   }
 
+  componentWillReceiveProps(newProps) {
+    if (!newProps.online) {
+      disableSortables()
+    } else {
+      enableSortables()
+    }
+  }
+
   onStart(evt) {
     _fromColumn  = this.props.name
     _dragging    = true
@@ -131,6 +139,7 @@ class Column extends React.Component {
           {
             this.props.stories.map((story) => {
               return <StoryCard
+                disabled={!this.props.online}
                 key={story.id}
                 story={story}
                 onClick={this.props.onStoryClick}

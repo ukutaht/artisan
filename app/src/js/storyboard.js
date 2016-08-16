@@ -150,6 +150,7 @@ export default class StoryBoard extends React.Component {
                     onClose={this.closeAddStory.bind(this)}
                     onSubmit={this.addStory.bind(this)}
                     header="Add"
+                    disabled={!this.props.online}
                     buttonText="Create" />
       )
     }
@@ -164,6 +165,7 @@ export default class StoryBoard extends React.Component {
                     onSubmit={this.updateStory.bind(this, this.state.editingStory.id)}
                     onDelete={() => this.deleteStory(this.state.editingStory)}
                     header="Edit"
+                    disabled={!this.props.online}
                     buttonText="Update" />
       )
     }
@@ -179,6 +181,7 @@ export default class StoryBoard extends React.Component {
               name={column}
               onStoryClick={this.openEditStory.bind(this)}
               onDrag={this.props.moveStory}
+              online={this.props.online}
               />
     })
   }
@@ -189,6 +192,7 @@ export default class StoryBoard extends React.Component {
     if (this.props.iteration.state === 'completed' && this.props.iteration.id === currentIteration.id) {
       return (
         <button className="button primary"
+                disabled={!this.props.online}
                 onClick={this.props.newIteration}>
           Start new iteration
         </button>
@@ -196,10 +200,10 @@ export default class StoryBoard extends React.Component {
     } else if (this.props.iteration.state === 'planning') {
       return (
         <div>
-          <button className="button primary" onClick={this.openAddStory.bind(this)}>
+          <button className="button primary" disabled={!this.props.online} onClick={this.openAddStory.bind(this)}>
             <i className="right-padded-icon ion-plus"></i> Add story
           </button>
-          <button className="button primary" onClick={this.props.startIteration}>
+          <button className="button primary" disabled={!this.props.online} onClick={this.props.startIteration}>
             Start iteration
           </button>
         </div>
@@ -207,10 +211,10 @@ export default class StoryBoard extends React.Component {
     } else if (this.props.iteration.state === 'working') {
       return (
         <div>
-          <button className="button primary" onClick={this.openAddStory.bind(this)}>
+          <button className="button primary" disabled={!this.props.online} onClick={this.openAddStory.bind(this)}>
             <i className="right-padded-icon ion-plus"></i> Add story
           </button>
-          <button className="button primary" onClick={this.props.completeIteration}>
+          <button className="button primary" disabled={!this.props.online} onClick={this.props.completeIteration}>
             Complete iteration
           </button>
         </div>

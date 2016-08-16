@@ -78,6 +78,10 @@
   @include user-select(none);
   cursor: move;
 
+  &.disabled {
+    cursor: initial;
+  }
+
   &__first-line {
     position: relative;
   }

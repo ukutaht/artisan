@@ -13,7 +13,8 @@ class IterationView extends React.Component {
     this.state = {
       iteration: null,
       allIterations: null,
-      stories: null
+      stories: null,
+      online: true,
     }
   }
 
@@ -26,7 +27,9 @@ class IterationView extends React.Component {
       onAddStory: this.doAddStory.bind(this),
       onUpdateStory: this.doUpdateStory.bind(this),
       onMoveStory: this.doMoveStory.bind(this),
-      onDeleteStory: this.doDeleteStory.bind(this)
+      onDeleteStory: this.doDeleteStory.bind(this),
+      connectionDropped: () => { this.setState({online: false}) },
+      connectionAlive: () => { this.setState({online: true}) },
     })
   }
 
@@ -165,6 +168,7 @@ class IterationView extends React.Component {
         startIteration={this.startIteration.bind(this)}
         completeIteration={this.completeIteration.bind(this)}
         project={this.props.project}
+        online={this.state.online}
       />
     )
   }
