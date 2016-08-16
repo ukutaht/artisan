@@ -34,4 +34,26 @@ defmodule Artisan.Test.Helpers do
     {:ok, user} = Repo.insert(struct(Artisan.User, params))
     user
   end
+
+  @story %{
+    name: "name",
+    state: "ready",
+    position: 0
+  }
+
+  def create_story(project_id, user_id, extra_params \\ []) do
+    params = Map.merge(@story, Enum.into(extra_params, %{
+       project_id: project_id,
+       creator_id: user_id,
+       number: next_number(project_id)
+     }))
+
+    {:ok, story} = Repo.insert(struct(Artisan.Story, params))
+    story
+  end
+
+  defp next_number(project_id) do
+    q = from(s in Artisan.Story, where: s.project_id == ^project_id)
+    (Repo.aggregate(q, :max, :number) || 0) + 1
+  end
 end

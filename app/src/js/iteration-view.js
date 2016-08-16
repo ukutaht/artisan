@@ -5,7 +5,6 @@ import ProjectNav from 'projects/nav'
 import StoryBoard from 'storyboard'
 import ProjectSocket from 'projects/socket'
 import * as iterations from 'iterations/service'
-import * as stories from 'stories/service'
 import * as storyCollection from 'stories/collection'
 
 class IterationView extends React.Component {
@@ -50,7 +49,7 @@ class IterationView extends React.Component {
   }
 
   addStory(story) {
-    return stories.add(story).then(this.doAddStory.bind(this))
+    return this.socket.addStory(story).then(this.doAddStory.bind(this))
   }
 
   doAddStory(story) {
@@ -59,7 +58,7 @@ class IterationView extends React.Component {
   }
 
   updateStory(id, story) {
-    return stories.update(id, story).then(this.doUpdateStory.bind(this))
+    return this.socket.updateStory(id, story).then(this.doUpdateStory.bind(this))
   }
 
   doUpdateStory(event) {
@@ -68,7 +67,7 @@ class IterationView extends React.Component {
   }
 
   moveStory(storyId, toColumn, toIndex, dragDone, dragAbort) {
-    stories.move(storyId, toColumn, toIndex).then((updated) => {
+    this.socket.moveStory(storyId, toColumn, toIndex).then((updated) => {
       dragDone()
       this.doMoveStory(updated)
     }).catch(() => {
@@ -82,7 +81,7 @@ class IterationView extends React.Component {
   }
 
   deleteStory(story) {
-    stories.del(story.id).then(this.doDeleteStory.bind(this))
+    this.socket.deleteStory(story.id).then(this.doDeleteStory.bind(this))
   }
 
   doDeleteStory(deleteEvent) {
