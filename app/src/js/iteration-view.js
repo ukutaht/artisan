@@ -1,12 +1,11 @@
 import React from 'react'
-import update from 'react/lib/update'
 import browserHistory from 'react-router/lib/browserHistory'
 
 import ProjectNav from 'projects/nav'
 import StoryBoard from 'storyboard'
 import ProjectSocket from 'projects/socket'
 import * as iterations from 'iterations/service'
-import * as stories from 'stories/service'
+import * as storyCollection from 'stories/collection'
 
 class IterationView extends React.Component {
   constructor(props) {
@@ -27,6 +26,7 @@ class IterationView extends React.Component {
       onAddStory: this.doAddStory.bind(this),
       onUpdateStory: this.doUpdateStory.bind(this),
       onMoveStory: this.doMoveStory.bind(this),
+      onDeleteStory: this.doDeleteStory.bind(this)
     })
   }
 
@@ -49,30 +49,25 @@ class IterationView extends React.Component {
   }
 
   addStory(story) {
-    return stories.add(story).then(this.doAddStory.bind(this))
+    return this.socket.addStory(story).then(this.doAddStory.bind(this))
   }
 
   doAddStory(story) {
-    this.setState(
-      update(this.state, {stories: {[story.state]: {$unshift: [story]}}})
-    )
+    const updated = storyCollection.addStory(this.state.stories, story)
+    this.setState({stories: updated})
   }
 
   updateStory(id, story) {
-    return stories.update(id, story).then(this.doUpdateStory.bind(this))
+    return this.socket.updateStory(id, story).then(this.doUpdateStory.bind(this))
   }
 
-  doUpdateStory(story) {
-    this.setState(
-      update(this.state, {stories: {[story.state]: {$apply: (column) => {
-        const index = column.findIndex((existing) => existing.id === story.id)
-        return update(column, {[index]: {$set: story}})
-      }}}})
-    )
+  doUpdateStory(event) {
+    const updated = storyCollection.updateStory(this.state.stories, event)
+    this.setState({stories: updated})
   }
 
   moveStory(storyId, toColumn, toIndex, dragDone, dragAbort) {
-    stories.move(storyId, toColumn, toIndex).then((updated) => {
+    this.socket.moveStory(storyId, toColumn, toIndex).then((updated) => {
       dragDone()
       this.doMoveStory(updated)
     }).catch(() => {
@@ -81,23 +76,18 @@ class IterationView extends React.Component {
   }
 
   doMoveStory(moveEvent) {
-    const removed = update(this.state.stories, {[moveEvent.from]: {$apply: (column) => {
-      return column.filter((existing) => existing.id !== moveEvent.story.id);
-    }}})
-
-    const added = update(removed, {[moveEvent.to]: {$splice: [[moveEvent.index, 0, moveEvent.story]]}})
-
-    this.setState({stories: added})
+    const updated = storyCollection.moveStory(this.state.stories, moveEvent)
+    this.setState({stories: updated})
   }
 
   deleteStory(story) {
-    stories.del(story.id).then(() => {
-      const updated = update(this.state, {stories: {[story.state]: {$apply: (column) => {
-        return column.filter((existing) => existing.id !== story.id);
-      }}}})
+    this.socket.deleteStory(story.id).then(this.doDeleteStory.bind(this))
+  }
 
-      this.setState(updated)
-    })
+  doDeleteStory(deleteEvent) {
+    const updated = storyCollection.deleteStory(this.state.stories, deleteEvent)
+
+    this.setState({stories: updated})
   }
 
   newIteration() {

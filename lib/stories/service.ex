@@ -27,22 +27,26 @@ defmodule Artisan.Stories do
     end
   end
 
-  def update(id, attrs) do
+  def update(id, user_id, attrs) do
     Repo.get(Story, id)
       |> Story.edit(attrs)
       |> Repo.update
       |> preload_creator
       |> preload_assignee
+      |> add_originator(user_id)
   end
 
-  def delete(id) do
-    Repo.delete(%Story{id: id})
+  def delete(user_id, id) do
+    Repo.get(Story, id)
+      |> Repo.delete
+      |> add_originator(user_id)
   end
 
   def move(id, user_id, state, index) do
     Ordering.move(id, user_id, state, index)
       |> preload_creator
       |> preload_assignee
+      |> add_originator(user_id)
   end
 
   def mark_completed_in(iteration) do
@@ -79,6 +83,12 @@ defmodule Artisan.Stories do
       where: is_nil(s.completed_in)
     )
   end
+
+  defp add_originator({:ok, story, from, to}, user_id) do
+    {:ok, story, Artisan.Users.find(user_id), from, to}
+  end
+  defp add_originator({:ok, story}, user_id), do: {:ok, story, Artisan.Users.find(user_id)}
+  defp add_originator({:error, changeset}, _), do: {:error, changeset}
 
   defp preload_creator({:ok, story}), do: {:ok, Repo.preload(story, :creator)}
   defp preload_creator({:ok, story, from, to}), do: {:ok, Repo.preload(story, :creator), from, to}

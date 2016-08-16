@@ -8,7 +8,7 @@ function values(object) {
 
 export default class Notifications extends React.Component {
   componentWillMount() {
-    this.setState({notifications: []})
+    this.setState({notifications: {}})
 
     notifications.subscribe(this.addNotification.bind(this))
   }

@@ -17,12 +17,29 @@ defmodule Artisan.Stories.View do
     |> Enum.into(@empty_states)
   end
 
-  def render("move.json", %{story: story, from: from, to: to, index: index}) do
+  def render("move.json", %{story: story, originator: originator, from: from, to: to, index: index}) do
     %{
       story: render("story.json", story: story),
+      originator: Artisan.Users.View.render("user.json", user: originator),
       from: from,
       to: to,
       index: index
+    }
+  end
+
+  def render("update.json", %{story: story, originator: originator}) do
+    %{
+      story: render("story.json", story: story),
+      originator: Artisan.Users.View.render("user.json", user: originator)
+    }
+  end
+
+  def render("deleted.json", %{story: story, originator: originator}) do
+    %{
+      id: story.id,
+      number: story.number,
+      from: story.state,
+      originator: Artisan.Users.View.render("user.json", user: originator)
     }
   end
 

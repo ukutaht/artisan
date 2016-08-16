@@ -46,13 +46,6 @@ defmodule Artisan.Router do
       post "/:iteration_id/complete", Controller, :complete
       post "/:iteration_id/start",    Controller, :start
     end
-
-    scope "/stories", Stories do
-      put    "/:id",      Controller, :update
-      post   "/",         Controller, :create
-      post   "/:id/move", Controller, :move
-      delete "/:id",      Controller, :delete
-    end
   end
 
   if Mix.env == :dev do
