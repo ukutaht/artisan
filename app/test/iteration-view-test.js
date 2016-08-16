@@ -4,7 +4,6 @@ import fakePromise from 'helpers/fake-promise'
 import IterationView from 'iteration-view'
 
 import * as iterations from 'iterations/service'
-import * as stories from 'stories/service'
 
 describe('IterationView', () => {
   let view;
