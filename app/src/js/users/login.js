@@ -22,6 +22,7 @@ class Login extends React.Component {
   onSubmit(e) {
     e.preventDefault()
     const {location} = this.props
+    this.setState({loginError: false})
 
     users.login(this.getFormData()).then(() => {
       if (location.state && location.state.nextPathname) {
@@ -56,13 +57,13 @@ class Login extends React.Component {
         <form onSubmit={this.onSubmit.bind(this)}>
           <div className="form-group">
             <div className="input-with-icon">
-              <input ref="email" type="email" placeholder="Email" />
+              <input ref="email" type="email" placeholder="Email" tabIndex="1" />
               <i className="ion-person light" />
             </div>
           </div>
           <div className="form-group">
             <div className="input-with-icon">
-              <input ref="password" type="password" placeholder="Password"/>
+              <input ref="password" type="password" placeholder="Password" tabIndex="2"/>
               <i className="ion-locked light" />
             </div>
           </div>
