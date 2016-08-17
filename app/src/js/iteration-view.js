@@ -30,7 +30,7 @@ class IterationView extends React.Component {
       onMoveStory: this.doMoveStory.bind(this),
       onDeleteStory: this.doDeleteStory.bind(this),
       connectionDropped: () => { this.setState({online: false}) },
-      connectionAlive: () => { this.setState({online: true}) },
+      connectionAlive: this.connectionAlive.bind(this),
     })
 
     socket.join()
@@ -45,8 +45,16 @@ class IterationView extends React.Component {
     this.loadIteration(newProps.project.id, newProps.routeParams.iterationNumber || 'current')
   }
 
+  connectionAlive() {
+    if (this.state.online) return;
+    const {project, routeParams} = this.props
+
+    this.loadIteration(project.id, routeParams.iterationNumber || 'current')
+      .then(() => this.setState({online: true}))
+  }
+
   loadIteration(projectId, iterationId) {
-    iterations.get(projectId, iterationId).then((res) => {
+    return iterations.get(projectId, iterationId).then((res) => {
       this.setState({
         iteration: res.iteration,
         allIterations: res.all_iterations,
