@@ -1,59 +1,89 @@
 import {Socket} from 'phoenix-socket'
 import * as users from 'users/service'
 
-function promisify(pushEvent) {
-  return new Promise((resolve, reject) => {
-    pushEvent
-      .receive('ok', resolve)
-      .receive('error', reject)
-  })
-}
-
 export default class ProjectSocket {
-  constructor(projectId) {
+  constructor(projectId, callbacks) {
     this.projectId = projectId
+    this.callbacks = callbacks
+
+    this.socket = new Socket('/socket', {
+      params: {token: users.token()},
+      //logger: ((kind, msg, data) => { console.log(`${kind}: ${msg}`, data) }),
+      timeout: 5000,
+      heartbeatIntervalMs: 5000
+    })
   }
 
   join(callbacks) {
-    const socket = new Socket('/socket', {
-      params: {token: users.token()},
-      //logger: ((kind, msg, data) => { console.log(`${kind}: ${msg}`, data) })
+    this.socket.connect();
+    window.addEventListener('offline', this.close.bind(this))
+    window.addEventListener('online', this.reconnect.bind(this))
+
+    this.socket.onOpen(this.closeOnSilentHeartbeat.bind(this))
+    this.socket.onClose(this.callbacks.connectionDropped)
+
+    this.channel = this.socket.channel(`projects:${this.projectId}`, {})
+    this.channel.on('story:update', this.callbacks.onUpdateStory)
+    this.channel.on('story:add',    this.callbacks.onAddStory)
+    this.channel.on('story:move',   this.callbacks.onMoveStory)
+    this.channel.on('story:delete', this.callbacks.onDeleteStory)
+    this.channel.join().receive("ok", this.callbacks.connectionAlive)
+  }
+
+  closeOnSilentHeartbeat() {
+    const timeout = this.socket.heartbeatIntervalMs + this.socket.timeout;
+
+    let timeoutId = window.setTimeout(this.close.bind(this), timeout)
+    this.socket.onMessage(() => {
+      window.clearTimeout(timeoutId)
+      timeoutId = window.setTimeout(this.close.bind(this), timeout)
     })
+  }
 
-    socket.connect()
+  close() {
+    if (this.socket.isConnected()) {
+      this.socket.disconnect()
+      this.socket.onConnClose()
+    }
+  }
 
-    this.channel = socket.channel(`projects:${this.projectId}`, {})
-    this.channel.join()
-
-    socket.onError(callbacks.connectionDropped)
-    socket.onClose(callbacks.connectionDropped)
-    socket.onOpen(callbacks.connectionAlive)
-
-    this.channel.on('story:update', callbacks.onUpdateStory)
-    this.channel.on('story:add',    callbacks.onAddStory)
-    this.channel.on('story:move',   callbacks.onMoveStory)
-    this.channel.on('story:delete', callbacks.onDeleteStory)
+  reconnect() {
+    if (!this.socket.isConnected()) {
+      this.socket.disconnect()
+      this.socket.connect()
+    }
   }
 
   addStory(story) {
-    return promisify(this.channel.push('story:add', story))
+    return this._push('story:add', story)
   }
 
   updateStory(id, story) {
-    return promisify(this.channel.push('story:update', {id: id, story: story}))
+    return this._push('story:update', {id: id, story: story})
   }
 
   moveStory(id, state, index) {
-    return promisify(
-      this.channel.push('story:move', {id: id, state: state, index: index})
-    )
+    return this._push('story:move', {id: id, state: state, index: index})
   }
 
   deleteStory(id) {
-    return promisify(this.channel.push('story:delete', {id: id}))
+    return this._push(this.channel.push('story:delete', {id: id}))
   }
 
   leave() {
     this.channel.leave()
+    this.socket.disconnect()
+  }
+
+  _push(event, data) {
+    return new Promise((resolve, reject) => {
+      this.channel.push(event, data)
+        .receive('ok', resolve)
+        .receive('error', reject)
+        .receive('timeout', () => {
+          this.close()
+          reject()
+        })
+    })
   }
 }

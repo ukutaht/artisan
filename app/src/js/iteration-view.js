@@ -7,6 +7,8 @@ import ProjectSocket from 'projects/socket'
 import * as iterations from 'iterations/service'
 import * as storyCollection from 'stories/collection'
 
+let socket = null;
+
 class IterationView extends React.Component {
   constructor(props) {
     super(props)
@@ -22,8 +24,7 @@ class IterationView extends React.Component {
     this.loadIteration(this.props.project.id, this.props.routeParams.iterationNumber || 'current')
     document.title = `${this.props.project.name}`
 
-    this.socket = new ProjectSocket(this.props.project.id)
-    this.socket.join({
+    socket = new ProjectSocket(this.props.project.id, {
       onAddStory: this.doAddStory.bind(this),
       onUpdateStory: this.doUpdateStory.bind(this),
       onMoveStory: this.doMoveStory.bind(this),
@@ -31,10 +32,13 @@ class IterationView extends React.Component {
       connectionDropped: () => { this.setState({online: false}) },
       connectionAlive: () => { this.setState({online: true}) },
     })
+
+    socket.join()
   }
 
   componentWillUnmount() {
-    this.socket.leave()
+    socket.leave()
+    socket = null;
   }
 
   componentWillReceiveProps(newProps) {
@@ -52,7 +56,7 @@ class IterationView extends React.Component {
   }
 
   addStory(story) {
-    return this.socket.addStory(story).then(this.doAddStory.bind(this))
+    return socket.addStory(story).then(this.doAddStory.bind(this))
   }
 
   doAddStory(story) {
@@ -61,7 +65,7 @@ class IterationView extends React.Component {
   }
 
   updateStory(id, story) {
-    return this.socket.updateStory(id, story).then(this.doUpdateStory.bind(this))
+    return socket.updateStory(id, story).then(this.doUpdateStory.bind(this))
   }
 
   doUpdateStory(event) {
@@ -70,7 +74,7 @@ class IterationView extends React.Component {
   }
 
   moveStory(storyId, toColumn, toIndex, dragDone, dragAbort) {
-    this.socket.moveStory(storyId, toColumn, toIndex).then((updated) => {
+    socket.moveStory(storyId, toColumn, toIndex).then((updated) => {
       dragDone()
       this.doMoveStory(updated)
     }).catch(() => {
@@ -84,7 +88,7 @@ class IterationView extends React.Component {
   }
 
   deleteStory(story) {
-    this.socket.deleteStory(story.id).then(this.doDeleteStory.bind(this))
+    socket.deleteStory(story.id).then(this.doDeleteStory.bind(this))
   }
 
   doDeleteStory(deleteEvent) {
