@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup'
 import browserHistory from 'react-router/lib/browserHistory'
 
 import ProjectNav from 'projects/nav'
@@ -185,9 +186,23 @@ class IterationView extends React.Component {
     )
   }
 
+  renderOfflineAlert() {
+    if (!this.state.online) {
+      return (
+        <div className="offline-alert">
+          <strong>Unable to reach the server, please check your connection</strong>
+        </div>
+
+      )
+    }
+  }
+
   render() {
     return (
       <div>
+        <ReactCSSTransitionGroup transitionName="offline-alert" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+          {this.renderOfflineAlert()}
+        </ReactCSSTransitionGroup>
         {this.renderProjectNav()}
         {this.renderStoryBoard()}
       </div>

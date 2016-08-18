@@ -142,3 +142,31 @@
     }
   }
 }
+
+.offline-alert-enter {
+  opacity: 0.5;
+  transform: translateY(-10px);
+  height: 0px;
+}
+
+.offline-alert-enter.offline-alert-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: height 300ms linear;
+  transition: opacity 300ms linear;
+  transition: transform 100ms linear;
+  height: initial;
+}
+
+.offline-alert {
+  width: 100%;
+  border: 1px solid darken($pale-yellow, 10%);
+  border-top: none;
+  background-color: $pale-yellow;
+  margin-top: -1px;
+  padding: $spacing-small;
+  text-align: center;
+  color: $dark-grey;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}

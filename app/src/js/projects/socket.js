@@ -5,6 +5,7 @@ export default class ProjectSocket {
   constructor(projectId, callbacks) {
     this.projectId = projectId
     this.callbacks = callbacks
+    this.closeTimeout = null
 
     this.socket = new Socket('/socket', {
       params: {token: users.token()},
@@ -14,7 +15,7 @@ export default class ProjectSocket {
     })
   }
 
-  join(callbacks) {
+  join() {
     this.socket.connect();
     window.addEventListener('offline', this.close.bind(this))
     window.addEventListener('online', this.reconnect.bind(this))
@@ -27,23 +28,24 @@ export default class ProjectSocket {
     this.channel.on('story:add',    this.callbacks.onAddStory)
     this.channel.on('story:move',   this.callbacks.onMoveStory)
     this.channel.on('story:delete', this.callbacks.onDeleteStory)
-    this.channel.join().receive("ok", this.callbacks.connectionAlive)
+    this.channel.join().receive('ok', this.callbacks.connectionAlive)
   }
 
   closeOnSilentHeartbeat() {
     const timeout = this.socket.heartbeatIntervalMs + this.socket.timeout;
+    window.clearTimeout(this.closeTimeout)
 
-    let timeoutId = window.setTimeout(this.close.bind(this), timeout)
+    this.closeTimeout = window.setTimeout(this.close.bind(this), timeout)
     this.socket.onMessage(() => {
-      window.clearTimeout(timeoutId)
-      timeoutId = window.setTimeout(this.close.bind(this), timeout)
+      window.clearTimeout(this.closeTimeout)
+      this.closeTimeout = window.setTimeout(this.close.bind(this), timeout)
     })
   }
 
   close() {
     if (this.socket.isConnected()) {
-      this.socket.disconnect()
-      this.socket.onConnClose()
+      this.socket.conn.dispatchEvent(new CloseEvent('close', {wasClean: false, code: 1006}))
+      this.socket.conn = null;
     }
   }
 
@@ -67,7 +69,7 @@ export default class ProjectSocket {
   }
 
   deleteStory(id) {
-    return this._push(this.channel.push('story:delete', {id: id}))
+    return this._push('story:delete', {id: id})
   }
 
   leave() {

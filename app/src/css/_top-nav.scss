@@ -3,6 +3,8 @@
   background: $darkest-grey;
   border-bottom: 1px solid $border-grey;
   color: $inverted;
+  position: relative;
+  z-index: 2;
 
   &__brand {
     height: 100%;
