@@ -17,8 +17,8 @@ export default class ProjectSocket {
 
   join() {
     this.socket.connect();
-    window.addEventListener('offline', this.close.bind(this))
-    window.addEventListener('online', this.reconnect.bind(this))
+    window.addEventListener('offline', this.callbacks.connectionDropped)
+    window.addEventListener('online', this.onlineCheck.bind(this))
 
     this.socket.onOpen(this.closeOnSilentHeartbeat.bind(this))
     this.socket.onClose(this.callbacks.connectionDropped)
@@ -35,23 +35,17 @@ export default class ProjectSocket {
     const timeout = this.socket.heartbeatIntervalMs + this.socket.timeout;
     window.clearTimeout(this.closeTimeout)
 
-    this.closeTimeout = window.setTimeout(this.close.bind(this), timeout)
+    this.closeTimeout = window.setTimeout(this.callbacks.connectionDropped, timeout)
     this.socket.onMessage(() => {
+      if (this.channel.canPush()) this.callbacks.connectionAlive()
+
       window.clearTimeout(this.closeTimeout)
-      this.closeTimeout = window.setTimeout(this.close.bind(this), timeout)
+      this.closeTimeout = window.setTimeout(this.callbacks.connectionDropped, timeout)
     })
   }
 
-  close() {
-    if (this.socket.isConnected()) {
-      this.socket.conn.dispatchEvent(new CloseEvent('close', {wasClean: false, code: 1006}))
-      this.socket.conn.onclose = () => {}
-      this.socket.conn = null;
-    }
-  }
-
-  reconnect() {
-    if (!this.socket.isConnected()) {
+  onlineCheck() {
+    if (!this.channel.canPush()) {
       this.socket.disconnect()
       this.socket.connect()
     }
@@ -84,7 +78,7 @@ export default class ProjectSocket {
         .receive('ok', resolve)
         .receive('error', reject)
         .receive('timeout', () => {
-          this.close()
+          this.callbacks.connectionDropped()
           reject()
         })
     })
