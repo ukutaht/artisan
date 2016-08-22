@@ -45,6 +45,7 @@ export default class ProjectSocket {
   close() {
     if (this.socket.isConnected()) {
       this.socket.conn.dispatchEvent(new CloseEvent('close', {wasClean: false, code: 1006}))
+      this.socket.conn.onclose = () => {}
       this.socket.conn = null;
     }
   }
