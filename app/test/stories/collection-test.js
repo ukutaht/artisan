@@ -8,6 +8,7 @@ describe('Stories collection', () => {
 
   beforeEach(() => {
     spyOn(users, 'current').and.returnValue(currentUser)
+    spyOn(notifications, 'info')
   })
 
   it('adds a story to a column', () => {
@@ -19,20 +20,18 @@ describe('Stories collection', () => {
     expect(updated.backlog[0]).toEqual(story)
   })
 
-  it('notifies of story created when it was created by current user', () => {
+  it('does not notify of story created when it was created by current user', () => {
     const stories = {backlog: []}
     const story = {state: 'backlog', creator: currentUser}
-    spyOn(notifications, 'success')
 
     storyCollection.addStory(stories, story)
 
-    expect(notifications.success).toHaveBeenCalledWith('Story created')
+    expect(notifications.info).not.toHaveBeenCalled()
   })
 
   it('notifies of story created when it was created by someone else', () => {
     const stories = {backlog: []}
     const story = {state: 'backlog', number: 42, creator: someoneElse}
-    spyOn(notifications, 'info')
 
     storyCollection.addStory(stories, story)
 
@@ -48,20 +47,18 @@ describe('Stories collection', () => {
     expect(updated.backlog[0].name).toEqual('New Name')
   })
 
-  it('notifies of story updated when it was updated by current user', () => {
+  it('does not notify of story updated when it was updated by current user', () => {
     const stories = {backlog: [{id: 1, name: 'Old Name'}]}
     const story = {id:1, state: 'backlog', name: 'New Name'}
-    spyOn(notifications, 'success')
 
-    const updated = storyCollection.updateStory(stories, {story: story, originator: currentUser})
+    storyCollection.updateStory(stories, {story: story, originator: currentUser})
 
-    expect(notifications.success).toHaveBeenCalledWith('Story updated')
+    expect(notifications.info).not.toHaveBeenCalled()
   })
 
   it('notifies of story updated when it was updated by someone else', () => {
     const stories = {backlog: [{id: 1, name: 'Old Name'}]}
     const story = {id:1, state: 'backlog', number: 42, name: 'New Name'}
-    spyOn(notifications, 'info')
 
     const updated = storyCollection.updateStory(stories, {story: story, originator: someoneElse})
 
@@ -80,20 +77,18 @@ describe('Stories collection', () => {
     expect(updated.ready[0]).toEqual(story)
   })
 
-  it('notifies of story move when it was moved by current user', () => {
+  it('does not notify of story move when it was moved by current user', () => {
     const stories = {backlog: [{id: 1}, {id: 2}], ready: []}
     const story = {id:1}
-    spyOn(notifications, 'success')
 
-    const updated = storyCollection.moveStory(stories, {story: story, from: 'backlog', to: 'ready', index: 0, originator: currentUser})
+    storyCollection.moveStory(stories, {story: story, from: 'backlog', to: 'ready', index: 0, originator: currentUser})
 
-    expect(notifications.success).toHaveBeenCalledWith('Story position saved')
+    expect(notifications.info).not.toHaveBeenCalled()
   })
 
   it('notifies of story updated when it was updated by someone else', () => {
     const stories = {backlog: [{id: 1}, {id: 2}], ready: []}
     const story = {id: 1, number: 42}
-    spyOn(notifications, 'info')
 
     const updated = storyCollection.moveStory(stories, {story: story, from: 'backlog', to: 'ready', index: 0, originator: someoneElse})
 
@@ -107,18 +102,16 @@ describe('Stories collection', () => {
     expect(updated.backlog.length).toEqual(0)
   })
 
-  it('notifies of story delete when it was deleted by current user', () => {
+  it('does not notify of story delete when it was deleted by current user', () => {
     const stories = {backlog: [{id: 1}]}
-    spyOn(notifications, 'success')
 
-    const updated = storyCollection.deleteStory(stories, {id: 1, from: 'backlog', number: 42, originator: currentUser})
+    storyCollection.deleteStory(stories, {id: 1, from: 'backlog', number: 42, originator: currentUser})
 
-    expect(notifications.success).toHaveBeenCalledWith('Story deleted')
+    expect(notifications.info).not.toHaveBeenCalled()
   })
 
   it('notifies of story delete when it was deleted by someone else', () => {
     const stories = {backlog: [{id: 1}]}
-    spyOn(notifications, 'info')
 
     const updated = storyCollection.deleteStory(stories, {id: 1, from: 'backlog', number: 42, originator: someoneElse})
 

@@ -3,9 +3,7 @@ import * as notifications from 'notifications/service'
 import * as users from 'users/service'
 
 export function addStory(stories, story) {
-  if (story.creator.id === users.current().id) {
-    notifications.success('Story created')
-  } else {
+  if (story.creator.id !== users.current().id) {
     notifications.info(`${story.creator.name} created story ${story.number}`)
   }
 
@@ -13,9 +11,7 @@ export function addStory(stories, story) {
 }
 
 export function updateStory(stories, {story, originator}) {
-  if (originator.id === users.current().id) {
-    notifications.success('Story updated')
-  } else {
+  if (originator.id !== users.current().id) {
     notifications.info(`${originator.name} updated story ${story.number}`)
   }
 
@@ -26,9 +22,7 @@ export function updateStory(stories, {story, originator}) {
 }
 
 export function moveStory(stories, {story, originator, from, to, index}) {
-  if (originator.id === users.current().id) {
-    notifications.success('Story position saved')
-  } else if (from !== to) {
+  if (originator.id !== users.current().id) {
     notifications.info(`${originator.name} moved story ${story.number} from ${from} to ${to}`)
   }
 
@@ -40,9 +34,7 @@ export function moveStory(stories, {story, originator, from, to, index}) {
 }
 
 export function deleteStory(stories, {id, number, from, originator}) {
-  if (originator.id === users.current().id) {
-    notifications.success('Story deleted')
-  } else {
+  if (originator.id !== users.current().id) {
     notifications.info(`${originator.name} deleted story ${number}`)
   }
 
