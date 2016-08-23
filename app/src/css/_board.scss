@@ -164,12 +164,12 @@
   width: 25%;
 
   .board__column__header {
-    transition: opacity 1ms linear 75ms;
+    transition: opacity 50ms linear 50ms;
     opacity: 1;
   }
 
   .story-card {
-    transition: opacity 1ms linear 75ms;
+    transition: opacity 50ms linear 50ms;
     opacity: 1;
   }
 }
@@ -180,12 +180,12 @@
   border-right: none;
 
   .board__column__header {
-    transition: opacity 1ms linear 75ms;
+    transition: opacity 50ms linear 50ms;
     opacity: 0;
   }
 
   .story-card {
-    transition: opacity 1ms linear 75ms;
+    transition: opacity 50ms linear 50ms;
     opacity: 0;
   }
 }
