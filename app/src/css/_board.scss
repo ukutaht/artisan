@@ -27,6 +27,7 @@
     margin-top: $spacing-medium;
     border-right: 1px dashed $border-grey;
     flex-grow: 1;
+    transition: width 300ms;
 
     &--2 {
       width: 50%;
