@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup'
 
 import Column from 'column'
 import StoryModal from 'stories/modal'
@@ -112,9 +113,9 @@ export default class StoryBoard extends React.Component {
               {this.renderActions()}
             </div>
           </div>
-          <div className="board__columns">
+          <ReactCSSTransitionGroup component="div" className="board__columns" transitionName="column" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
             {this.renderColumns()}
-          </div>
+          </ReactCSSTransitionGroup>
         </div>
         {this.renderAddStoryModal()}
         {this.renderEditStoryModal()}
