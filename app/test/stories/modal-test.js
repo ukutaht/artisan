@@ -22,22 +22,27 @@ describe('StoryModal', () => {
     creator: {name: 'Creator name'}
   }
 
-  let submit;
+  let addStory;
+  let updateStory;
   let onClose;
   const fakeSubmitEvent = { preventDefault() {} }
 
   beforeEach(() => {
     onClose = jasmine.createSpy('onClose')
-    submit  = jasmine.createSpy('submit')
+    addStory  = jasmine.createSpy('addStory')
+    updateStory  = jasmine.createSpy('updateStory')
 
     view = TestUtils.renderIntoDocument(<StoryModal
       story={story}
       project={project}
-      onSubmit={submit}
+      addStory={addStory}
+      updateStory={updateStory}
       onClose={onClose}
       routeParams={{iterationNumber: 'current'}}/>
     );
   })
+
+  function addedStory() { return addStory.calls.mostRecent().args[0] }
 
   it('closes when user presses escape', () => {
     document.onkeydown({keyCode: 27})
@@ -54,23 +59,21 @@ describe('StoryModal', () => {
   it('calls the onSubmit handler when form is submitted', () => {
     view.handleSubmit(fakeSubmitEvent)
 
-    expect(submit).toHaveBeenCalled()
+    expect(addStory).toHaveBeenCalled()
   })
 
   it('submits name', () => {
     view.nameChanged({target: {value: 'New Name'}})
     view.handleSubmit(fakeSubmitEvent)
 
-    const submitted = submit.calls.mostRecent().args[0]
-    expect(submitted.name).toEqual('New Name')
+    expect(addedStory().name).toEqual('New Name')
   })
 
   it('submits acceptance criteria', () => {
     view.acceptanceCriteriaChanged({target: {value: 'New AC'}})
     view.handleSubmit(fakeSubmitEvent)
 
-    const submitted = submit.calls.mostRecent().args[0]
-    expect(submitted.acceptance_criteria).toEqual('New AC')
+    expect(addedStory().acceptance_criteria).toEqual('New AC')
   })
 
   it('submits estimates as numbers', () => {
@@ -80,10 +83,10 @@ describe('StoryModal', () => {
 
     view.handleSubmit(fakeSubmitEvent)
 
-    const submitted = submit.calls.mostRecent().args[0]
-    expect(submitted.optimistic).toEqual(2)
-    expect(submitted.realistic).toEqual(3)
-    expect(submitted.pessimistic).toEqual(4)
+    const added = addedStory()
+    expect(added.optimistic).toEqual(2)
+    expect(added.realistic).toEqual(3)
+    expect(added.pessimistic).toEqual(4)
   })
 
   it('submits null values for empty estimates', () => {
@@ -93,10 +96,10 @@ describe('StoryModal', () => {
 
     view.handleSubmit(fakeSubmitEvent)
 
-    const submitted = submit.calls.mostRecent().args[0]
-    expect(submitted.optimistic).toBeNull()
-    expect(submitted.realistic).toBeNull()
-    expect(submitted.pessimistic).toBeNull()
+    const added = addedStory()
+    expect(added.optimistic).toBeNull()
+    expect(added.realistic).toBeNull()
+    expect(added.pessimistic).toBeNull()
   })
 
   it('calculates and submits total estimate', () => {
@@ -106,8 +109,7 @@ describe('StoryModal', () => {
 
     view.handleSubmit(fakeSubmitEvent)
 
-    const submitted = submit.calls.mostRecent().args[0]
-    expect(submitted.estimate).toEqual(3.75)
+    expect(addedStory().estimate).toEqual(3.75)
   })
 
   it('splits tags before posting to backend', () => {
@@ -115,8 +117,7 @@ describe('StoryModal', () => {
 
     view.handleSubmit(fakeSubmitEvent)
 
-    const submitted = submit.calls.mostRecent().args[0]
-    expect(submitted.tags).toEqual(['tag1', 'tag2'])
+    expect(addedStory().tags).toEqual(['tag1', 'tag2'])
   })
 
   it('submits assignee id', () => {
@@ -124,8 +125,7 @@ describe('StoryModal', () => {
 
     view.handleSubmit(fakeSubmitEvent)
 
-    const submitted = submit.calls.mostRecent().args[0]
-    expect(submitted.assignee_id).toEqual(1)
+    expect(addedStory().assignee_id).toEqual(1)
   })
 
   it('only submits data that has been changed', () => {
@@ -133,8 +133,7 @@ describe('StoryModal', () => {
 
     view.handleSubmit(fakeSubmitEvent)
 
-    const submitted = submit.calls.mostRecent().args[0]
-    expect(submitted.acceptance_criteria).toBeUndefined()
-    expect(submitted.assignee_id).toBeUndefined()
+    expect(addedStory().acceptance_criteria).toBeUndefined()
+    expect(addedStory().assignee_id).toBeUndefined()
   })
 })
