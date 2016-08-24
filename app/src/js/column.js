@@ -132,6 +132,7 @@ class Column extends React.Component {
     return (
       <div className={`board__column board__column--${this.props.count}`}>
         <div className="board__column__header">
+          {this.props.children}
           <h3>{columnTitles[this.props.name]}</h3>
           {this.renderStoryPoints()}
         </div>

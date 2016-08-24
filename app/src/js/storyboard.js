@@ -105,10 +105,6 @@ export default class StoryBoard extends React.Component {
       <div>
         <div className="board">
           <div className="board__actions">
-            <div className="board__actions__left">
-              {this.renderBacklogLink()}
-            </div>
-
             <div className="board__actions__right">
               {this.renderActions()}
             </div>
@@ -122,7 +118,7 @@ export default class StoryBoard extends React.Component {
   }
 
   renderColumnsWithTransition() {
-    if (this.props.iteration.state === 'working') {
+    if (this.canToggleBacklog()) {
       return (
         <ReactCSSTransitionGroup component="div" className="board__columns" transitionName="column" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
           {this.renderColumns()}
@@ -137,24 +133,20 @@ export default class StoryBoard extends React.Component {
     }
   }
 
-  renderBacklogLink() {
+  renderBacklogLink(column) {
     if (!this.canToggleBacklog()) return null
 
-    if (this.isBacklogVisible()) {
+    if (this.isBacklogVisible() && column === 'backlog') {
       return (
-        <a href="javascript://" onClick={this.hideBacklog.bind(this)}>
-          Hide Backlog
-          <i className="left-padded-icon ion-chevron-right"></i>
-        </a>
+        <i className="clickable ion-chevron-left" onClick={this.hideBacklog.bind(this)}></i>
       )
-    } else {
+    } else if (!this.isBacklogVisible() && column === 'ready') {
       return (
-        <a href="javascript://" onClick={this.showBacklog.bind(this)}>
-          <i className="right-padded-icon ion-chevron-left"></i>
-          Show Backlog
-        </a>
+        <i className="clickable ion-chevron-right" onClick={this.showBacklog.bind(this)}></i>
       )
     }
+
+    return null
   }
 
   renderAddStoryModal() {
@@ -190,14 +182,17 @@ export default class StoryBoard extends React.Component {
     const count = this.state.visibleColumns.length;
 
     return this.state.visibleColumns.map((column) => {
-      return <Column stories={this.props.stories[column]}
-              key={column}
-              count={count}
-              name={column}
-              onStoryClick={this.openEditStory.bind(this)}
-              onDrag={this.props.moveStory}
-              online={this.props.online}
-              />
+      return (
+        <Column stories={this.props.stories[column]}
+          key={column}
+          count={count}
+          name={column}
+          onStoryClick={this.openEditStory.bind(this)}
+          onDrag={this.props.moveStory}
+          online={this.props.online}>
+          {this.renderBacklogLink(column)}
+        </Column>
+      )
     })
   }
 

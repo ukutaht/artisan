@@ -3,11 +3,6 @@
     @include row();
     margin-top: $spacing-large;
 
-    &__left {
-      min-height: 1px;
-      display: inline-block;
-    }
-
     &__right {
       float: right;
       display: inline-block;
@@ -49,6 +44,13 @@
       position: relative;
       text-align: center;
       width: 100%;
+
+      i {
+        position: absolute;
+        color: $dark-grey;
+        left: $spacing-medium;
+        top: 24px;
+      }
 
       h3 {
         display: inline-block;
