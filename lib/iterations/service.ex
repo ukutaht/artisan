@@ -68,7 +68,8 @@ defmodule Artisan.Iterations do
 
   defp all_for(project_id) do
     Repo.all(from i in Iteration,
-      where: i.project_id == ^project_id
+      where: i.project_id == ^project_id,
+      order_by: i.number
     )
   end
 end
