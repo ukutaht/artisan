@@ -113,14 +113,28 @@ export default class StoryBoard extends React.Component {
               {this.renderActions()}
             </div>
           </div>
-          <ReactCSSTransitionGroup component="div" className="board__columns" transitionName="column" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
-            {this.renderColumns()}
-          </ReactCSSTransitionGroup>
+          {this.renderColumnsWithTransition()}
         </div>
         {this.renderAddStoryModal()}
         {this.renderEditStoryModal()}
       </div>
     )
+  }
+
+  renderColumnsWithTransition() {
+    if (this.props.iteration.state === 'working') {
+      return (
+        <ReactCSSTransitionGroup component="div" className="board__columns" transitionName="column" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+          {this.renderColumns()}
+        </ReactCSSTransitionGroup>
+      )
+    } else {
+      return (
+        <div className="board__columns">
+          {this.renderColumns()}
+        </div>
+      )
+    }
   }
 
   renderBacklogLink() {
