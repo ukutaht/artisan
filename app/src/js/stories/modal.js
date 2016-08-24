@@ -59,7 +59,11 @@ export default class StoryModal extends React.Component {
 
     delete updated.tagsInput
 
-    this.props.onSubmit(updated)
+    if (this.isNew()) {
+      this.props.addStory(updated)
+    } else {
+      this.props.updateStory(updated)
+    }
   }
 
   nameChanged(e) {
@@ -123,6 +127,10 @@ export default class StoryModal extends React.Component {
     this.setState({assignee_id: newId})
   }
 
+  isNew() { return !this.props.story.id }
+  header() { return this.isNew() ? 'Add' : 'Edit' }
+  buttonText() { return this.isNew() ? 'Create' : 'Update' }
+
   renderAssigneeSelect() {
     const options = this.props.project.collaborators.map((user) => {
       return {value: user.id, label: user.name}
@@ -141,7 +149,7 @@ export default class StoryModal extends React.Component {
       <Modal onClose={this.props.onClose}>
         <div className="modal story-modal">
           <header className="modal__header">
-            <h3>{this.props.header}</h3>
+            <h3>{this.header()}</h3>
             <i className="ion-android-close modal__close" onClick={this.props.onClose}></i>
           </header>
           <div className="modal__body row">
@@ -182,7 +190,7 @@ export default class StoryModal extends React.Component {
                   <input type="text" placeholder="Comma-separated" value={this.state.tagsInput} onChange={this.tagsChanged.bind(this)}/>
                 </section>
 
-                <button className="button primary save-story-button" disabled={this.props.disabled}>{this.props.buttonText}</button>
+                <button className="button primary save-story-button" disabled={this.props.disabled}>{this.buttonText()}</button>
               </div>
             </form>
           </div>

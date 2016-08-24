@@ -37,7 +37,6 @@ export default class StoryBoard extends React.Component {
     super(props)
     this.state = {
       visibleColumns: iterationColumns[props.iteration.state],
-      addingStory: false,
       editingStory: null
     }
   }
@@ -67,21 +66,13 @@ export default class StoryBoard extends React.Component {
     this.closeEditStory()
   }
 
-  openAddStory() {
-    this.setState({addingStory: true})
-  }
-
-  closeAddStory() {
-    this.setState({addingStory: false})
-  }
-
   addStory(story) {
     const newStory = Object.assign({}, story, {
       state: this.state.visibleColumns[0],
       project_id: this.props.project.id
     })
 
-    this.props.addStory(newStory).then(this.closeAddStory.bind(this))
+    this.props.addStory(newStory).then(this.closeEditStory.bind(this))
   }
 
   isBacklogVisible() {
@@ -111,7 +102,6 @@ export default class StoryBoard extends React.Component {
           </div>
           {this.renderColumnsWithTransition()}
         </div>
-        {this.renderAddStoryModal()}
         {this.renderEditStoryModal()}
       </div>
     )
@@ -149,31 +139,17 @@ export default class StoryBoard extends React.Component {
     return null
   }
 
-  renderAddStoryModal() {
-    if (this.state.addingStory) {
-      return (
-        <StoryModal story={newStory}
-                    project={this.props.project}
-                    onClose={this.closeAddStory.bind(this)}
-                    onSubmit={this.addStory.bind(this)}
-                    header="Add"
-                    disabled={!this.props.online}
-                    buttonText="Create" />
-      )
-    }
-  }
-
   renderEditStoryModal() {
-    if (this.state.editingStory) {
+    const story = this.state.editingStory
+    if (story) {
       return (
-        <StoryModal story={this.state.editingStory}
+        <StoryModal story={story}
                     project={this.props.project}
                     onClose={this.closeEditStory.bind(this)}
-                    onSubmit={this.updateStory.bind(this, this.state.editingStory.id)}
-                    onDelete={() => this.deleteStory(this.state.editingStory)}
-                    header="Edit"
-                    disabled={!this.props.online}
-                    buttonText="Update" />
+                    addStory={this.addStory.bind(this)}
+                    updateStory={this.updateStory.bind(this, story.id)}
+                    onDelete={this.deleteStory.bind(this, story)}
+                    disabled={!this.props.online} />
       )
     }
   }
@@ -211,7 +187,7 @@ export default class StoryBoard extends React.Component {
     } else if (this.props.iteration.state === 'planning') {
       return (
         <div>
-          <button className="button primary" disabled={!this.props.online} onClick={this.openAddStory.bind(this)}>
+          <button className="button primary" disabled={!this.props.online} onClick={this.openEditStory.bind(this, newStory)}>
             <i className="right-padded-icon ion-plus"></i> Add story
           </button>
           <button className="button primary" disabled={!this.props.online} onClick={this.props.startIteration}>
@@ -222,7 +198,7 @@ export default class StoryBoard extends React.Component {
     } else if (this.props.iteration.state === 'working') {
       return (
         <div>
-          <button className="button primary" disabled={!this.props.online} onClick={this.openAddStory.bind(this)}>
+          <button className="button primary" disabled={!this.props.online} onClick={this.openEditStory.bind(this, newStory)}>
             <i className="right-padded-icon ion-plus"></i> Add story
           </button>
           <button className="button primary" disabled={!this.props.online} onClick={this.props.completeIteration}>
