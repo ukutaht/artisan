@@ -188,9 +188,10 @@ export default class StoryBoard extends React.Component {
   }
 
   renderActions() {
-    const currentIteration = this.props.allIterations[0]
+    const allIterationNumbers = this.props.allIterations.map(({number}) => number)
+    const currentIterationNumber = Math.max.apply(Math, allIterationNumbers)
 
-    if (this.props.iteration.state === 'completed' && this.props.iteration.id === currentIteration.id) {
+    if (this.props.iteration.state === 'completed' && this.props.iteration.number === currentIterationNumber) {
       return (
         <button className="button primary"
                 disabled={!this.props.online}
