@@ -120,9 +120,7 @@ class IterationView extends React.Component {
 
   startIteration() {
     iterations.start(this.state.iteration.id).then((updated) => {
-      this.setState({
-        iteration: updated,
-      })
+      this.setState({iteration: updated})
     })
   }
 
@@ -151,7 +149,7 @@ class IterationView extends React.Component {
     if (!story) {
       browserHistory.push({pathname: this.iterationRoute(this.state.iteration.number), state: {selectedStory: story}})
     } else if (story.id) {
-      browserHistory.push({pathname: `/${this.props.project.slug}/stories/${story.id}`, state: {selectedStory: story}})
+      browserHistory.push({pathname: `/${this.props.project.slug}/stories/${story.number}`, state: {selectedStory: story}})
     } else {
       browserHistory.push({pathname: `/${this.props.project.slug}/stories/new`, state: {selectedStory: story}})
     }
