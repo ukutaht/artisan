@@ -18,6 +18,7 @@ class IterationView extends React.Component {
       allIterations: null,
       stories: null,
       online: true,
+      selectedStory: null,
     }
   }
 
@@ -64,22 +65,27 @@ class IterationView extends React.Component {
     })
   }
 
-  addStory(story) {
-    return socket.addStory(story).then(this.doAddStory.bind(this))
+  addStory(state, story) {
+    const newStory = Object.assign({}, story, {
+      state: state,
+      project_id: this.props.project.id
+    })
+
+    return socket.addStory(newStory).then((created) => this.doAddStory(created, {selectedStory: null}))
   }
 
-  doAddStory(story) {
-    const updated = storyCollection.addStory(this.state.stories, story)
-    this.setState({stories: updated})
+  doAddStory(story, overrides = {}) {
+    const updatedStories = storyCollection.addStory(this.state.stories, story)
+    this.setState(Object.assign({stories: updatedStories}, overrides))
   }
 
   updateStory(id, story) {
-    return socket.updateStory(id, story).then(this.doUpdateStory.bind(this))
+    return socket.updateStory(id, story).then((updated) => this.doUpdateStory(updated, {selectedStory: null}))
   }
 
-  doUpdateStory(event) {
-    const updated = storyCollection.updateStory(this.state.stories, event)
-    this.setState({stories: updated})
+  doUpdateStory(story, overrides = {}) {
+    const updated = storyCollection.updateStory(this.state.stories, story)
+    this.setState(Object.assign({stories: updated}, overrides))
   }
 
   moveStory(storyId, toColumn, toIndex, dragDone, dragAbort) {
@@ -96,14 +102,14 @@ class IterationView extends React.Component {
     this.setState({stories: updated})
   }
 
-  deleteStory(story) {
-    socket.deleteStory(story.id).then(this.doDeleteStory.bind(this))
+  deleteStory(storyId) {
+    socket.deleteStory(storyId).then((deleted) => this.doDeleteStory(deleted, {selectedStory: null}))
   }
 
-  doDeleteStory(deleteEvent) {
+  doDeleteStory(deleteEvent, overrides = {}) {
     const updated = storyCollection.deleteStory(this.state.stories, deleteEvent)
 
-    this.setState({stories: updated})
+    this.setState(Object.assign({stories: updated}, overrides))
   }
 
   newIteration() {
@@ -143,6 +149,10 @@ class IterationView extends React.Component {
     }
   }
 
+  selectStory(story) {
+    this.setState({selectedStory: story})
+  }
+
   renderBreadCrumb() {
     if (!this.state.iteration || !this.state.allIterations) return null
 
@@ -171,6 +181,8 @@ class IterationView extends React.Component {
     return (
       <StoryBoard
         stories={this.state.stories}
+        selectedStory={this.state.selectedStory}
+        selectStory={this.selectStory.bind(this)}
         iteration={this.state.iteration}
         allIterations={this.state.allIterations}
         moveStory={this.moveStory.bind(this)}
