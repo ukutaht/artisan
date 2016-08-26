@@ -134,7 +134,7 @@ class IterationView extends React.Component {
   }
 
   iterationRoute(iterationNumber) {
-    const currentIteration = this.state.allIterations[0];
+    const currentIteration = this.state.allIterations[this.state.allIterations.length - 1];
 
     if (iterationNumber === currentIteration.number) {
       return `/${this.props.project.slug}`;
