@@ -10,6 +10,21 @@ import * as storyCollection from 'stories/collection'
 
 let socket = null;
 
+const newStory = {
+  id: null,
+  project_id: null,
+  name: '',
+  acceptance_criteria: '',
+  number: null,
+  estimate: null,
+  optimistic: null,
+  realistic: null,
+  pessimistic: null,
+  state: 'backlog',
+  position: 0,
+  tags: [],
+}
+
 class IterationView extends React.Component {
   constructor(props) {
     super(props)
@@ -22,9 +37,20 @@ class IterationView extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.loadIteration(this.props.project.id, this.props.routeParams.iterationNumber || 'current')
-    document.title = `${this.props.project.name}`
+  componentWillMount() {
+    const {project, routeParams} = this.props
+    document.title = project.name
+
+    if (routeParams.storyNumber === 'new') {
+      this.loadIteration(project.id, 'current')
+      this.setState({selectedStory: newStory})
+    } else if (routeParams.storyNumber) {
+      this.loadIterationByStory(project.id, routeParams.storyNumber)
+    } else if (routeParams.iterationNumber) {
+      this.loadIteration(project.id, routeParams.iterationNumber)
+    } else {
+      this.loadIteration(project.id, 'current')
+    }
 
     socket = new ProjectSocket(this.props.project.id, {
       onAddStory: this.doAddStory.bind(this),
@@ -45,7 +71,9 @@ class IterationView extends React.Component {
 
   componentWillReceiveProps(newProps) {
     const {project, location, routeParams} = newProps
-    if (location.state && location.state.selectedStory !== undefined) {
+    if (routeParams.storyNumber === 'new') {
+      this.setState({selectedStory: newStory})
+    } else if (location.state && location.state.selectedStory !== undefined) {
       this.setState({selectedStory: location.state.selectedStory})
     } else {
       this.loadIteration(project.id, routeParams.iterationNumber || 'current')
@@ -60,12 +88,23 @@ class IterationView extends React.Component {
       .then(() => this.setState({online: true}))
   }
 
-  loadIteration(projectId, iterationId) {
-    return iterations.get(projectId, iterationId).then((res) => {
+  loadIteration(projectId, iterationNumber) {
+    return iterations.get(projectId, iterationNumber).then((res) => {
       this.setState({
         iteration: res.iteration,
         allIterations: res.all_iterations,
         stories: res.stories
+      })
+    })
+  }
+
+  loadIterationByStory(projectId, storyNumber) {
+    return iterations.getByStory(projectId, storyNumber).then((res) => {
+      this.setState({
+        iteration: res.iteration,
+        allIterations: res.all_iterations,
+        stories: res.stories,
+        selectedStory: res.story
       })
     })
   }

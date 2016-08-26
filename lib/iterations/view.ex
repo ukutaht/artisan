@@ -13,6 +13,15 @@ defmodule Artisan.Iterations.View do
     end)
   end
 
+  def render("by_story.json", %{iteration: iteration, stories: stories, all_iterations: all_iterations, story: story}) do
+    %{
+      iteration: render("iteration.json", iteration: iteration),
+      all_iterations: render("iterations.json", iterations: all_iterations),
+      stories: Artisan.Stories.View.render("by_state.json", stories: stories),
+      story: Artisan.Stories.View.render("story.json", story: story)
+    }
+  end
+
   def render("current.json", %{iteration: iteration, stories: stories, all_iterations: all_iterations}) do
     %{
       iteration: render("iteration.json", iteration: iteration),

@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup'
+import browserHistory from 'react-router/lib/browserHistory'
 
 import Column from 'column'
 import StoryModal from 'stories/modal'
@@ -15,21 +16,6 @@ const canToggleBacklog = {
   planning: false,
   working: true,
   completed: false
-}
-
-const newStory = {
-  id: null,
-  project_id: null,
-  name: '',
-  acceptance_criteria: '',
-  number: null,
-  estimate: null,
-  optimistic: null,
-  realistic: null,
-  pessimistic: null,
-  state: 'backlog',
-  position: 0,
-  tags: [],
 }
 
 export default class StoryBoard extends React.Component {
@@ -145,6 +131,8 @@ export default class StoryBoard extends React.Component {
     })
   }
 
+  newStory() { browserHistory.push(`/${this.props.project.slug}/stories/new`) }
+
   renderActions() {
     const currentIteration = this.props.allIterations[this.props.allIterations.length - 1];
 
@@ -159,7 +147,7 @@ export default class StoryBoard extends React.Component {
     } else if (this.props.iteration.state === 'planning') {
       return (
         <div>
-          <button className="button primary" disabled={!this.props.online} onClick={() => this.props.selectStory(newStory)}>
+          <button className="button primary" disabled={!this.props.online} onClick={this.newStory.bind(this)}>
             <i className="right-padded-icon ion-plus"></i> Add story
           </button>
           <button className="button primary" disabled={!this.props.online} onClick={this.props.startIteration}>
@@ -170,7 +158,7 @@ export default class StoryBoard extends React.Component {
     } else if (this.props.iteration.state === 'working') {
       return (
         <div>
-          <button className="button primary" disabled={!this.props.online} onClick={() => this.props.selectStory(newStory)}>
+          <button className="button primary" disabled={!this.props.online} onClick={this.newStory.bind(this)}>
             <i className="right-padded-icon ion-plus"></i> Add story
           </button>
           <button className="button primary" disabled={!this.props.online} onClick={this.props.completeIteration}>

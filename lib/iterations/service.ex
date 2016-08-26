@@ -16,7 +16,7 @@ defmodule Artisan.Iterations do
     if Enum.empty?(iterations) do
       nil
     else
-      current = Enum.max_by(iterations, fn(i) -> i.number end)
+      current = current_from(iterations)
       %{
         iteration: current,
         stories: stories_for(current),
@@ -25,13 +25,31 @@ defmodule Artisan.Iterations do
     end
   end
 
-  def get(project_id, number) do
+  def get_by_story(project_id, story_number) do
     iterations = all_for(project_id)
-    current = Enum.find(iterations, fn(i) -> i.number == number end)
+    story = Repo.one(from s in Artisan.Story,
+      where: s.project_id == ^project_id,
+      where: s.number == ^story_number,
+      preload: [:creator, :assignee]
+    )
+
+    iteration = scan_for(iterations, story.completed_in) || current_from(iterations)
 
     %{
-      iteration: current,
-      stories: stories_for(current),
+      iteration: iteration,
+      stories: stories_for(iteration),
+      all_iterations: iterations,
+      story: story
+    }
+  end
+
+  def get(project_id, number) do
+    iterations = all_for(project_id)
+    iteration = scan_for(iterations, number)
+
+    %{
+      iteration: iteration,
+      stories: stories_for(iteration),
       all_iterations: iterations
     }
   end
@@ -51,6 +69,14 @@ defmodule Artisan.Iterations do
     Artisan.Stories.move_working_to_ready(updated.project_id)
 
     {:ok, %{iteration: updated, stories: stories_for(updated)}}
+  end
+
+  defp current_from(iterations) do
+    Enum.max_by(iterations, fn(i) -> i.number end)
+  end
+
+  defp scan_for(iterations, number) do
+    Enum.find(iterations, fn(i) -> i.number == number end)
   end
 
   defp stories_for(%Iteration{state: "completed", id: id}) do
