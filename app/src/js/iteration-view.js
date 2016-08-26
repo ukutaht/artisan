@@ -44,7 +44,12 @@ class IterationView extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.loadIteration(newProps.project.id, newProps.routeParams.iterationNumber || 'current')
+    const {project, location, routeParams} = newProps
+    if (location.state && location.state.selectedStory !== undefined) {
+      this.setState({selectedStory: location.state.selectedStory})
+    } else {
+      this.loadIteration(project.id, routeParams.iterationNumber || 'current')
+    }
   }
 
   connectionAlive() {
@@ -71,21 +76,19 @@ class IterationView extends React.Component {
       project_id: this.props.project.id
     })
 
-    return socket.addStory(newStory).then((created) => this.doAddStory(created, {selectedStory: null}))
+    return socket.addStory(newStory).then(this.doAddStory.bind(this)).then(this.selectStory.bind(this, null))
   }
 
-  doAddStory(story, overrides = {}) {
-    const updatedStories = storyCollection.addStory(this.state.stories, story)
-    this.setState(Object.assign({stories: updatedStories}, overrides))
+  doAddStory(story) {
+    this.setState({stories: storyCollection.addStory(this.state.stories, story)})
   }
 
   updateStory(id, story) {
-    return socket.updateStory(id, story).then((updated) => this.doUpdateStory(updated, {selectedStory: null}))
+    return socket.updateStory(id, story).then(this.doUpdateStory.bind(this)).then(this.selectStory.bind(this, null))
   }
 
-  doUpdateStory(story, overrides = {}) {
-    const updated = storyCollection.updateStory(this.state.stories, story)
-    this.setState(Object.assign({stories: updated}, overrides))
+  doUpdateStory(story) {
+    this.setState({stories: storyCollection.updateStory(this.state.stories, story)})
   }
 
   moveStory(storyId, toColumn, toIndex, dragDone, dragAbort) {
@@ -98,18 +101,15 @@ class IterationView extends React.Component {
   }
 
   doMoveStory(moveEvent) {
-    const updated = storyCollection.moveStory(this.state.stories, moveEvent)
-    this.setState({stories: updated})
+    this.setState({stories: storyCollection.moveStory(this.state.stories, moveEvent)})
   }
 
   deleteStory(storyId) {
-    socket.deleteStory(storyId).then((deleted) => this.doDeleteStory(deleted, {selectedStory: null}))
+    socket.deleteStory(storyId).then(this.doDeleteStory.bind(this)).then(this.selectStory.bind(this, null))
   }
 
-  doDeleteStory(deleteEvent, overrides = {}) {
-    const updated = storyCollection.deleteStory(this.state.stories, deleteEvent)
-
-    this.setState(Object.assign({stories: updated}, overrides))
+  doDeleteStory(deleteEvent) {
+    this.setState({stories: storyCollection.deleteStory(this.state.stories, deleteEvent)})
   }
 
   newIteration() {
@@ -135,9 +135,7 @@ class IterationView extends React.Component {
     })
   }
 
-  changeView(e) {
-    browserHistory.push(e.target.value)
-  }
+  changeView(e) { browserHistory.push(e.target.value) }
 
   iterationRoute(iterationNumber) {
     const currentIteration = this.state.allIterations[this.state.allIterations.length - 1];
@@ -150,7 +148,13 @@ class IterationView extends React.Component {
   }
 
   selectStory(story) {
-    this.setState({selectedStory: story})
+    if (!story) {
+      browserHistory.push({pathname: this.iterationRoute(this.state.iteration.number), state: {selectedStory: story}})
+    } else if (story.id) {
+      browserHistory.push({pathname: `/${this.props.project.slug}/stories/${story.id}`, state: {selectedStory: story}})
+    } else {
+      browserHistory.push({pathname: `/${this.props.project.slug}/stories/new`, state: {selectedStory: story}})
+    }
   }
 
   renderBreadCrumb() {
