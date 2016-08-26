@@ -144,6 +144,10 @@ export default class StoryModal extends React.Component {
     )
   }
 
+  selectTarget(e) {
+    e.target.select()
+  }
+
   render() {
     return (
       <Modal onClose={this.props.onClose}>
@@ -167,15 +171,15 @@ export default class StoryModal extends React.Component {
                 <div className="estimate-form">
                   <section className="estimate-form__group">
                     <label className="estimate-form__left">Optimistic:</label>
-                    <input type="text" className="estimate-form__right" value={this.displayEstimate('optimistic')} onChange={this.estimateChanged('optimistic')} />
+                    <input type="text" className="estimate-form__right" value={this.displayEstimate('optimistic')} onClick={this.selectTarget} onChange={this.estimateChanged('optimistic')} />
                   </section>
                   <section className="estimate-form__group">
                     <label className="estimate-form__left">Realistic:</label>
-                    <input type="text" className="estimate-form__right" value={this.displayEstimate('realistic')} onChange={this.estimateChanged('realistic')} />
+                    <input type="text" className="estimate-form__right" value={this.displayEstimate('realistic')} onClick={this.selectTarget} onChange={this.estimateChanged('realistic')} />
                   </section>
                   <section className="estimate-form__group">
                     <label className="estimate-form__left">Pessimistic:</label>
-                    <input type="text" className="estimate-form__right" value={this.displayEstimate('pessimistic')} onChange={this.estimateChanged('pessimistic')}/>
+                    <input type="text" className="estimate-form__right" value={this.displayEstimate('pessimistic')} onClick={this.selectTarget} onChange={this.estimateChanged('pessimistic')}/>
                   </section>
                   <section className="estimate-form__total">
                     <label className="estimate-form__left">Estimate:</label>
