@@ -25,7 +25,7 @@ const newStory = {
   tags: [],
 }
 
-class IterationView extends React.Component {
+export default class IterationView extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -71,12 +71,17 @@ class IterationView extends React.Component {
 
   componentWillReceiveProps(newProps) {
     const {project, location, routeParams} = newProps
+
     if (routeParams.storyNumber === 'new') {
       this.setState({selectedStory: newStory})
     } else if (location.state && location.state.selectedStory !== undefined) {
       this.setState({selectedStory: location.state.selectedStory})
+    } else if (routeParams.iterationNumber) {
+      this.setState({selectedStory: null})
+      this.loadIterationIfNeeded(project.id, routeParams.iterationNumber)
     } else {
-      this.loadIteration(project.id, routeParams.iterationNumber || 'current')
+      this.setState({selectedStory: null})
+      this.loadIterationIfNeeded(project.id, 'current')
     }
   }
 
@@ -86,6 +91,16 @@ class IterationView extends React.Component {
 
     this.loadIteration(project.id, routeParams.iterationNumber || 'current')
       .then(() => this.setState({online: true}))
+  }
+
+  loadIterationIfNeeded(projectId, iterationNumber) {
+    const currentIteration = this.state.allIterations[this.state.allIterations.length - 1];
+
+    if (iterationNumber === 'current' && currentIteration.number !== this.state.iteration.number) {
+      this.loadIteration(projectId, iterationNumber)
+    } else if (iterationNumber !== 'current' && this.state.iteration.number !== parseInt(iterationNumber)) {
+      this.loadIteration(projectId, iterationNumber)
+    }
   }
 
   loadIteration(projectId, iterationNumber) {
@@ -262,5 +277,3 @@ class IterationView extends React.Component {
     )
   }
 }
-
-export default IterationView
