@@ -4,4 +4,8 @@ defmodule Artisan.ErrorView do
   def render("500.json", _) do
     ""
   end
+
+  def render("404.json", _) do
+    ""
+  end
 end

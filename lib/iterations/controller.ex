@@ -15,7 +15,10 @@ defmodule Artisan.Iterations.Controller do
   end
 
   def get_by_story(conn, %{"project_id" => project_id, "story_number" => story_number}) do
-    conn |> render("by_story.json", Iterations.get_by_story(project_id, story_number))
+    case Iterations.get_by_story(project_id, story_number) do
+      nil -> send_resp(conn, 404, "")
+      iteration -> render(conn, "by_story.json", iteration)
+    end
   end
 
   def complete(conn, %{"iteration_id" => iteration_id}) do

@@ -36,12 +36,10 @@ defmodule Artisan.Test.APIHelpers do
       |> json_response(200)
   end
 
-  def create_story(token, project_id) do
-    story = Map.put(@story, :project_id, project_id)
-
+  def create_iteration(token, project_id) do
     authenticated_conn(token)
-      |> post("/api/stories", %{story: story})
+      |> post("/api/projects/#{project_id}/iterations/create")
       |> json_response(200)
+      |> Map.get("iteration")
   end
-
 end

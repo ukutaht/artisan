@@ -26,21 +26,25 @@ defmodule Artisan.Iterations do
   end
 
   def get_by_story(project_id, story_number) do
-    iterations = all_for(project_id)
     story = Repo.one(from s in Artisan.Story,
       where: s.project_id == ^project_id,
       where: s.number == ^story_number,
       preload: [:creator, :assignee]
     )
 
-    iteration = scan_for(iterations, story.completed_in) || current_from(iterations)
+    if story do
+      iterations = all_for(project_id)
+      iteration = scan_for(iterations, story.completed_in) || current_from(iterations)
 
-    %{
-      iteration: iteration,
-      stories: stories_for(iteration),
-      all_iterations: iterations,
-      story: story
-    }
+      %{
+        iteration: iteration,
+        stories: stories_for(iteration),
+        all_iterations: iterations,
+        story: story
+      }
+    else
+      nil
+    end
   end
 
   def get(project_id, number) do
