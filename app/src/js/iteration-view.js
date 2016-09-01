@@ -11,17 +11,12 @@ import * as storyCollection from 'stories/collection'
 let socket = null;
 
 const newStory = {
-  id: null,
-  project_id: null,
   name: '',
   acceptance_criteria: '',
-  number: null,
   estimate: null,
   optimistic: null,
   realistic: null,
   pessimistic: null,
-  state: 'backlog',
-  position: 0,
   tags: [],
 }
 
