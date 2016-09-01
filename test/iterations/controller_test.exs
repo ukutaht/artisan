@@ -27,10 +27,7 @@ defmodule Artisan.Iterations.ControllerTest do
   end
 
   test "gets a specific iteration", %{project: project, user: user} do
-    created = authenticated_conn(user["token"])
-      |> post("/api/projects/#{project["id"]}/iterations/create")
-      |> json_response(200)
-      |> Map.get("iteration")
+    created = create_iteration(user["token"], project["id"])
 
     res = authenticated_conn(user["token"])
       |> get("/api/projects/#{project["id"]}/iterations/#{created["number"]}")
@@ -39,6 +36,29 @@ defmodule Artisan.Iterations.ControllerTest do
     assert Map.has_key?(res, "stories")
     assert Map.has_key?(res, "all_iterations")
     assert res["iteration"]["state"] == "planning"
+  end
+
+  describe "getting by story" do
+    test "gets an iteration by story", %{project: project, user: user} do
+      iteration = create_iteration(user["token"], project["id"])
+      story = Artisan.Test.Helpers.create_story(project["id"], user["user"]["id"])
+
+      res = authenticated_conn(user["token"])
+        |> get("/api/projects/#{project["id"]}/iterations/by-story/#{story.number}")
+        |> json_response(200)
+
+      assert Map.has_key?(res, "stories")
+      assert Map.has_key?(res, "story")
+      assert Map.has_key?(res, "all_iterations")
+      assert res["iteration"]["id"] == iteration["id"]
+    end
+
+    test "returns 404 if story not found", %{project: project, user: user} do
+      res = authenticated_conn(user["token"])
+        |> get("/api/projects/#{project["id"]}/iterations/by-story/-1")
+
+      assert res.status == 404
+    end
   end
 
   test "completes an iteration", %{project: project, user: user} do

@@ -4,6 +4,10 @@ export function get(projectId, number) {
   return Api.get(`/api/projects/${projectId}/iterations/${number}`)
 }
 
+export function getByStory(projectId, storyNumber) {
+  return Api.get(`/api/projects/${projectId}/iterations/by-story/${storyNumber}`)
+}
+
 export function create(projectId) {
   return Api.post(`/api/projects/${projectId}/iterations/create`)
 }

@@ -31,6 +31,7 @@ const router = (
       <Route path=":slug" component={ProjectContainer}>
         <IndexRoute component={IterationView} />
         <Route path="iterations/:iterationNumber" component={IterationView} />
+        <Route path="stories/:storyNumber" component={IterationView} />
         <Route path="settings" component={ProjectSettings}>
           <IndexRoute component={ProjectSettingsTab} />
           <Route path="collaborators" component={ProjectCollaboratorsTab} />

@@ -37,9 +37,10 @@ defmodule Artisan.Router do
     end
 
     scope "/projects/:project_id/iterations", Iterations do
-      get  "/current", Controller, :current
-      get  "/:number", Controller, :get
-      post "/create",  Controller, :create
+      get  "/current",                Controller, :current
+      get  "/:number",                Controller, :get
+      get  "/by-story/:story_number", Controller, :get_by_story
+      post "/create",                 Controller, :create
     end
 
     scope "/iterations", Iterations do

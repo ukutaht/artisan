@@ -10,7 +10,17 @@ import * as storyCollection from 'stories/collection'
 
 let socket = null;
 
-class IterationView extends React.Component {
+const newStory = {
+  name: '',
+  acceptance_criteria: '',
+  estimate: null,
+  optimistic: null,
+  realistic: null,
+  pessimistic: null,
+  tags: [],
+}
+
+export default class IterationView extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -18,14 +28,26 @@ class IterationView extends React.Component {
       allIterations: null,
       stories: null,
       online: true,
+      selectedStory: null,
     }
   }
 
-  componentDidMount() {
-    this.loadIteration(this.props.project.id, this.props.routeParams.iterationNumber || 'current')
-    document.title = `${this.props.project.name}`
+  componentWillMount() {
+    const {project, routeParams} = this.props
+    document.title = project.name
 
-    socket = new ProjectSocket(this.props.project.id, {
+    if (routeParams.storyNumber === 'new') {
+      this.loadIteration(project.id, 'current')
+      this.setState({selectedStory: newStory})
+    } else if (routeParams.storyNumber) {
+      this.loadIterationByStory(project.id, routeParams.storyNumber)
+    } else if (routeParams.iterationNumber) {
+      this.loadIteration(project.id, routeParams.iterationNumber)
+    } else {
+      this.loadIteration(project.id, 'current')
+    }
+
+    socket = new ProjectSocket(project.id, {
       onAddStory: this.doAddStory.bind(this),
       onUpdateStory: this.doUpdateStory.bind(this),
       onMoveStory: this.doMoveStory.bind(this),
@@ -43,7 +65,19 @@ class IterationView extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.loadIteration(newProps.project.id, newProps.routeParams.iterationNumber || 'current')
+    const {project, location, routeParams} = newProps
+
+    if (routeParams.storyNumber === 'new') {
+      this.setState({selectedStory: newStory})
+    } else if (location.state && location.state.selectedStory !== undefined) {
+      this.setState({selectedStory: location.state.selectedStory})
+    } else if (routeParams.iterationNumber) {
+      this.setState({selectedStory: null})
+      this.loadIterationIfNeeded(project.id, routeParams.iterationNumber)
+    } else {
+      this.setState({selectedStory: null})
+      this.loadIterationIfNeeded(project.id, 'current')
+    }
   }
 
   connectionAlive() {
@@ -54,8 +88,16 @@ class IterationView extends React.Component {
       .then(() => this.setState({online: true}))
   }
 
-  loadIteration(projectId, iterationId) {
-    return iterations.get(projectId, iterationId).then((res) => {
+  loadIterationIfNeeded(projectId, iterationNumber) {
+    if (iterationNumber === 'current' && !this.isCurrent(this.state.iteration.number)) {
+      this.loadIteration(projectId, iterationNumber)
+    } else if (iterationNumber !== 'current' && this.state.iteration.number !== parseInt(iterationNumber)) {
+      this.loadIteration(projectId, iterationNumber)
+    }
+  }
+
+  loadIteration(projectId, iterationNumber) {
+    return iterations.get(projectId, iterationNumber).then((res) => {
       this.setState({
         iteration: res.iteration,
         allIterations: res.all_iterations,
@@ -64,22 +106,36 @@ class IterationView extends React.Component {
     })
   }
 
-  addStory(story) {
-    return socket.addStory(story).then(this.doAddStory.bind(this))
+  loadIterationByStory(projectId, storyNumber) {
+    return iterations.getByStory(projectId, storyNumber).then((res) => {
+      this.setState({
+        iteration: res.iteration,
+        allIterations: res.all_iterations,
+        stories: res.stories,
+        selectedStory: res.story
+      })
+    })
+  }
+
+  addStory(state, story) {
+    const newStory = Object.assign({}, story, {
+      state: state,
+      project_id: this.props.project.id
+    })
+
+    return socket.addStory(newStory).then(this.doAddStory.bind(this)).then(this.selectStory.bind(this, null))
   }
 
   doAddStory(story) {
-    const updated = storyCollection.addStory(this.state.stories, story)
-    this.setState({stories: updated})
+    this.setState({stories: storyCollection.addStory(this.state.stories, story)})
   }
 
   updateStory(id, story) {
-    return socket.updateStory(id, story).then(this.doUpdateStory.bind(this))
+    return socket.updateStory(id, story).then(this.doUpdateStory.bind(this)).then(this.selectStory.bind(this, null))
   }
 
-  doUpdateStory(event) {
-    const updated = storyCollection.updateStory(this.state.stories, event)
-    this.setState({stories: updated})
+  doUpdateStory(story) {
+    this.setState({stories: storyCollection.updateStory(this.state.stories, story)})
   }
 
   moveStory(storyId, toColumn, toIndex, dragDone, dragAbort) {
@@ -92,18 +148,15 @@ class IterationView extends React.Component {
   }
 
   doMoveStory(moveEvent) {
-    const updated = storyCollection.moveStory(this.state.stories, moveEvent)
-    this.setState({stories: updated})
+    this.setState({stories: storyCollection.moveStory(this.state.stories, moveEvent)})
   }
 
-  deleteStory(story) {
-    socket.deleteStory(story.id).then(this.doDeleteStory.bind(this))
+  deleteStory(storyId) {
+    socket.deleteStory(storyId).then(this.doDeleteStory.bind(this)).then(this.selectStory.bind(this, null))
   }
 
   doDeleteStory(deleteEvent) {
-    const updated = storyCollection.deleteStory(this.state.stories, deleteEvent)
-
-    this.setState({stories: updated})
+    this.setState({stories: storyCollection.deleteStory(this.state.stories, deleteEvent)})
   }
 
   newIteration() {
@@ -114,9 +167,7 @@ class IterationView extends React.Component {
 
   startIteration() {
     iterations.start(this.state.iteration.id).then((updated) => {
-      this.setState({
-        iteration: updated,
-      })
+      this.setState({iteration: updated})
     })
   }
 
@@ -129,17 +180,28 @@ class IterationView extends React.Component {
     })
   }
 
-  changeView(e) {
-    browserHistory.push(e.target.value)
+  changeView(e) { browserHistory.push(e.target.value) }
+
+  isCurrent(iterationNumber) {
+    const currentIteration = this.state.allIterations[this.state.allIterations.length - 1];
+    return currentIteration.number === iterationNumber;
   }
 
   iterationRoute(iterationNumber) {
-    const currentIteration = this.state.allIterations[this.state.allIterations.length - 1];
-
-    if (iterationNumber === currentIteration.number) {
+    if (this.isCurrent(iterationNumber)) {
       return `/${this.props.project.slug}`;
     } else {
       return `/${this.props.project.slug}/iterations/${iterationNumber}`;
+    }
+  }
+
+  selectStory(story) {
+    if (!story) {
+      browserHistory.push({pathname: this.iterationRoute(this.state.iteration.number), state: {selectedStory: story}})
+    } else if (story.id) {
+      browserHistory.push({pathname: `/${this.props.project.slug}/stories/${story.number}`, state: {selectedStory: story}})
+    } else {
+      browserHistory.push({pathname: `/${this.props.project.slug}/stories/new`, state: {selectedStory: story}})
     }
   }
 
@@ -171,6 +233,8 @@ class IterationView extends React.Component {
     return (
       <StoryBoard
         stories={this.state.stories}
+        selectedStory={this.state.selectedStory}
+        selectStory={this.selectStory.bind(this)}
         iteration={this.state.iteration}
         allIterations={this.state.allIterations}
         moveStory={this.moveStory.bind(this)}
@@ -209,5 +273,3 @@ class IterationView extends React.Component {
     )
   }
 }
-
-export default IterationView

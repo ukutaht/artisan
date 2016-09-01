@@ -133,13 +133,37 @@ defmodule Artisan.IterationsTest do
 
   test "completed iteration only includes stories completed in that iteration", %{user: user, project: project} do
     iteration = create_iteration(project.id)
-    Artisan.Stories.create(user.id, project.id, %{name: "name", state: "completed"})
-    Artisan.Stories.create(user.id, project.id, %{name: "name", state: "working"})
+    Helpers.create_story(project.id, user.id, %{state: "completed"})
+    Helpers.create_story(project.id, user.id, %{state: "working"})
     Iterations.complete(iteration.id)
 
     %{stories: stories} = Iterations.current(project.id)
 
     assert Enum.count(stories["completed"]) == 1
     assert stories["working"] == nil
+  end
+
+  describe "get_by_story" do
+    test "finds current iteration if story is not completed", %{user: user, project: project} do
+      current_iteration = create_iteration(project.id)
+      story = Helpers.create_story(project.id, user.id, %{state: "working"})
+
+      %{iteration: iteration} = Iterations.get_by_story(project.id, story.number)
+
+      assert iteration.id == current_iteration.id
+    end
+
+    test "finds iteration if story has been completed", %{user: user, project: project} do
+      completed_iteration = Helpers.create_iteration(project.id, %{state: "completed"})
+      story = Helpers.create_story(project.id, user.id, %{state: "completed", completed_in: completed_iteration.id})
+
+      %{iteration: iteration} = Iterations.get_by_story(project.id, story.number)
+
+      assert iteration.id == completed_iteration.id
+    end
+
+    test "does not find iteration when story does not exist", %{project: project} do
+      assert Iterations.get_by_story(project.id, -1) == nil
+    end
   end
 end
