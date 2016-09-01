@@ -56,6 +56,18 @@ describe('StoryModal', () => {
     expect(onClose).not.toHaveBeenCalled()
   })
 
+  it('submit is disabled when name is not filled in', () => {
+    view.nameChanged({target: {value: ''}})
+
+    expect(view.isDisabled()).toEqual(true);
+  })
+
+  it('submit is enabled when name is filled in', () => {
+    view.nameChanged({target: {value: 'New Name'}})
+
+    expect(view.isDisabled()).toEqual(false);
+  })
+
   it('calls the onSubmit handler when form is submitted', () => {
     view.handleSubmit(fakeSubmitEvent)
 

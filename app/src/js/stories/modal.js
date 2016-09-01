@@ -34,6 +34,10 @@ export default class StoryModal extends React.Component {
     }
   }
 
+  isDisabled() {
+    return this.props.disabled || this.state.name === ''
+  }
+
   changedFields() {
     const story = this.props.story
 
@@ -194,7 +198,7 @@ export default class StoryModal extends React.Component {
                   <input type="text" placeholder="Comma-separated" value={this.state.tagsInput} onChange={this.tagsChanged.bind(this)}/>
                 </section>
 
-                <button className="button primary save-story-button" disabled={this.props.disabled}>{this.buttonText()}</button>
+                <button className="button primary save-story-button" disabled={this.isDisabled()}>{this.buttonText()}</button>
               </div>
             </form>
           </div>
