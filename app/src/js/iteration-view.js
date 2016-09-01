@@ -47,7 +47,7 @@ export default class IterationView extends React.Component {
       this.loadIteration(project.id, 'current')
     }
 
-    socket = new ProjectSocket(this.props.project.id, {
+    socket = new ProjectSocket(project.id, {
       onAddStory: this.doAddStory.bind(this),
       onUpdateStory: this.doUpdateStory.bind(this),
       onMoveStory: this.doMoveStory.bind(this),
