@@ -34,7 +34,7 @@ defmodule Artisan.Iterations do
 
     if story do
       iterations = all_for(project_id)
-      iteration = scan_for(iterations, story.completed_in) || current_from(iterations)
+      iteration = Enum.find(iterations, fn(i) -> i.id == story.completed_in end) || current_from(iterations)
 
       %{
         iteration: iteration,
@@ -49,7 +49,7 @@ defmodule Artisan.Iterations do
 
   def get(project_id, number) do
     iterations = all_for(project_id)
-    iteration = scan_for(iterations, number)
+    iteration = Enum.find(iterations, fn(i) -> i.number == number end)
 
     %{
       iteration: iteration,
@@ -77,10 +77,6 @@ defmodule Artisan.Iterations do
 
   defp current_from(iterations) do
     Enum.max_by(iterations, fn(i) -> i.number end)
-  end
-
-  defp scan_for(iterations, number) do
-    Enum.find(iterations, fn(i) -> i.number == number end)
   end
 
   defp stories_for(%Iteration{state: "completed", id: id}) do
