@@ -89,9 +89,7 @@ export default class IterationView extends React.Component {
   }
 
   loadIterationIfNeeded(projectId, iterationNumber) {
-    const currentIteration = this.state.allIterations[this.state.allIterations.length - 1];
-
-    if (iterationNumber === 'current' && currentIteration.number !== this.state.iteration.number) {
+    if (iterationNumber === 'current' && !this.isCurrent(this.state.iteration.number)) {
       this.loadIteration(projectId, iterationNumber)
     } else if (iterationNumber !== 'current' && this.state.iteration.number !== parseInt(iterationNumber)) {
       this.loadIteration(projectId, iterationNumber)
@@ -184,10 +182,13 @@ export default class IterationView extends React.Component {
 
   changeView(e) { browserHistory.push(e.target.value) }
 
-  iterationRoute(iterationNumber) {
+  isCurrent(iterationNumber) {
     const currentIteration = this.state.allIterations[this.state.allIterations.length - 1];
+    return currentIteration.number === iterationNumber;
+  }
 
-    if (iterationNumber === currentIteration.number) {
+  iterationRoute(iterationNumber) {
+    if (this.isCurrent(iterationNumber)) {
       return `/${this.props.project.slug}`;
     } else {
       return `/${this.props.project.slug}/iterations/${iterationNumber}`;
