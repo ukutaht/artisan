@@ -1,5 +1,5 @@
-defmodule Artisan.Users.Email.Emails do
-  use Bamboo.Phoenix, view: Artisan.Users.Email.View
+defmodule Artisan.Mailer.Emails do
+  use Bamboo.Phoenix, view: Artisan.Mailer.View
   @from "Artisan <noreply@artisan-app.com>"
   @invite_subject "[Artisan] You've been invited to join Artisan"
 

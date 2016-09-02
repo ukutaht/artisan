@@ -2,7 +2,7 @@ defmodule Artisan.Users do
   use Artisan.Repo
   alias Artisan.User
   alias Artisan.Users.Password
-  alias Artisan.Users.Email.Emails
+  alias Artisan.Mailer.Emails
   alias Artisan.Users.InviteToken
   alias Artisan.Projects
 
