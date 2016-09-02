@@ -19,11 +19,8 @@ const canToggleBacklog = {
 }
 
 export default class StoryBoard extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      visibleColumns: iterationColumns[props.iteration.state]
-    }
+  componentWillMount() {
+    this.setState({visibleColumns: iterationColumns[this.props.iteration.state]})
   }
 
   componentWillReceiveProps(nextProps) {
