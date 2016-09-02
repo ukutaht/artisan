@@ -2,7 +2,7 @@ use Mix.Config
 
 config :artisan, Artisan.Endpoint,
   url: [host: "staging.artisan-app.com", port: 80],
-  server: false,
+  server: true,
   http: [port: {:system, "PORT"}]
 
 config :logger, level: :info
