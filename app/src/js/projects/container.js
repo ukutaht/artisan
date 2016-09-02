@@ -8,12 +8,8 @@ function nameSort(users) {
 }
 
 export default class ProjectContainer extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
-
-  componentDidMount() {
+  componentWillMount() {
+    this.setState({})
     projects.find(this.props.routeParams.slug).then((project) => {
       nameSort(project.collaborators)
       this.setState({project: project})

@@ -9,9 +9,10 @@ const BAD_REQUEST = 400;
 const FORBIDDEN = 403;
 
 class Signup extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
+  componentWillMount() {
+    document.title = 'Artisan | Sign up'
+
+    this.setState({
       formErrors: {},
       tokenError: null,
       form: {
@@ -20,7 +21,7 @@ class Signup extends React.Component {
         password: '',
         passwordConfirmation: ''
       }
-    }
+    })
   }
 
   validate() {

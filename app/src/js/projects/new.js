@@ -3,10 +3,9 @@ import browserHistory from 'react-router/lib/browserHistory'
 
 import * as projects from 'projects/service'
 
-class NewProject extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {name: ''}
+export default class NewProject extends React.Component {
+  componentWillMount() {
+    this.setState({name: ''})
   }
 
   submit(e) {
@@ -39,5 +38,3 @@ class NewProject extends React.Component {
     )
   }
 }
-
-export default NewProject

@@ -1,12 +1,8 @@
 import React from 'react'
 
 export default class AvatarSelect extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selectedSocial: 'twitter',
-      userName: ''
-    }
+  componentWillMount() {
+    this.setState({selectedSocial: 'twitter', userName: ''})
   }
 
   userNameChanged(e) {

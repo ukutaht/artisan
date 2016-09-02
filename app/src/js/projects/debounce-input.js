@@ -14,23 +14,16 @@ function debounce(func, wait) {
 }
 
 export default class DebounceInput extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      value: props.value
-    }
-  }
-
-  componentWillReceiveProps(newProps) {
-    this.setState({
-      value: newProps.value
-    })
-  }
-
   componentWillMount() {
+    this.setState({value: this.props.value})
+
     this.handleInputDebounced = debounce(() => {
       this.props.onChange.apply(this, [this.state.value]);
     }, this.props.delay);
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState({value: newProps.value})
   }
 
   onChange(e) {

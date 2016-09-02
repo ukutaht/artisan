@@ -10,15 +10,14 @@ const ENTER = 13
 const ESCAPE = 27
 
 export default class CollaboratorsSearch extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
+  componentWillMount() {
+    this.setState({
       query: '',
       searchResults: [],
       showResults: false,
       selectedIndex: 0,
       selectedUser: null,
-    }
+    })
   }
 
   addCollaborator() {

@@ -5,11 +5,10 @@ import browserHistory from 'react-router/lib/browserHistory'
 import * as users from 'users/service'
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      loginError: false
-    }
+  componentWillMount() {
+    document.title = 'Artisan | Log in'
+
+    this.setState({loginError: false})
   }
 
   getFormData() {

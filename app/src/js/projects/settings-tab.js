@@ -2,19 +2,16 @@ import React from 'react'
 import InputWithError from 'forms/input-with-error'
 
 export default class ProjectSettingsTab extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
+  componentWillMount() {
+    document.title = `${this.props.project.name} | Settings`
+
+    this.setState({
       form: {
-        name: props.project.name,
-        slug: props.project.slug
+        name: this.props.project.name,
+        slug: this.props.project.slug
       },
       formErrors: {}
-    }
-  }
-
-  componentDidMount() {
-    document.title = `${this.props.project.name} | Settings`
+    })
   }
 
   componentWillReceiveProps(newProps) {

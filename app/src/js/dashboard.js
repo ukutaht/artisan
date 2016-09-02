@@ -4,13 +4,10 @@ import Link from 'react-router/lib/Link'
 import * as projects from 'projects/service'
 
 class Dashboard extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {projects: []}
-  }
-
-  componentDidMount() {
+  componentWillMount() {
     document.title = 'Artisan'
+    this.setState({projects: []})
+
     projects.all().then((projects) => {
       this.setState({projects: projects})
     })

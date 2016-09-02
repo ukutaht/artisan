@@ -9,15 +9,9 @@ import Notifications from 'notifications/notifications'
 import * as users from 'users/service'
 
 export default class Layout extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      currentUser: users.current(),
-      inviteOpen: false
-    }
-  }
+  componentWillMount() {
+    this.setState({currentUser: users.current(), inviteOpen: false})
 
-  componentDidMount() {
     users.subscribeToChanges((updated) => {
       this.setState({currentUser: updated})
     })

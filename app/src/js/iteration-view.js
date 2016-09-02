@@ -21,20 +21,17 @@ const newStory = {
 }
 
 export default class IterationView extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
+  componentWillMount() {
+    const {project, routeParams} = this.props
+    document.title = project.name
+
+    this.setState({
       iteration: null,
       allIterations: null,
       stories: null,
       online: true,
       selectedStory: null,
-    }
-  }
-
-  componentWillMount() {
-    const {project, routeParams} = this.props
-    document.title = project.name
+    })
 
     if (routeParams.storyNumber === 'new') {
       this.loadIteration(project.id, 'current')

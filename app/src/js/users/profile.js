@@ -14,17 +14,14 @@ const formStates = {
 }
 
 export default class Profile extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
+  componentWillMount() {
+    document.title = 'Profile'
+
+    this.setState({
       user: users.current(),
       selectingNewAvatar: false,
       formState: formStates.initial
-    }
-  }
-
-  componentDidMount() {
-    document.title = 'Profile'
+    })
   }
 
   onSubmit(e) {
