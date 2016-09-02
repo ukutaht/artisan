@@ -1,7 +1,7 @@
 defmodule Artisan.Projects.Channel do
   use Phoenix.Channel
-  alias Artisan.Projects
-  alias Artisan.Stories
+  alias Artisan.{Projects, Stories}
+  require Logger
 
   def subscribe(project_id) do
     Artisan.Endpoint.subscribe("projects:#{project_id}")
@@ -22,7 +22,19 @@ defmodule Artisan.Projects.Channel do
     end
   end
 
-  def handle_in("story:add", params, socket) do
+  def handle_in(event, params, socket) do
+    Logger.info(["Receive ", event])
+    start = System.monotonic_time()
+
+    response = handle_event(event, params, socket)
+
+    stop = System.monotonic_time()
+    diff = System.convert_time_unit(stop - start, :native, :micro_seconds)
+    Logger.info(["Reply ", event, " in ", formatted_diff(diff)])
+    response
+  end
+
+  defp handle_event("story:add", params, socket) do
     case Stories.create(socket.assigns[:current_user], socket.assigns[:project_id], params) do
       {:ok, created} ->
         view = render("story.json", story: created)
@@ -33,7 +45,7 @@ defmodule Artisan.Projects.Channel do
     end
   end
 
-  def handle_in("story:update", %{"id" => id, "story" => story_params}, socket) do
+  defp handle_event("story:update", %{"id" => id, "story" => story_params}, socket) do
     case Stories.update(id, socket.assigns[:current_user], story_params) do
       {:ok, updated, originator} ->
         view = render("update.json", story: updated, originator: originator)
@@ -44,7 +56,7 @@ defmodule Artisan.Projects.Channel do
     end
   end
 
-  def handle_in("story:move", %{"id" => id, "state" => state, "index" => index}, socket) do
+  defp handle_event("story:move", %{"id" => id, "state" => state, "index" => index}, socket) do
     user_id = socket.assigns[:current_user]
     {:ok, updated, originator, from, to} = Stories.move(id, user_id, state, index)
     view = render("move.json", story: updated, originator: originator, from: from, to: to, index: index)
@@ -52,7 +64,7 @@ defmodule Artisan.Projects.Channel do
     {:reply, {:ok, view}, socket}
   end
 
-  def handle_in("story:delete", %{"id" => id}, socket) do
+  defp handle_event("story:delete", %{"id" => id}, socket) do
     {:ok, deleted, originator} = Stories.delete(socket.assigns[:current_user], id)
     view = render("deleted.json", story: deleted, originator: originator)
 
@@ -67,4 +79,7 @@ defmodule Artisan.Projects.Channel do
   defp render(name, assigns) do
     Phoenix.View.render(Stories.View, name, assigns)
   end
+
+  defp formatted_diff(diff) when diff > 1000, do: [diff |> div(1000) |> Integer.to_string, "ms"]
+  defp formatted_diff(diff), do: [diff |> Integer.to_string, "µs"]
 end
