@@ -43,10 +43,12 @@ defmodule Artisan.Stories do
   end
 
   def move(id, user_id, state, index) do
-    Ordering.move(id, user_id, state, index)
-      |> preload_creator
-      |> preload_assignee
-      |> add_originator(user_id)
+    Repo.transaction!(fn() ->
+      Ordering.move(id, user_id, state, index)
+        |> preload_creator
+        |> preload_assignee
+        |> add_originator(user_id)
+    end)
   end
 
   def mark_completed_in(iteration) do
