@@ -8,7 +8,6 @@ defmodule Artisan.Users.Email.Emails do
 
     base_email
       |> to(email)
-      |> subject(@invite_subject)
       |> render(:invite, inviter: inviter, link: link)
   end
 
@@ -18,7 +17,6 @@ defmodule Artisan.Users.Email.Emails do
 
     base_email
       |> to(email)
-      |> subject(@invite_subject)
       |> render(:invite_to_project, inviter: inviter, link: link, project: project)
   end
 
@@ -35,6 +33,6 @@ defmodule Artisan.Users.Email.Emails do
   end
 
   defp base_email do
-    new_email(from: @from)
+    new_email(from: @from, subject: @invite_subject)
   end
 end
