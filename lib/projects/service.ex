@@ -1,10 +1,6 @@
 defmodule Artisan.Projects do
   use Artisan.Repo
-  alias Artisan.Project
-  alias Artisan.Collaborator
-  alias Artisan.Iterations
-  alias Artisan.User
-  alias Artisan.Projects.Slug
+  alias Artisan.{Project, Collaborator, Iterations, User, Projects.Slug}
 
   def create(user_id, params) do
     %Project{}
