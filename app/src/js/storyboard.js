@@ -4,6 +4,7 @@ import browserHistory from 'react-router/lib/browserHistory'
 
 import Column from 'column'
 import StoryModal from 'stories/modal'
+import Modal from 'forms/modal'
 
 const iterationColumns = {
   planning: ['backlog', 'ready'],
@@ -20,7 +21,7 @@ const canToggleBacklog = {
 
 export default class StoryBoard extends React.Component {
   componentWillMount() {
-    this.setState({visibleColumns: iterationColumns[this.props.iteration.state]})
+    this.setState({visibleColumns: iterationColumns[this.props.iteration.state], confirmCompletion: false})
   }
 
   componentWillReceiveProps(nextProps) {
@@ -47,20 +48,17 @@ export default class StoryBoard extends React.Component {
     return canToggleBacklog[this.props.iteration.state]
   }
 
-  render() {
-    return (
-      <div>
-        <div className="board">
-          <div className="board__actions">
-            <div className="board__actions__right">
-              {this.renderActions()}
-            </div>
-          </div>
-          {this.renderColumnsWithTransition()}
-        </div>
-        {this.renderEditStoryModal()}
-      </div>
-    )
+  confirmCompletion() {
+    this.props.completeIteration()
+    this.setState({confirmCompletion: false})
+  }
+
+  showConfirmCompletion() {
+    this.setState({confirmCompletion: true})
+  }
+
+  dismissCompletion() {
+    this.setState({confirmCompletion: false})
   }
 
   renderColumnsWithTransition() {
@@ -158,7 +156,7 @@ export default class StoryBoard extends React.Component {
           <button className="button primary" disabled={!this.props.online} onClick={this.newStory.bind(this)}>
             <i className="right-padded-icon ion-plus"></i> Add story
           </button>
-          <button className="button primary" disabled={!this.props.online} onClick={this.props.completeIteration}>
+          <button className="button primary" disabled={!this.props.online} onClick={this.showConfirmCompletion.bind(this)}>
             Complete iteration
           </button>
         </div>
@@ -167,4 +165,45 @@ export default class StoryBoard extends React.Component {
 
     return false
   }
+
+  renderConfirmCompletion() {
+    if (this.state.confirmCompletion) {
+      return (
+        <Modal onClose={this.dismissCompletion.bind(this)}>
+          <div className="modal confirm-modal">
+            <header className="modal__header">
+              <h3>Complete</h3>
+              <i className="ion-android-close modal__close" onClick={this.dismissCompletion.bind(this)}></i>
+            </header>
+            <div className="modal__body row">
+              Are you sure you want to complete iteration {this.props.iteration.number}?
+              <div className="confirm-modal__buttons">
+                <button className="button error no-margin" onClick={this.dismissCompletion.bind(this)}>Cancel</button>
+                <button className="button primary" onClick={this.confirmCompletion.bind(this)}>Complete</button>
+              </div>
+            </div>
+          </div>
+        </Modal>
+      )
+    }
+    return null
+  }
+
+  render() {
+    return (
+      <div>
+        <div className="board">
+          <div className="board__actions">
+            <div className="board__actions__right">
+              {this.renderActions()}
+            </div>
+          </div>
+          {this.renderColumnsWithTransition()}
+        </div>
+        {this.renderEditStoryModal()}
+        {this.renderConfirmCompletion()}
+      </div>
+    )
+  }
+
 }
