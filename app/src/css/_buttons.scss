@@ -24,6 +24,15 @@
     }
   }
 
+  &.error {
+    background: $error;
+    color: $inverted;
+
+    &:hover {
+      background: darken($error, 5%);
+    }
+  }
+
   &:disabled {
     background: $grey;
     cursor: not-allowed;
