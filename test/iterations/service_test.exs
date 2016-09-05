@@ -15,24 +15,33 @@ defmodule Artisan.IterationsTest do
     iteration
   end
 
-  test "creates an iteration for a project", %{project: project} do
-    {:ok, _} = Iterations.create_for(project.id)
+  describe "create" do
+    test "creates an iteration for a project", %{project: project} do
+      {:ok, _} = Iterations.create_for(project.id)
 
-    assert Repo.aggregate(Iteration, :count, :id) == 1
-  end
+      assert Repo.aggregate(Iteration, :count, :id) == 1
+    end
 
-  test "iterations start out in planning state", %{project: project} do
-    created = create_iteration(project.id)
+    test "does not create another iteration if there is one currently open", %{project: project} do
+      {:ok, _} = Iterations.create_for(project.id)
 
-    assert created.state == "planning"
-  end
+      assert Iterations.create_for(project.id) == {:error, :active_iteration_exists}
+    end
 
-  test "auto-increments the iteration number", %{project: project} do
-    first = create_iteration(project.id)
-    second = create_iteration(project.id)
+    test "iterations start out in planning state", %{project: project} do
+      created = create_iteration(project.id)
 
-    assert first.number == 1
-    assert second.number == 2
+      assert created.state == "planning"
+    end
+
+    test "auto-increments the iteration number", %{project: project} do
+      first = create_iteration(project.id)
+      Iterations.complete(first.id)
+      second = create_iteration(project.id)
+
+      assert first.number == 1
+      assert second.number == 2
+    end
   end
 
   test "completes an iteration", %{project: project} do
@@ -89,6 +98,7 @@ defmodule Artisan.IterationsTest do
 
   test "current iteration has all iterations", %{project: project} do
     first = create_iteration(project.id)
+    Iterations.complete(first.id)
     second = create_iteration(project.id)
 
     %{all_iterations: all_iterations} = Iterations.current(project.id)

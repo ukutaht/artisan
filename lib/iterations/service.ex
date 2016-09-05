@@ -3,11 +3,15 @@ defmodule Artisan.Iterations do
   alias Artisan.Iteration
 
   def create_for(project_id) do
-    {:ok, iteration} = %Iteration{number: next_number(project_id), state: "planning"}
-      |> Iteration.changeset(%{project_id: project_id})
-      |> Repo.insert
+    if active_iteration_exists?(project_id) do
+      {:error, :active_iteration_exists}
+    else
+      {:ok, iteration} = %Iteration{number: next_number(project_id), state: "planning"}
+        |> Iteration.changeset(%{project_id: project_id})
+        |> Repo.insert
 
-    {:ok, %{iteration: iteration, stories: stories_for(iteration)}}
+      {:ok, %{iteration: iteration, stories: stories_for(iteration)}}
+    end
   end
 
   def current(project_id) do
@@ -90,6 +94,11 @@ defmodule Artisan.Iterations do
   defp next_number(project_id) do
     q = from(i in Iteration, where: i.project_id == ^project_id)
     Repo.aggregate(q, :count, :id) + 1
+  end
+
+  defp active_iteration_exists?(project_id) do
+    q = from(i in Iteration, where: i.project_id == ^project_id, where: i.state != "completed")
+    Repo.aggregate(q, :count, :id) > 0
   end
 
   defp all_for(project_id) do
