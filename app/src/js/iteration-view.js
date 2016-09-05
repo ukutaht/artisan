@@ -157,8 +157,8 @@ export default class IterationView extends React.Component {
   }
 
   newIteration() {
-    iterations.create(this.props.project.id).then(() => {
-      browserHistory.push(`/${this.props.project.slug}`)
+    iterations.create(this.props.project.id).then(({iteration: created}) => {
+      this.loadIteration(this.props.project.id, created.number)
     })
   }
 
