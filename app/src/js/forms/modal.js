@@ -31,7 +31,7 @@ export default class Modal extends React.Component {
   }
 
   render() {
-    const extraClass = this.props.className || ""
+    const extraClass = this.props.className || ''
 
     return (
       <div className="modal-container" ref="container" onClick={this.onContainerClick.bind(this)}>
