@@ -154,58 +154,56 @@ export default class StoryModal extends React.Component {
 
   render() {
     return (
-      <Modal onClose={this.props.onClose}>
-        <div className="modal story-modal">
-          <header className="modal__header">
-            <h3>{this.header()}</h3>
-            <i className="ion-android-close modal__close" onClick={this.props.onClose}></i>
-          </header>
-          <div className="modal__body row">
-            <form onSubmit={this.handleSubmit.bind(this)}>
-              <div className="eight-columns">
-                <section className="form-group">
-                  <label>Name</label>
-                  <input autoFocus="true" type="text" value={this.state.name} onChange={this.nameChanged.bind(this)}/>
-                </section>
-
-                <label>Acceptance criteria</label>
-                <textarea rows="15" value={this.state.acceptance_criteria} onChange={this.acceptanceCriteriaChanged.bind(this)}></textarea>
-              </div>
-              <div className="four-columns story-right">
-                <div className="estimate-form">
-                  <section className="estimate-form__group">
-                    <label className="estimate-form__left">Optimistic:</label>
-                    <input type="text" className="estimate-form__right" value={this.displayEstimate('optimistic')} onClick={this.selectTarget} onChange={this.estimateChanged('optimistic')} />
-                  </section>
-                  <section className="estimate-form__group">
-                    <label className="estimate-form__left">Realistic:</label>
-                    <input type="text" className="estimate-form__right" value={this.displayEstimate('realistic')} onClick={this.selectTarget} onChange={this.estimateChanged('realistic')} />
-                  </section>
-                  <section className="estimate-form__group">
-                    <label className="estimate-form__left">Pessimistic:</label>
-                    <input type="text" className="estimate-form__right" value={this.displayEstimate('pessimistic')} onClick={this.selectTarget} onChange={this.estimateChanged('pessimistic')}/>
-                  </section>
-                  <section className="estimate-form__total">
-                    <label className="estimate-form__left">Estimate:</label>
-                    <span className="estimate-form__right">{this.state.estimate}</span>
-                  </section>
-                </div>
-
-                {this.renderAssigneeSelect()}
-
-                <section className="form-group">
-                  <label>Tags</label>
-                  <input type="text" placeholder="Comma-separated" value={this.state.tagsInput} onChange={this.tagsChanged.bind(this)}/>
-                </section>
-
-                <button className="button primary save-story-button" disabled={this.isDisabled()}>{this.buttonText()}</button>
-              </div>
-            </form>
-          </div>
-          <div className="modal__footer row">
+      <Modal className="story-modal" onClose={this.props.onClose}>
+        <header className="modal__header">
+          <h3>{this.header()}</h3>
+          <i className="ion-android-close modal__close" onClick={this.props.onClose}></i>
+        </header>
+        <div className="modal__body row">
+          <form onSubmit={this.handleSubmit.bind(this)}>
             <div className="eight-columns">
-              {this.bottomSection()}
+              <section className="form-group">
+                <label>Name</label>
+                <input autoFocus="true" type="text" value={this.state.name} onChange={this.nameChanged.bind(this)}/>
+              </section>
+
+              <label>Acceptance criteria</label>
+              <textarea rows="15" value={this.state.acceptance_criteria} onChange={this.acceptanceCriteriaChanged.bind(this)}></textarea>
             </div>
+            <div className="four-columns story-right">
+              <div className="estimate-form">
+                <section className="estimate-form__group">
+                  <label className="estimate-form__left">Optimistic:</label>
+                  <input type="text" className="estimate-form__right" value={this.displayEstimate('optimistic')} onClick={this.selectTarget} onChange={this.estimateChanged('optimistic')} />
+                </section>
+                <section className="estimate-form__group">
+                  <label className="estimate-form__left">Realistic:</label>
+                  <input type="text" className="estimate-form__right" value={this.displayEstimate('realistic')} onClick={this.selectTarget} onChange={this.estimateChanged('realistic')} />
+                </section>
+                <section className="estimate-form__group">
+                  <label className="estimate-form__left">Pessimistic:</label>
+                  <input type="text" className="estimate-form__right" value={this.displayEstimate('pessimistic')} onClick={this.selectTarget} onChange={this.estimateChanged('pessimistic')}/>
+                </section>
+                <section className="estimate-form__total">
+                  <label className="estimate-form__left">Estimate:</label>
+                  <span className="estimate-form__right">{this.state.estimate}</span>
+                </section>
+              </div>
+
+              {this.renderAssigneeSelect()}
+
+              <section className="form-group">
+                <label>Tags</label>
+                <input type="text" placeholder="Comma-separated" value={this.state.tagsInput} onChange={this.tagsChanged.bind(this)}/>
+              </section>
+
+              <button className="button primary save-story-button" disabled={this.isDisabled()}>{this.buttonText()}</button>
+            </div>
+          </form>
+        </div>
+        <div className="modal__footer row">
+          <div className="eight-columns">
+            {this.bottomSection()}
           </div>
         </div>
       </Modal>

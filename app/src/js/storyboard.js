@@ -169,18 +169,16 @@ export default class StoryBoard extends React.Component {
   renderConfirmCompletion() {
     if (this.state.confirmCompletion) {
       return (
-        <Modal onClose={this.dismissCompletion.bind(this)}>
-          <div className="modal confirm-modal">
-            <header className="modal__header">
-              <h3>Complete</h3>
-              <i className="ion-android-close modal__close" onClick={this.dismissCompletion.bind(this)}></i>
-            </header>
-            <div className="modal__body row">
-              Are you sure you want to complete iteration {this.props.iteration.number}?
-              <div className="confirm-modal__buttons">
-                <button className="button error no-margin" onClick={this.dismissCompletion.bind(this)}>Cancel</button>
-                <button className="button primary" onClick={this.confirmCompletion.bind(this)}>Complete</button>
-              </div>
+        <Modal onClose={this.dismissCompletion.bind(this)} className="confirm-modal">
+          <header className="modal__header">
+            <h3>Complete</h3>
+            <i className="ion-android-close modal__close" onClick={this.dismissCompletion.bind(this)}></i>
+          </header>
+          <div className="modal__body row">
+            Are you sure you want to complete iteration {this.props.iteration.number}?
+            <div className="confirm-modal__buttons">
+              <button className="button error no-margin" onClick={this.dismissCompletion.bind(this)}>Cancel</button>
+              <button className="button primary" onClick={this.confirmCompletion.bind(this)}>Complete</button>
             </div>
           </div>
         </Modal>

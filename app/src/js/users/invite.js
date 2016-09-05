@@ -70,23 +70,21 @@ export default class Invite extends React.Component {
 
   render() {
     return (
-      <Modal onClose={this.props.onClose}>
-        <div className="modal invite-modal">
-          <header className="modal__header">
-            <h3>Invite</h3>
-            <i className="ion-android-close modal__close" onClick={this.props.onClose}></i>
-          </header>
-          <div className="modal__body row">
-            <form onSubmit={this.handleSubmit.bind(this)}>
-              <section className="form-group">
-                <InputWithError type="text" error={this.state.error} value={this.state.email} onChange={this.emailChanged.bind(this)} placeholder="Email"/>
-              </section>
+      <Modal className="invite-modal" onClose={this.props.onClose}>
+        <header className="modal__header">
+          <h3>Invite</h3>
+          <i className="ion-android-close modal__close" onClick={this.props.onClose}></i>
+        </header>
+        <div className="modal__body row">
+          <form onSubmit={this.handleSubmit.bind(this)}>
+            <section className="form-group">
+              <InputWithError type="text" error={this.state.error} value={this.state.email} onChange={this.emailChanged.bind(this)} placeholder="Email"/>
+            </section>
 
-              <Select value={this.state.project} options={this.options()} onChange={this.projectChanged.bind(this)} placeholder="Choose project to join"/>
+            <Select value={this.state.project} options={this.options()} onChange={this.projectChanged.bind(this)} placeholder="Choose project to join"/>
 
-              <button className="button primary no-margin full-width space-top-large space-bottom">Invite</button>
-            </form>
-          </div>
+            <button className="button primary no-margin full-width space-top-large space-bottom">Invite</button>
+          </form>
         </div>
       </Modal>
     )
