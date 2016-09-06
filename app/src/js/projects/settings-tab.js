@@ -71,7 +71,7 @@ export default class ProjectSettingsTab extends React.Component {
         <div className="form-group">
           <label>Slug</label>
           <br />
-          <small>Identifier for this project used in the URL i.e. <em>https://artisan.com/projects/<strong>{this.state.slug}</strong></em></small>
+          <small>Identifier for this project used in the URL i.e. <em>https://artisan.com/<strong>{this.state.form.slug}</strong></em></small>
           <InputWithError type="text" error={this.state.formErrors.slug} value={this.state.form.slug} onChange={this.change.bind(this, 'slug')} />
         </div>
         <button type="submit" className="button primary full-width no-margin">Save</button>
