@@ -38,7 +38,7 @@ class Dashboard extends React.Component {
                       <i className="ion-gear-b right-padded-icon"></i>Settings
                     </Link>
                   </li>
-                  )
+                )
               })
             }
           </ul>

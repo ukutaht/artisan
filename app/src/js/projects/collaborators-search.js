@@ -127,7 +127,7 @@ export default class CollaboratorsSearch extends React.Component {
                     <Avatar src={result.avatar} size={16} />
                     {result.name} ({result.email})
                   </a>
-                  )
+                )
               })
             }
           </div>
