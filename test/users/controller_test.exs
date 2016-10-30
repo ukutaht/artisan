@@ -155,4 +155,28 @@ defmodule Artisan.Users.ControllerTest do
       assert res.status == 400
     end
   end
+
+  describe "/stories" do
+    test "returns empty list if user has no assigned stories" do
+      user = create_user()
+
+      res = authenticated_conn(user["token"])
+        |> get("/api/users/stories")
+        |> json_response(200)
+
+      assert res == []
+    end
+
+    test "returns story that current user is assigned to" do
+      user = create_user()
+      project = Artisan.Test.Helpers.create_project()
+      story = Artisan.Test.Helpers.create_story(project.id, user["user"]["id"], assignee_id: user["user"]["id"])
+
+      [found] = authenticated_conn(user["token"])
+        |> get("/api/users/stories")
+        |> json_response(200)
+
+      assert found["id"] == story.id
+    end
+  end
 end

@@ -51,7 +51,7 @@ defmodule Artisan.Stories.View do
   end
 
   def render("stories.json", %{stories: stories}) do
-    Enum.map(stories, fn(story) -> render("story.json", story: story)end)
+    Enum.map(stories, fn(story) -> render("story.json", story: story) end)
   end
 
   def render("invalid.json", %{story: story}) do

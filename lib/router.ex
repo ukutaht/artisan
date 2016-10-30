@@ -24,6 +24,7 @@ defmodule Artisan.Router do
       get "/current", Controller, :current
       put "/current", Controller, :update_profile
       post "/invite", Controller, :invite
+      get "/stories", Controller, :stories
     end
 
     scope "/projects", Projects do

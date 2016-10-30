@@ -17,4 +17,8 @@ defmodule Artisan.Users.View do
   def render("invalid.json", %{user: user}) do
     Artisan.ErrorHelper.serialize_errors(user)
   end
+
+  def render("current_stories.json", %{stories: stories}) do
+    Artisan.Stories.View.render("stories.json", stories: stories)
+  end
 end

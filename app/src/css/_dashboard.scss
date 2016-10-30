@@ -1,5 +1,11 @@
 .dashboard-column {
-  @include span-columns(6);
+  &.stories {
+    @include span-columns(4);
+  }
+
+  &.projects {
+    @include span-columns(8);
+  }
 
   &__header {
     border-bottom: 1px solid $grey;
@@ -12,7 +18,8 @@
 
 .create-project {
   float: right;
-  transform: translateY(26px);
+  transform: translateY(2px);
+  font-size: $regular-font;
 }
 
 .no-margin {

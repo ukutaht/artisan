@@ -39,9 +39,23 @@ export default class Card extends React.Component {
     return null
   }
 
+  renderSecondLine() {
+    if (this.props.hideTags) return null
+    const tags = this.props.story.tags || []
+
+    return (
+      <div className="story-card__second-line">
+        <ul className="story-card__tags truncated">
+          {tags.map((tag) => {
+            return <li className="story-card__tags__item" key={tag}>{tag}</li>
+          })}
+        </ul>
+        {this.renderAvatar()}
+      </div>
+    )
+  }
+
   render() {
-    const story = this.props.story
-    const tags = story.tags || []
     const disabledClass = this.props.disabled ? 'disabled' : ''
 
     return (
@@ -50,14 +64,7 @@ export default class Card extends React.Component {
           {this.renderTitle()}
           {this.renderEstimate()}
         </div>
-        <div className="story-card__second-line">
-          <ul className="story-card__tags truncated">
-            {tags.map((tag) => {
-              return <li className="story-card__tags__item" key={tag}>{tag}</li>
-            })}
-          </ul>
-          {this.renderAvatar()}
-        </div>
+        {this.renderSecondLine()}
       </li>
     )
   }

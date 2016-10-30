@@ -319,4 +319,29 @@ defmodule Artisan.StoriesTest do
       assert originator.id == user.id
     end
   end
+
+  describe "current_for" do
+    test "finds current stories for user", %{user: user, project: project} do
+      story = Helpers.create_story(project.id, user.id, assignee_id: user.id)
+
+      [found] = Stories.current_for(user.id)
+
+      assert found.id == story.id
+      assert found.creator.id == user.id
+      assert found.assignee.id == user.id
+    end
+
+    test "does not find story if user is not assigned to it", %{project: project, user: user} do
+      Helpers.create_story(project.id, user.id)
+
+      assert Stories.current_for(user.id) == []
+    end
+
+    test "does not find story if its completed", %{project: project, user: user} do
+      iteration = Helpers.create_iteration(project.id)
+      Helpers.create_story(project.id, user.id, assignee_id: user.id, completed_in: iteration.id)
+
+      assert Stories.current_for(user.id) == []
+    end
+  end
 end

@@ -55,6 +55,11 @@ defmodule Artisan.Users.Controller do
     end
   end
 
+  def stories(conn, _params) do
+    stories = Artisan.Stories.current_for(conn.assigns[:current_user])
+    conn |> render("current_stories.json", stories: stories)
+  end
+
   defp invalid(conn, user) do
     conn |> put_status(400) |> render("invalid.json", user: user)
   end

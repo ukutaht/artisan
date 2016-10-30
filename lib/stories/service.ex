@@ -27,6 +27,14 @@ defmodule Artisan.Stories do
     end
   end
 
+  def current_for(user_id) do
+    Repo.all(from s in Story,
+      where: s.assignee_id == ^user_id,
+      where: is_nil(s.completed_in),
+      preload: [:creator, :assignee]
+    )
+  end
+
   def update(id, user_id, attrs) do
     Repo.get(Story, id)
       |> Story.edit(attrs)

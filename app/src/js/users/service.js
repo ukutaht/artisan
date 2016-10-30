@@ -35,6 +35,10 @@ export function logout() {
   currentUser = null;
 }
 
+export function currentStories() {
+  return Api.get('/api/users/stories')
+}
+
 export function requireAuth(nextState, replace, callback) {
   tryAuth(() => {
     callback()
