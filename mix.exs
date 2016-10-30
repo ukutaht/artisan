@@ -25,7 +25,7 @@ defmodule Artisan.Mixfile do
   defp deps do
     [
       {:phoenix, "~> 1.2"},
-      {:phoenix_html, "~> 2.6.2"},
+      {:phoenix_html, "~> 2.7.0"},
       {:phoenix_pubsub, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_ecto, "~> 3.0"},
@@ -33,7 +33,7 @@ defmodule Artisan.Mixfile do
       {:comeonin, "~> 2.5"},
       {:slugger, "~> 0.1.0"},
       {:distillery, "~> 0.9"},
-      {:junit_formatter, "~> 1.1.0", only: :test},
+      {:junit_formatter, "~> 1.2.0", only: :test},
       {:bamboo, "~> 0.7"}
    ]
   end
