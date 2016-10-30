@@ -21,9 +21,3 @@ test:
     - mkdir -p $CIRCLE_TEST_REPORTS/karma
     - mv _build/test/lib/artisan/test-junit-report.xml $CIRCLE_TEST_REPORTS/exunit
     - mv priv/static/js/test-results.xml $CIRCLE_TEST_REPORTS/karma
-
-deployment:
-  staging:
-    branch: master
-    commands:
-      - rel/ship_it
