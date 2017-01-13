@@ -25,16 +25,16 @@ defmodule Artisan.Mixfile do
   defp deps do
     [
       {:phoenix, "~> 1.2"},
-      {:phoenix_html, "~> 2.7.0"},
+      {:phoenix_html, "~> 2.9.0"},
       {:phoenix_pubsub, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_ecto, "~> 3.0"},
       {:cowboy, "~> 1.0"},
-      {:comeonin, "~> 2.5"},
+      {:comeonin, "~> 3.0"},
       {:slugger, "~> 0.1.0"},
       {:distillery, "~> 0.9"},
       {:junit_formatter, "~> 1.2.0", only: :test},
-      {:bamboo, "~> 0.7"}
+      {:bamboo, "~> 0.8"}
    ]
   end
 
